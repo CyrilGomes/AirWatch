@@ -15,7 +15,7 @@ SERV = $(addprefix Services/, $(SERV_CLASSES).cpp)
 EXE = AirWatch
 DB_CLASSES = DBManager
 DISP_CLASSES = Console HmiManagement
-MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Reading Sensor User
+MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Reading Sensor User Date
 SERV_CLASSES = ApplicationServices UserManagement
 
 # Essentials
