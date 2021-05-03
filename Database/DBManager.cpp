@@ -1,24 +1,24 @@
 #include "DBManager.h"
 
-String Database::DBManager::getDirectory() {
+string DBManager::getDirectory() {
 	return this->directory;
 }
 
-void Database::DBManager::setDirectory(String directory) {
+void DBManager::setDirectory(string directory) {
 	this->directory = directory;
 }
 
-void Database::DBManager::importCentralServerData() {
+void DBManager::importCentralServerData() {
 	// TODO - implement DBManager::importCentralServerData
 	throw "Not yet implemented";
 }
 
-void Database::DBManager::importLocalData() {
+void DBManager::importLocalData() {
 	// TODO - implement DBManager::importLocalData
 	throw "Not yet implemented";
 }
 
-void Database::DBManager::saveLocalData() {
+void DBManager::saveLocalData() {
 	// TODO - implement DBManager::saveLocalData
 	throw "Not yet implemented";
 }
