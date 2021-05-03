@@ -1,24 +1,22 @@
 #ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 
-namespace Model {
-	class Individual : Model::User {
+class Individual : User {
 
 	private:
 		int score;
-		List sensorList;
+		list sensorList;
 
 	public:
-		Individual(int id, String password, String mail);
+		Individual(int id, string password, string mail);
 
 		int getScore();
 
 		void setScore(int score);
 
-		List getSensorList();
+		list getSensorList();
 
-		void setSensorList(List sensorList);
-	};
-}
+		void setSensorList(list sensorList);
+};
 
 #endif
