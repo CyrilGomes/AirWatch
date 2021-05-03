@@ -1,11 +1,11 @@
 #include "Sensor.h"
 
-Model::Sensor::Sensor(int id, float latitude, float longitude) {
+Sensor::Sensor(int id, float latitude, float longitude) {
 	// TODO - implement Sensor::Sensor
 	throw "Not yet implemented";
 }
 
-int Model::Sensor::getId() {
+int Sensor::getId() {
 	return this->id;
 }
 
@@ -13,23 +13,23 @@ void Model::Sensor::setId(int id) {
 	this->id = id;
 }
 
-float Model::Sensor::getLatitude() {
+float Sensor::getLatitude() {
 	return this->latitude;
 }
 
-void Model::Sensor::setLatitude(float latitude) {
+void Sensor::setLatitude(float latitude) {
 	this->latitude = latitude;
 }
 
-float Model::Sensor::getLongitude() {
+float Sensor::getLongitude() {
 	return this->longitude;
 }
 
-void Model::Sensor::setLongitude(float longitude) {
+void Sensor::setLongitude(float longitude) {
 	this->longitude = longitude;
 }
 
-Model::User Model::Sensor::getOwner() {
+User Sensor::getOwner() {
 	return this->owner;
 }
 
