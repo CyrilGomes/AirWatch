@@ -1,21 +1,21 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
-
-namespace Display {
-	class Console {
+#include <string>
+#include <list>
+using namespace std;
+class Console {
 
 
 	public:
-		void displayMessage(String message);
+		void displayMessage(string message);
 
-		float promptInteger(String prompt);
+		int promptInteger(string prompt);
 
-		float promptString(String prompt);
+		string promptString(string prompt);
 
-		float promptFloat(String prompt);
+		float promptFloat(string prompt);
 
-		void promptMenuChoice(String prompt, List<String> menuItems);
-	};
-}
+		int promptMenuChoice(string prompt, list<string> menuItems);
+};
 
 #endif
