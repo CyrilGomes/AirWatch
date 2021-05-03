@@ -3,27 +3,26 @@
 
 #include <list>
 #include "Sensor.h"
-
+#include <string>
 using namespace std;
 
-namespace Model {
-	class Individual : public Model::User {
+class Individual : public User
+{
 
-	private:
-		int score;
-		list<Sensor> sensorList;
+private:
+	int score;
+	list<Sensor> sensorList;
 
-	public:
-		Individual(int id, string password, string mail);
+public:
+	Individual(int id, string password, string mail);
+	Individual();
+	int getScore();
 
-		int getScore();
+	void setScore(int score);
 
-		void setScore(int score);
+	list<Sensor> getSensorList();
 
-		list<Model::Sensor> getSensorList();
-
-		void setSensorList(list<Model::Sensor> sensorList);
-	};
-}
+	void setSensorList(list<Sensor> sensorList);
+};
 
 #endif

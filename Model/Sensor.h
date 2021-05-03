@@ -3,43 +3,42 @@
 
 #include <list>
 #include "Reading.h"
-
+#include "User.h"
 using namespace std;
-using namespace Model;
 
-namespace Model {
-	class Sensor {
 
-	private:
-		int id;
-		float latitude;
-		float longitude;
-		User owner;
-		list<Reading> readings;
+class Sensor
+{
 
-	public:
-		Sensor(int id, float latitude, float longitude);
+private:
+	int id;
+	float latitude;
+	float longitude;
+	User owner;
+	list<Reading> readings;
 
-		int getId();
+public:
+	Sensor(int id, float latitude, float longitude);
 
-		void setId(int id);
+	int getId();
 
-		float getLatitude();
+	void setId(int id);
 
-		void setLatitude(float latitude);
+	float getLatitude();
 
-		float getLongitude();
+	void setLatitude(float latitude);
 
-		void setLongitude(float longitude);
+	float getLongitude();
 
-		User getOwner();
+	void setLongitude(float longitude);
 
-		void setOwner(User owner);
+	User getOwner();
 
-		list<Reading> getReadings();
+	void setOwner(User owner);
 
-		void setReadings(list<Reading> readings);
-	};
-}
+	list<Reading> getReadings();
+
+	void setReadings(list<Reading> readings);
+};
 
 #endif

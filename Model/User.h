@@ -1,31 +1,30 @@
 #ifndef USER_H
 #define USER_H
-
+#include<string>
 using namespace std;
 
-namespace Model {
-	class User {
+class User
+{
 
-	protected:
-		int id;
-		string password;
-		string mail;
+protected:
+	int id;
+	string password;
+	string mail;
 
-	public:
-		int getId();
+public:
+	int getId();
 
-		void setId(int id);
+	void setId(int id);
 
-		string getPassword();
+	string getPassword();
 
-		void setPassword(string password);
+	void setPassword(string password);
 
-		string getMail();
+	string getMail();
 
-		void setMail(string mail);
+	void setMail(string mail);
 
-		User(int id, string password, string mail);
-	};
-}
+	User(int id, string password, string mail);
+};
 
 #endif

@@ -6,17 +6,17 @@
 #include "../Model/Individual.h"
 
 using namespace std;
-using namespace Database;
 
-string Database::DBManager::getDirectory() {
+
+string DBManager::getDirectory() {
 	return this->directory;
 }
 
-void Database::DBManager::setDirectory(string directory) {
+void DBManager::setDirectory(string directory) {
 	this->directory = directory;
 }
 
-void Database::DBManager::importCentralServerData() {
+void DBManager::importCentralServerData() {
 	// TODO - implement DBManager::importCentralServerData
 	/*
 		A- attributes
@@ -26,24 +26,24 @@ void Database::DBManager::importCentralServerData() {
 		E- sensors
 		F- users
 
-		1- liste de users (map, clé = ...)
-		2- liste de sensors (map, clé = id), potentiellement associée à un user
-		3- liste de cleaners (map, clé = id)
-		4- liste de readings (map, clé = timestamp), associée à un sensor
-		5- liste de measurements (list), associée à un reading
+		1- liste de users (map, clï¿½ = ...)
+		2- liste de sensors (map, clï¿½ = id), potentiellement associï¿½e ï¿½ un user
+		3- liste de cleaners (map, clï¿½ = id)
+		4- liste de readings (map, clï¿½ = timestamp), associï¿½e ï¿½ un sensor
+		5- liste de measurements (list), associï¿½e ï¿½ un reading
 
-		parcours simple de F pour créer (1) puis stoquer les valeurs dans une map temporaire (clé = sensorID, valeurs = users, mais attention à pas créer des users dupliquées))
-		parcours simple de E pour créer (2) avec chopage des owners dans la map crée précedemment
-		parcours de D pour stoquer les valeurs dans une map temporaire (clé = cleanerID)
-		parcours simple de B pour créer (3) avec chopage des providers depuis la map crée pécedemment
-		parcours de A pour stoquer les valeurs dans une map temporaire (scope de la fonction) (clé = id)
-		parcours de measurements, création des Measurements avec les attributs tirés de la map crée précedemment
-		regroupement de 4 Measurements consécutifs (même timestamp) en (5) stoquée dans un Reading puis ajout à (4) avec association à un sensor de (2)
+		parcours simple de F pour crï¿½er (1) puis stoquer les valeurs dans une map temporaire (clï¿½ = sensorID, valeurs = users, mais attention ï¿½ pas crï¿½er des users dupliquï¿½es))
+		parcours simple de E pour crï¿½er (2) avec chopage des owners dans la map crï¿½e prï¿½cedemment
+		parcours de D pour stoquer les valeurs dans une map temporaire (clï¿½ = cleanerID)
+		parcours simple de B pour crï¿½er (3) avec chopage des providers depuis la map crï¿½e pï¿½cedemment
+		parcours de A pour stoquer les valeurs dans une map temporaire (scope de la fonction) (clï¿½ = id)
+		parcours de measurements, crï¿½ation des Measurements avec les attributs tirï¿½s de la map crï¿½e prï¿½cedemment
+		regroupement de 4 Measurements consï¿½cutifs (mï¿½me timestamp) en (5) stoquï¿½e dans un Reading puis ajout ï¿½ (4) avec association ï¿½ un sensor de (2)
 	*/
 
 	/* Read through the users.csv and create the existing Users */
-	std::map<int, Model::User*> users; //(userID, User)
-	std::map<int, Model::User*> sensorUsersAssociation; //(sensorID, User)
+	std::map<int, User*> users; //(userID, User)
+	std::map<int, User*> sensorUsersAssociation; //(sensorID, User)
 	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> in("../Dataset/users.csv");
 	in.set_header("userID", "sensorID", "EOF");
 	string sUserID; string sSensorID; string eof;
@@ -53,7 +53,7 @@ void Database::DBManager::importCentralServerData() {
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
 		// If there's no entry with the ID in the users map, create a User
 		if (users.count(userID) == 0) {
-			users[userID] = new  Model::Individual(userID, "", "");
+			users[userID] = new  Individual(userID, "", "");
 		}
 		// Add it to the temporary map
 		sensorUsersAssociation[sensorID] = users[userID];
@@ -67,19 +67,19 @@ void Database::DBManager::importCentralServerData() {
 	//throw "Not yet implemented";
 }
 
-void Database::DBManager::importLocalData() {
+void DBManager::importLocalData() {
 	// TODO - implement DBManager::importLocalData
 	throw "Not yet implemented";
 }
 
-void Database::DBManager::saveLocalData() {
+void DBManager::saveLocalData() {
 	// TODO - implement DBManager::saveLocalData
 	throw "Not yet implemented";
 }
 
 int main() {
 
-	Database::DBManager dbManager;
+	DBManager dbManager;
 	dbManager.importCentralServerData();
 
 	return 0;

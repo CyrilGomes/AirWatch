@@ -2,45 +2,44 @@
 #define CLEANER_H
 
 #include "Date.h"
+#include "Company.h"
+class Cleaner
+{
 
-namespace Model {
-	class Cleaner {
+private:
+	int id;
+	float latitude;
+	float longitude;
+	Date startDate;
+	Date stopDate;
+	Company owner;
 
-	private:
-		int id;
-		float latitude;
-		float longitude;
-		Date startDate;
-		Date stopDate;
-		Model::Company owner;
+public:
+	Cleaner(int id, float latitude, float longitude);
 
-	public:
-		Cleaner(int id, float latitude, float longitude);
+	int getId();
 
-		int getId();
+	void setId(int id);
 
-		void setId(int id);
+	float getLatitude();
 
-		float getLatitude();
+	void setLatitude(float latitude);
 
-		void setLatitude(float latitude);
+	float getLongitude();
 
-		float getLongitude();
+	void setLongitude(float longitude);
 
-		void setLongitude(float longitude);
+	Date getStartDate();
 
-		Date getStartDate();
+	void setStartDate(Date startDate);
 
-		void setStartDate(Date startDate);
+	Date getStopDate();
 
-		Date getStopDate();
+	void setStopDate(Date stopDate);
 
-		void setStopDate(Date stopDate);
+	Company getOwner();
 
-		Model::Company getOwner();
-
-		void setOwner(Model::Company owner);
-	};
-}
+	void setOwner(Company owner);
+};
 
 #endif

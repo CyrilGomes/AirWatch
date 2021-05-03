@@ -7,31 +7,30 @@
 
 using namespace std;
 
-namespace Model {
-	class Reading {
+class Reading
+{
 
-	private:
-		int id;
-		Date timeStamp;
-		list<Model::Measurement> measurements;
+private:
+	int id;
+	Date timeStamp;
+	list<Measurement> measurements;
 
-	public:
-		Reading(int id, Date timeStamp);
+public:
+	Reading(int id, Date timeStamp);
 
-		int getId();
+	int getId();
 
-		void setId(int id);
+	void setId(int id);
 
-		Date getTimeStamp();
+	Date getTimeStamp();
 
-		void setTimeStamp(Date timeStamp);
+	void setTimeStamp(Date timeStamp);
 
-		int getAtmoScore();
+	int getAtmoScore();
 
-		list<Model::Measurement> getMeasurements();
+	list<Measurement> getMeasurements();
 
-		void setMeasurements(list<Model::Measurement> measurements);
-	};
-}
+	void setMeasurements(list<Measurement> measurements);
+};
 
 #endif

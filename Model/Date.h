@@ -1,32 +1,31 @@
 #ifndef DATE_H
 #define DATE_H
 
-namespace Model {
-	class Date {
+class Date
+{
 
-	private:
-		int Year;
-		int Month;
-		int Day;
-		int Hour;
+private:
+	int Year;
+	int Month;
+	int Day;
+	int Hour;
 
-	public:
-		int getYear();
+public:
+	int getYear();
 
-		void setYear(int Year);
+	void setYear(int Year);
 
-		int getMonth();
+	int getMonth();
 
-		void setMonth(int Month);
+	void setMonth(int Month);
 
-		int getDay();
+	int getDay();
 
-		void setDay(int Day);
+	void setDay(int Day);
 
-		int getHour();
+	int getHour();
 
-		void setHour(int Hour);
-	};
-}
+	void setHour(int Hour);
+};
 
 #endif

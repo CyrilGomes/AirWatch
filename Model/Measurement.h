@@ -1,31 +1,30 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
-
+#include<string>
 using namespace std;
 
-namespace Model {
-	class Measurement {
+class Measurement
+{
 
-	private:
-		string unitType;
-		string description;
-		float value;
+private:
+	string unitType;
+	string description;
+	float value;
 
-	public:
-		Measurement(string unitType, string description, float value);
+public:
+	Measurement(string unitType, string description, float value);
 
-		string getUnitType();
+	string getUnitType();
 
-		void setUnitType(string unitType);
+	void setUnitType(string unitType);
 
-		string getDescription();
+	string getDescription();
 
-		void setDescription(string description);
+	void setDescription(string description);
 
-		float getValue();
+	float getValue();
 
-		void setValue(float value);
-	};
-}
+	void setValue(float value);
+};
 
 #endif
