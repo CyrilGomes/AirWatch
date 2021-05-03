@@ -1,6 +1,8 @@
 #ifndef CLEANER_H
 #define CLEANER_H
 
+#include "Date.h"
+
 namespace Model {
 	class Cleaner {
 

@@ -7,11 +7,11 @@
 using namespace std;
 
 namespace Model {
-	class Individual : Model::User {
+	class Individual : public Model::User {
 
 	private:
 		int score;
-		list<Model::Sensor> sensorList;
+		list<Sensor> sensorList;
 
 	public:
 		Individual(int id, string password, string mail);

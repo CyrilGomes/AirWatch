@@ -5,6 +5,7 @@
 #include "Reading.h"
 
 using namespace std;
+using namespace Model;
 
 namespace Model {
 	class Sensor {
@@ -14,7 +15,7 @@ namespace Model {
 		float latitude;
 		float longitude;
 		User owner;
-		list<Model::Reading> readings;
+		list<Reading> readings;
 
 	public:
 		Sensor(int id, float latitude, float longitude);
@@ -31,13 +32,13 @@ namespace Model {
 
 		void setLongitude(float longitude);
 
-		Model::User getOwner();
+		User getOwner();
 
-		void setOwner(Model::User owner);
+		void setOwner(User owner);
 
-		list<Model::Reading> getReadings();
+		list<Reading> getReadings();
 
-		void setReadings(list<Model::Reading> readings);
+		void setReadings(list<Reading> readings);
 	};
 }
 

@@ -53,7 +53,7 @@ void Database::DBManager::importCentralServerData() {
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
 		// If there's no entry with the ID in the users map, create a User
 		if (users.count(userID) == 0) {
-			users[userID] = new Individual(userID, "", "");
+			users[userID] = new  Model::Individual(userID, "", "");
 		}
 		// Add it to the temporary map
 		sensorUsersAssociation[sensorID] = users[userID];
