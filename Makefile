@@ -5,7 +5,7 @@ G++ = g++
 G++FLAGS = -std=c++17
 
 # Assembling the list of sources in a single variable
-SRC = $(EXE).cpp 
+SRC = $(EXE).cpp $(DB) $(DISP) $(MODEL) $(SERV)
 DB = $(addprefix Database/, $(DB_CLASSES).cpp)
 DISP = $(addprefix Display/, $(DISP_CLASSES).cpp)
 MODEL = $(addprefix Model/, $(MODEL_CLASSES).cpp)
