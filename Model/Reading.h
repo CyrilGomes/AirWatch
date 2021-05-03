@@ -1,13 +1,12 @@
 #ifndef READING_H
 #define READING_H
 
-namespace Model {
-	class Reading {
+class Reading {
 
 	private:
 		int id;
 		Date timeStamp;
-		List measurements;
+		list measurements;
 
 	public:
 		Reading(int id, Date timeStamp);
@@ -22,10 +21,9 @@ namespace Model {
 
 		int getAtmoScore();
 
-		List getMeasurements();
+		list getMeasurements();
 
-		void setMeasurements(List measurements);
-	};
-}
+		void setMeasurements(list measurements);
+};
 
 #endif
