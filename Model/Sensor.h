@@ -1,10 +1,9 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include <list>
+class User;
+#include "User.h"
 #include "Reading.h"
-
-using namespace std;
 
 	class Sensor {
 

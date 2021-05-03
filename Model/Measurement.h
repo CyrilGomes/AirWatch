@@ -1,9 +1,10 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
 
+#include <string>
 using namespace std;
 
-namespace Model {
+
 	class Measurement {
 
 	private:
@@ -26,6 +27,6 @@ namespace Model {
 
 		void setValue(float value);
 	};
-}
+
 
 #endif

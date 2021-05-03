@@ -1,37 +1,36 @@
 #ifndef READING_H
 #define READING_H
 
+#include <ctime>
 #include <list>
-#include "Measurement.h"
-#include "Date.h"
-
 using namespace std;
 
-namespace Model {
+#include "Measurement.h"
+
 	class Reading {
 
 	private:
 		int id;
-		Date timeStamp;
-		list<Model::Measurement> measurements;
+		tm timeStamp;
+		list<Measurement> measurements;
 
 	public:
-		Reading(int id, Date timeStamp);
+		Reading(int id, tm timeStamp);
 
 		int getId();
 
 		void setId(int id);
 
-		Date getTimeStamp();
+		tm getTimeStamp();
 
-		void setTimeStamp(Date timeStamp);
+		void setTimeStamp(tm timeStamp);
 
 		int getAtmoScore();
 
-		list<Model::Measurement> getMeasurements();
+		list<Measurement> getMeasurements();
 
-		void setMeasurements(list<Model::Measurement> measurements);
+		void setMeasurements(list<Measurement> measurements);
 	};
-}
+
 
 #endif

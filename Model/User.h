@@ -1,9 +1,10 @@
 #ifndef USER_H
 #define USER_H
 
+#include <string>
 using namespace std;
 
-namespace Model {
+
 	class User {
 
 	protected:
@@ -26,6 +27,6 @@ namespace Model {
 
 		User(int id, string password, string mail);
 	};
-}
+
 
 #endif

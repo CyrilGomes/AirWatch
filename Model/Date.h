@@ -1,7 +1,7 @@
 #ifndef DATE_H
 #define DATE_H
 
-namespace Model {
+
 	class Date {
 
 	private:
@@ -27,6 +27,6 @@ namespace Model {
 
 		void setHour(int Hour);
 	};
-}
+
 
 #endif

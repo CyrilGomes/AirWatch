@@ -1,27 +1,37 @@
 #ifndef APPLICATIONDATA_H
 #define APPLICATIONDATA_H
 
-class ApplicationData {
+//------------------------include------------------------
+#include <list>
+using namespace std;
+
+#include "Cleaner.h"
+#include "Sensor.h"
+#include "User.h"
+
+
+	class ApplicationData {
 
 	private:
-		list cleanerList;
-		list sensorList;
-		list userList;
+		list<Cleaner> cleanerList;
+		list<Sensor> sensorList;
+		list<User> userList;
 
 	public:
-		list getCleanerList();
+		list<Cleaner> getCleanerList();
 
 		void addCleaner(Cleaner cleaner);
 
-		list getSensorList();
+		list<Sensor> getSensorList();
 
 		void addSensor(Sensor sensor);
 
-		list getUserList();
+		list<User> getUserList();
 
 		void addUser(User user);
 
 		float distance(float lat1, float lon1, float lat2, float lon2);
-};
+	};
+
 
 #endif

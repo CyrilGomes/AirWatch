@@ -1,6 +1,6 @@
 #include "Company.h"
 
-Company::Company(int id, String password, String mail, int companyId) {
+Company::Company(int id, string password, string mail, int companyId) {
 	// TODO - implement Company::Company
 	throw "Not yet implemented";
 }
@@ -13,10 +13,10 @@ void Company::setCompanyId(int companyId) {
 	this->companyId = companyId;
 }
 
-List Company::getCleanerList() {
+list<Cleaner> Company::getCleanerList() {
 	return this->cleanerList;
 }
 
-void Company::setCleanerList(List cleanerList) {
+void Company::setCleanerList(list<Cleaner> cleanerList) {
 	this->cleanerList = cleanerList;
 }

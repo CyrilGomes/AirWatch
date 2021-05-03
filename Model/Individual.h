@@ -1,13 +1,16 @@
 #ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 
+#include <string>
 #include <list>
-#include "Sensor.h"
-
 using namespace std;
 
-namespace Model {
-	class Individual : public Model::User {
+#include "User.h"
+#include "Sensor.h"
+#include "ReliabilityFlag.h"
+
+
+	class Individual : User {
 
 	private:
 		int score;
@@ -20,10 +23,10 @@ namespace Model {
 
 		void setScore(int score);
 
-		list<Model::Sensor> getSensorList();
+		list<Sensor> getSensorList();
 
-		void setSensorList(list<Model::Sensor> sensorList);
+		void setSensorList(list<Sensor> sensorList);
 	};
-}
+
 
 #endif

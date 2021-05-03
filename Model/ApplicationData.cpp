@@ -1,6 +1,7 @@
 #include "ApplicationData.h"
 
-List ApplicationData::getCleanerList() {
+
+list<Cleaner> ApplicationData::getCleanerList() {
 	return this->cleanerList;
 }
 
@@ -9,7 +10,7 @@ void ApplicationData::addCleaner(Cleaner cleaner) {
 	throw "Not yet implemented";
 }
 
-List ApplicationData::getSensorList() {
+list<Sensor> ApplicationData::getSensorList() {
 	return this->sensorList;
 }
 
@@ -18,7 +19,7 @@ void ApplicationData::addSensor(Sensor sensor) {
 	throw "Not yet implemented";
 }
 
-List ApplicationData::getUserList() {
+list<User> ApplicationData::getUserList() {
 	return this->userList;
 }
 
