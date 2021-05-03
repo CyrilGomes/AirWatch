@@ -5,18 +5,18 @@ Model::Individual::Individual(int id, String password, String mail) {
 	throw "Not yet implemented";
 }
 
-int Model::Individual::getScore() {
+int Individual::getScore() {
 	return this->score;
 }
 
-void Model::Individual::setScore(int score) {
+void Individual::setScore(int score) {
 	this->score = score;
 }
 
-List Model::Individual::getSensorList() {
+List Individual::getSensorList() {
 	return this->sensorList;
 }
 
-void Model::Individual::setSensorList(List sensorList) {
+void Individual::setSensorList(List sensorList) {
 	this->sensorList = sensorList;
 }
