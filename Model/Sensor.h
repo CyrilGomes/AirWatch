@@ -1,15 +1,13 @@
 #ifndef SENSOR_H
 #define SENSOR_H
-
-namespace Model {
-	class Sensor {
+class Sensor {
 
 	private:
 		int id;
 		float latitude;
 		float longitude;
-		Model::User owner;
-		List readings;
+		User owner;
+		list readings;
 
 	public:
 		Sensor(int id, float latitude, float longitude);
@@ -26,14 +24,13 @@ namespace Model {
 
 		void setLongitude(float longitude);
 
-		Model::User getOwner();
+		User getOwner();
 
-		void setOwner(Model::User owner);
+		void setOwner(User owner);
 
-		List getReadings();
+		list getReadings();
 
-		void setReadings(List readings);
-	};
-}
+		void setReadings(list readings);
+};
 
 #endif
