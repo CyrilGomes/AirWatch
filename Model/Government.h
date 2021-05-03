@@ -1,13 +1,12 @@
 #ifndef GOVERNMENT_H
 #define GOVERNMENT_H
 
-namespace Model {
-	class Government : Model::User {
+class Government : User {
 
 
 	public:
-		Government(int id, String password, String mail);
-	};
-}
+		Government(int id, string password, string mail);
+};
+
 
 #endif
