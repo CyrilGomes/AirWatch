@@ -1,23 +1,23 @@
 #include "Measurement.h"
 
-Model::Measurement::Measurement(String unitType, String description, float value) {
+Model::Measurement::Measurement(string unitType, string description, float value) {
 	// TODO - implement Measurement::Measurement
 	throw "Not yet implemented";
 }
 
-String Model::Measurement::getUnitType() {
+string Model::Measurement::getUnitType() {
 	return this->unitType;
 }
 
-void Model::Measurement::setUnitType(String unitType) {
+void Model::Measurement::setUnitType(string unitType) {
 	this->unitType = unitType;
 }
 
-String Model::Measurement::getDescription() {
+string Model::Measurement::getDescription() {
 	return this->description;
 }
 
-void Model::Measurement::setDescription(String description) {
+void Model::Measurement::setDescription(string description) {
 	this->description = description;
 }
 

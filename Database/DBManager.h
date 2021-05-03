@@ -5,12 +5,12 @@ namespace Database {
 	class DBManager {
 
 	private:
-		String directory;
+		std::string directory;
 
 	public:
-		String getDirectory();
+		std::string getDirectory();
 
-		void setDirectory(String directory);
+		void setDirectory(std::string directory);
 
 		void importCentralServerData();
 

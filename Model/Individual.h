@@ -1,23 +1,28 @@
 #ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 
+#include <list>
+#include "Sensor.h"
+
+using namespace std;
+
 namespace Model {
 	class Individual : Model::User {
 
 	private:
 		int score;
-		List sensorList;
+		list<Model::Sensor> sensorList;
 
 	public:
-		Individual(int id, String password, String mail);
+		Individual(int id, string password, string mail);
 
 		int getScore();
 
 		void setScore(int score);
 
-		List getSensorList();
+		list<Model::Sensor> getSensorList();
 
-		void setSensorList(List sensorList);
+		void setSensorList(list<Model::Sensor> sensorList);
 	};
 }
 

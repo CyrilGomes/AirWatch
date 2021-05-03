@@ -26,10 +26,10 @@ int Model::Reading::getAtmoScore() {
 	throw "Not yet implemented";
 }
 
-List Model::Reading::getMeasurements() {
+list<Model::Measurement> Model::Reading::getMeasurements() {
 	return this->measurements;
 }
 
-void Model::Reading::setMeasurements(List measurements) {
+void Model::Reading::setMeasurements(list<Model::Measurement> measurements) {
 	this->measurements = measurements;
 }

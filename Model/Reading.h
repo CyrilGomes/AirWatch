@@ -1,13 +1,18 @@
 #ifndef READING_H
 #define READING_H
 
+#include <list>
+#include "Measurement.h"
+
+using namespace std;
+
 namespace Model {
 	class Reading {
 
 	private:
 		int id;
 		Date timeStamp;
-		List measurements;
+		list<Model::Measurement> measurements;
 
 	public:
 		Reading(int id, Date timeStamp);
@@ -22,9 +27,9 @@ namespace Model {
 
 		int getAtmoScore();
 
-		List getMeasurements();
+		list<Model::Measurement> getMeasurements();
 
-		void setMeasurements(List measurements);
+		void setMeasurements(list<Model::Measurement> measurements);
 	};
 }
 

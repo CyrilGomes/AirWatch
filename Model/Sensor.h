@@ -1,6 +1,11 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#include <list>
+#include "Reading.h"
+
+using namespace std;
+
 namespace Model {
 	class Sensor {
 
@@ -8,8 +13,8 @@ namespace Model {
 		int id;
 		float latitude;
 		float longitude;
-		Model::User owner;
-		List readings;
+		User owner;
+		list<Model::Reading> readings;
 
 	public:
 		Sensor(int id, float latitude, float longitude);
@@ -30,9 +35,9 @@ namespace Model {
 
 		void setOwner(Model::User owner);
 
-		List getReadings();
+		list<Model::Reading> getReadings();
 
-		void setReadings(List readings);
+		void setReadings(list<Model::Reading> readings);
 	};
 }
 

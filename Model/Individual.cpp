@@ -1,6 +1,6 @@
 #include "Individual.h"
 
-Model::Individual::Individual(int id, String password, String mail) {
+Model::Individual::Individual(int id, string password, string mail) {
 	// TODO - implement Individual::Individual
 	throw "Not yet implemented";
 }
@@ -13,10 +13,10 @@ void Model::Individual::setScore(int score) {
 	this->score = score;
 }
 
-List Model::Individual::getSensorList() {
+list<Model::Sensor> Model::Individual::getSensorList() {
 	return this->sensorList;
 }
 
-void Model::Individual::setSensorList(List sensorList) {
+void Model::Individual::setSensorList(list<Model::Sensor> sensorList) {
 	this->sensorList = sensorList;
 }

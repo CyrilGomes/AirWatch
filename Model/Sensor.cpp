@@ -37,10 +37,10 @@ void Model::Sensor::setOwner(Model::User owner) {
 	this->owner = owner;
 }
 
-List Model::Sensor::getReadings() {
+list<Model::Reading> Model::Sensor::getReadings() {
 	return this->readings;
 }
 
-void Model::Sensor::setReadings(List readings) {
+void Model::Sensor::setReadings(list<Model::Reading> readings) {
 	this->readings = readings;
 }
