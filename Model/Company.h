@@ -1,22 +1,25 @@
 #ifndef COMPANY_H
 #define COMPANY_H
 
-class Company : User {
+#include <list>
+#include <string>
+#include "User.h"
+#include "Cleaner.h"
+using namespace std;
+
+class Company : public User {
 
 	private:
 		int companyId;
-		list cleanerList;
+		list<Cleaner> cleanerList;
 
 	public:
-		Company(int id, string password, string mail, int companyId);
-
+		Company(int companyId, string password, string mail);
 		int getCompanyId();
-
 		void setCompanyId(int companyId);
+		list<Cleaner> getCleanerList();
+		void addCleaner(Cleaner* cleaner);
 
-		list getCleanerList();
-
-		void setCleanerList(list cleanerList);
 };
 
 #endif

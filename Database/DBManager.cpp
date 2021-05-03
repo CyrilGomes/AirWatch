@@ -1,12 +1,13 @@
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include "CSVParser.h"
 #include "DBManager.h"
 #include "../Model/User.h"
 #include "../Model/Individual.h"
+#include "../Model/Sensor.h"
 
-using namespace std;
-
+using namespace stf;
 
 string DBManager::getDirectory() {
 	return this->directory;
@@ -41,30 +42,166 @@ void DBManager::importCentralServerData() {
 		regroupement de 4 Measurements cons�cutifs (m�me timestamp) en (5) stoqu�e dans un Reading puis ajout � (4) avec association � un sensor de (2)
 	*/
 
-	/* Read through the users.csv and create the existing Users */
-	std::map<int, User*> users; //(userID, User)
-	std::map<int, User*> sensorUsersAssociation; //(sensorID, User)
-	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> in("../Dataset/users.csv");
-	in.set_header("userID", "sensorID", "EOF");
-	string sUserID; string sSensorID; string eof;
-	while (in.read_row(sUserID, sSensorID, eof)) {
+	string eof;
+	string sUserID;
+	string sSensorID;
+	string sCleanerID;
+	string sAttributeID;
+
+	// Final Data Structures
+	unordered_map<int, User*> users = new unordered_map<string, User*>(); // Final map<userEmail, User>
+	unordered_map<int, Sensor*> sensors = new unordered_map<int, Sensor*>(); // Final map<sensorID, Sensor>
+	unordered_map<int, Cleaner*> cleaners = new unordered_map<int, Cleaner*>(); // Final map<cleanerID, Cleaner>
+
+	/*
+	Read through users.csv, create and store the Users found within
+	as well as their corresponding sensors
+	*/
+	unordered_map<int, Individual*> sensorIndividualAssociations; // Temporary association map<sensorID, Individual>
+	// CSV Reader
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> usersReader("Dataset/users.csv");
+	usersReader.set_header("userID", "sensorID", "EOF");
+	// For each row in the CSV...
+	while (usersReader.read_row(sUserID, sSensorID, eof)) {
 		// Extract integer ids
 		int userID = atoi(sUserID.erase(0, 4).c_str());
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
-		// If there's no entry with the ID in the users map, create a User
-		if (users.count(userID) == 0) {
-			users[userID] = new  Individual(userID, "", "");
+		// If there's no entry with the ID in the users map, create it
+		Individual* individual;
+		if (users.count(sUserID) == 0) {
+			individual = new Individual(userID, sUserID, ""); // temporary email = userID string
 		}
-		// Add it to the temporary map
-		sensorUsersAssociation[sensorID] = users[userID];
+		else {
+			individual = users[sUserID];
+		}
+		// Add data to the temporary association map
+		sensorIndividualAssociations[sensorID] = individual;
+		// Save it to the users list
+		users[sUserID] = individual;
 	}
 
-	//DEBUG delete users
+	/*
+	Read through sensors.csv, create and store the Sensors found within
+	and fetch their owner from the previously created association map
+	*/
+	// CSV Reader
+	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> sensorsReader("Dataset/sensors.csv");
+	sensorsReader.set_header("sensorID", "latitude", "longitude", "EOF");
+	// For each row in the CSV...
+	float latitude; float longitude;
+	while (sensorsReader.read_row(sSensorID, latitude, longitude, eof)) {
+		// Extract integer ids
+		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
+		// Create the Sensor
+		Sensor* sensor = new Sensor(sensorID, latitude, longitude);
+		// Fetch owner from association map and set it
+		Individual* owner = sensorIndividualAssociations[sensorID];
+		sensor->setOwner(owner);
+		owner->addSensor(sensor);
+		// Save it to the sensors list
+		sensors[sensorID] = sensor;
+	}
+
+	/*
+	Read through providers.csv, create and store the Users found within
+	as well as their corresponding cleaners
+	*/
+	// Data structures
+	unordered_map<int, Company*> cleanerCompanyAssociations; // Temporary association map<cleanerID, Company>
+	// CSV Reader
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> providersReader("Dataset/providers.csv");
+	providersReader.set_header("userID", "sensorID", "EOF");
+	// For each row in the CSV...
+	while (providersReader.read_row(sUserID, sCleanerID, eof)) {
+		// Extract integer ids
+		int userID = atoi(sUserID.erase(0, 4).c_str());
+		int cleanerID = atoi(sCleanerID.erase(0, 6).c_str());
+		// If there's no entry with the ID in the users map, create it
+		Company* company;
+		if (users.count(sUserID) == 0) {
+			company = new Company(userID, sUserID, ""); // temporary email = userID string
+		}
+		else {
+			company = (Company*)users[sUserID];
+		}
+		// Add data to the temporary association map
+		cleanerCompanyAssociations[cleanerID] = company;
+		// Save it to the users list
+		users[sUserID] = company;
+	}
+
+	/*
+	Read through cleaners.csv, create and store the Cleaners found within
+	and fetch their owner from the previously created association map
+	*/
+	// CSV Reader
+	io::CSVReader<6, io::trim_chars<>, io::no_quote_escape<';'>> cleanersReader("Dataset/cleaners.csv");
+	cleanersReader.set_header("cleanerID", "latitude", "longitude", "startTime", "stopTime", "EOF");
+	// For each row in the CSV...
+	float latitude; float longitude; string sStartTime; string sStopTime;
+	while (cleanersReader.read_row(sCleanerID, latitude, longitude, sStartTime, sStopTime, eof)) {
+		// Extract integer ids
+		int cleanerID = atoi(sCleanerID.erase(0, 7).c_str());
+		// Extract dates
+		Date startTime; Date stopTime; // TODO
+		// Create the Cleaner
+		Cleaner* cleaner = new Cleaner(cleanerID, latitude, longitude, tBegin, tEnd);
+		// Fetch owner from association map and set it
+		Company* owner = cleanerCompanyAssociations[cleanerID];
+		cleaner->setOwner(owner);
+		owner->addCleaner(cleaner);
+		// Save it to the cleaners list
+		cleaners[cleanerID] = cleaner;
+	}
+
+	/*
+	Read through attributes.csv, store them in an association map
+	*/
+	unordered_map<string, pair<string, string>> attributesAssociations;
+	// CSV Reader
+	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> attributesReader("Dataset/attributes.csv");
+	attributesReader.read_header("attributeID", "unit", "description", "EOF");
+	// For each row in the CSV...
+	string unit; string description;
+	while (attributesReader.read_row(sAttributeID, unit, description, eof)) {
+		// Add data to the temporary association map
+		attributesAssociations[sAttributeID] = make_pair(unit, description);
+	}
+
+	/*
+	Read through measurements.csv, create and store the Measurements found within grouped by timestamps
+	and fetch their attributes from the previously created association map
+	*/
+	// CSV Reader
+	io::CSVReader<5, io::trim_chars<>, io::no_quote_escape<';'>> cleanersReader("Dataset/measurements.csv");
+	cleanersReader.set_header("timestamp", "sensorID", "attributeID", "value", "EOF");
+	// For each row in the CSV...
+	string sTimestamp; float value;
+	while (cleanersReader.read_row(sTimestamp, sSensorID, sAttributeID, value, eof)) {
+		// Extract integer ids
+		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
+		// Extract dates
+		Date timestamp; // TODO
+		// Create the Measurement
+		pair<string, string> attributes = attributesAssociations[sAttributeID];
+		Measurement* measurement = new Measurement(attributes.first, attributes.second, value);
+		// Add it to a reading corresponding to the correct timestamp
+		// TODO
+		// Save reading to the corresponding sensor's list
+		// TODO
+	}
+
+	//DEBUG delete instances
 	for(auto u : users) {
 		delete u.second;
 	}
+	for(auto s : sensors) {
+		delete s.second;
+	}
+	for(auto c : cleaners) {
+		delete c.second;
+	}
 
-	//throw "Not yet implemented";
 }
 
 void DBManager::importLocalData() {
@@ -75,13 +212,4 @@ void DBManager::importLocalData() {
 void DBManager::saveLocalData() {
 	// TODO - implement DBManager::saveLocalData
 	throw "Not yet implemented";
-}
-
-int main() {
-
-	DBManager dbManager;
-	dbManager.importCentralServerData();
-
-	return 0;
-
 }

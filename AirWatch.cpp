@@ -1,8 +1,13 @@
 #include <iostream>
 using namespace std;
 
+#include "Database/DBManager.h"
+
 int main(int argc, char const *argv[])
 {
-    std::cout << "Hello world!" << std::endl;
+
+    DBManager dbManager;
+    dbManager.importCentralServerData();
+
     return 0;
 }

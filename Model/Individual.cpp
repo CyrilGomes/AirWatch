@@ -1,8 +1,15 @@
 #include "Individual.h"
 
-Individual::Individual(int id, string password, string mail) : User(id,password,mail) {
-	// TODO - implement Individual::Individual
-	
+Individual::Individual(int individualId, string mail, string password) : User(mail, password) {
+	this->individualId = individualId;
+}
+
+int Company::getIndividualId() {
+	return this->individualId;
+}
+
+void Company::setIndividualId(int individualId) {
+	this->individualId = individualId;
 }
 
 int Individual::getScore() {
@@ -17,6 +24,6 @@ list<Sensor> Individual::getSensorList() {
 	return this->sensorList;
 }
 
-void Individual::setSensorList(list<Sensor> sensorList) {
-	this->sensorList = sensorList;
+void Individual::addSensor(Sensor* sensor) {
+	// TODO
 }

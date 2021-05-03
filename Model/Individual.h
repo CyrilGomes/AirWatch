@@ -2,27 +2,28 @@
 #define INDIVIDUAL_H
 
 #include <list>
-#include "Sensor.h"
 #include <string>
+#include "Sensor.h"
+#include "User.h"
 using namespace std;
 
-class Individual : public User
-{
+class Individual : public User {
 
-private:
-	int score;
-	list<Sensor> sensorList;
+	private:
+		int individualId;
+		int score;
+		list<Sensor> sensorList;
 
-public:
-	Individual(int id, string password, string mail);
-	Individual();
-	int getScore();
+	public:
+		Individual(int individualId, string mail, string password);
+		Individual();
+		int getIndividualId();
+		void setIndividualId(int individualId);
+		int getScore();
+		void setScore(int score);
+		list<Sensor> getSensorList();
+		void addSensor(Sensor* sensor);
 
-	void setScore(int score);
-
-	list<Sensor> getSensorList();
-
-	void setSensorList(list<Sensor> sensorList);
 };
 
 #endif

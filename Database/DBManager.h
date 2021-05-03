@@ -1,21 +1,21 @@
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
 
-	class DBManager {
+#include <string>
+using namespace std;
+
+class DBManager {
 
 	private:
-		std::string directory;
+		string directory;
 
 	public:
-		std::string getDirectory();
-
-		void setDirectory(std::string directory);
-
+		string getDirectory();
+		void setDirectory(string directory);
 		void importCentralServerData();
-
 		void importLocalData();
-
 		void saveLocalData();
-	};
+
+};
 
 #endif

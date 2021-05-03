@@ -1,8 +1,9 @@
 #include "Sensor.h"
 
 Sensor::Sensor(int id, float latitude, float longitude) {
-	// TODO - implement Sensor::Sensor
-	throw "Not yet implemented";
+	this->id = id;
+	this->latitude = latitude;
+	this->longitude = longitude;
 }
 
 int Sensor::getId() {
@@ -29,11 +30,11 @@ void Sensor::setLongitude(float longitude) {
 	this->longitude = longitude;
 }
 
-User Sensor::getOwner() {
+Individual* Sensor::getOwner() {
 	return this->owner;
 }
 
-void Sensor::setOwner(User owner) {
+void Sensor::setOwner(Individual* owner) {
 	this->owner = owner;
 }
 

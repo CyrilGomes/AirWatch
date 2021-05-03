@@ -1,31 +1,24 @@
 #ifndef DATE_H
 #define DATE_H
 
-class Date
-{
+class Date {
 
-private:
-	int Year;
-	int Month;
-	int Day;
-	int Hour;
+	private:
+		int Year;
+		int Month;
+		int Day;
+		int Hour;
 
-public:
-	int getYear();
+	public:
+		int getYear();
+		void setYear(int Year);
+		int getMonth();
+		void setMonth(int Month);
+		int getDay();
+		void setDay(int Day);
+		int getHour();
+		void setHour(int Hour);
 
-	void setYear(int Year);
-
-	int getMonth();
-
-	void setMonth(int Month);
-
-	int getDay();
-
-	void setDay(int Day);
-
-	int getHour();
-
-	void setHour(int Hour);
 };
 
 #endif

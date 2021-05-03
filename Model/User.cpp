@@ -1,5 +1,5 @@
 #include "User.h"
-using namespace std;
+
 int User::getId() {
 	return this->id;
 }
@@ -24,7 +24,8 @@ void User::setMail(string mail) {
 	this->mail = mail;
 }
 
-User::User(int id, string password, string mail) {
-	// TODO - implement User::User
-	throw "Not yet implemented";
+User::User(string mail, string password) {
+	this->mail = mail;
+	this->password = password;
+	this->id = ID++;
 }
