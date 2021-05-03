@@ -1,8 +1,7 @@
 #ifndef CLEANER_H
 #define CLEANER_H
 
-namespace Model {
-	class Cleaner {
+class Cleaner {
 
 	private:
 		int id;
@@ -10,7 +9,7 @@ namespace Model {
 		float longitude;
 		Date startDate;
 		Date stopDate;
-		Model::Company owner;
+		Company owner;
 
 	public:
 		Cleaner(int id, float latitude, float longitude);
@@ -35,10 +34,9 @@ namespace Model {
 
 		void setStopDate(Date stopDate);
 
-		Model::Company getOwner();
+		Company getOwner();
 
-		void setOwner(Model::Company owner);
-	};
-}
+		void setOwner(Company owner);
+};
 
 #endif
