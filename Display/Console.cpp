@@ -1,26 +1,71 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include<limits>
 #include "Console.h"
+using namespace std;
 
-void Display::Console::displayMessage(String message) {
-	// TODO - implement Console::displayMessage
-	throw "Not yet implemented";
+void Console::displayMessage(string message) {
+    cout << message << endl;
 }
 
-float Display::Console::promptInteger(String prompt) {
-	// TODO - implement Console::promptInteger
-	throw "Not yet implemented";
+int Console::promptInteger(string prompt) {
+	int valueIn = 1;
+    float ref = 0;
+	cout << prompt << " : ";
+	cin >> ref;
+    valueIn = (int)ref;
+    // TODO - vérifier que l'entrée est un int;
+    while(cin.fail() || valueIn!=ref)
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cout<<"Please enter an integer value for "<< prompt <<endl;
+        cout << prompt << " : ";
+        cin>>ref;
+        valueIn = (int)ref;
+    }
+    cout << endl;
+	return valueIn;
+
 }
 
-float Display::Console::promptString(String prompt) {
+string Console::promptString(string prompt) {
+	string valueIn = "";
+	cout << prompt << " : ";
+	cin >> valueIn;
+	return valueIn;
 	// TODO - implement Console::promptString
-	throw "Not yet implemented";
 }
 
-float Display::Console::promptFloat(String prompt) {
-	// TODO - implement Console::promptFloat
-	throw "Not yet implemented";
+float Console::promptFloat(string prompt) {
+	float valueIn = 0;
+	cout << prompt << " : ";
+	cin >> valueIn;
+    // TODO - vérifier que l'entrée est bien un float
+    while(cin.fail() )
+    {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cout<<"Please enter a float value for "<< prompt <<endl;
+        cout << prompt << " : ";
+        cin>>valueIn;
+    }
+    cout << endl;
+	return valueIn;
 }
 
-void Display::Console::promptMenuChoice(String prompt, List<String> menuItems) {
-	// TODO - implement Console::promptMenuChoice
-	throw "Not yet implemented";
+int Console::promptMenuChoice(string prompt, list<string> menuItems) {
+
+    cout << prompt << " :" << endl;
+    int count = 1;
+    for (string item : menuItems)
+    {
+        cout << count << ". "<< item << endl;
+        count++;
+    }
+    return promptInteger(">");
+
 }
+
+
