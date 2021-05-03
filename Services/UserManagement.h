@@ -1,23 +1,21 @@
 #ifndef USERMANAGEMENT_H
 #define USERMANAGEMENT_H
 
-namespace Services {
-	class UserManagement {
+class UserManagement {
 
 	private:
-		Model::User currentUser;
+		User currentUser;
 
 	public:
-		Model::User getCurrentUser();
+		User getCurrentUser();
 
-		void setCurrentUser(Model::User currentUser);
+		void setCurrentUser(User currentUser);
 
-		Model::User authenticate(String uEmail, String uPassword);
+		User authenticate(string uEmail, string uPassword);
 
 		bool registerCompany(int companyId);
 
-		bool registerIndividual(String uEmail, String uPassword);
-	};
-}
+		bool registerIndividual(string uEmail, string uPassword);
+};
 
 #endif
