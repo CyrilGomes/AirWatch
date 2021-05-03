@@ -1,29 +1,27 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
 
-namespace Model {
-	class Measurement {
+class Measurement {
 
 	private:
-		String unitType;
-		String description;
+		string unitType;
+		string description;
 		float value;
 
 	public:
-		Measurement(String unitType, String description, float value);
+		Measurement(string unitType, string description, float value);
 
-		String getUnitType();
+		string getUnitType();
 
-		void setUnitType(String unitType);
+		void setUnitType(string unitType);
 
-		String getDescription();
+		string getDescription();
 
-		void setDescription(String description);
+		void setDescription(string description);
 
 		float getValue();
 
 		void setValue(float value);
-	};
-}
+};
 
 #endif
