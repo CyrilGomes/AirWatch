@@ -1,29 +1,27 @@
 #ifndef APPLICATIONDATA_H
 #define APPLICATIONDATA_H
 
-namespace Model {
-	class ApplicationData {
+class ApplicationData {
 
 	private:
-		List cleanerList;
-		List sensorList;
-		List userList;
+		list cleanerList;
+		list sensorList;
+		list userList;
 
 	public:
-		List getCleanerList();
+		list getCleanerList();
 
-		void addCleaner(Model::Cleaner cleaner);
+		void addCleaner(Cleaner cleaner);
 
-		List getSensorList();
+		list getSensorList();
 
-		void addSensor(Model::Sensor sensor);
+		void addSensor(Sensor sensor);
 
-		List getUserList();
+		list getUserList();
 
-		void addUser(Model::User user);
+		void addUser(User user);
 
 		float distance(float lat1, float lon1, float lat2, float lon2);
-	};
-}
+};
 
 #endif
