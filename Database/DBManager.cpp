@@ -26,19 +26,19 @@ void Database::DBManager::importCentralServerData() {
 		E- sensors
 		F- users
 
-		1- liste de users (map, clÃ© = ...)
-		2- liste de sensors (map, clÃ© = id), potentiellement associÃ©e Ã  un user
-		3- liste de cleaners (map, clÃ© = id)
-		4- liste de readings (map, clÃ© = timestamp), associÃ©e Ã  un sensor
-		5- liste de measurements (list), associÃ©e Ã  un reading
+		1- liste de users (map, clé = ...)
+		2- liste de sensors (map, clé = id), potentiellement associée à un user
+		3- liste de cleaners (map, clé = id)
+		4- liste de readings (map, clé = timestamp), associée à un sensor
+		5- liste de measurements (list), associée à un reading
 
-		parcours simple de F pour crÃ©er (1) puis stoquer les valeurs dans une map temporaire (clÃ© = sensorID, valeurs = users, mais attention Ã  pas crÃ©er des users dupliquÃ©es))
-		parcours simple de E pour crÃ©er (2) avec chopage des owners dans la map crÃ©e prÃ©cedemment
-		parcours de D pour stoquer les valeurs dans une map temporaire (clÃ© = cleanerID)
-		parcours simple de B pour crÃ©er (3) avec chopage des providers depuis la map crÃ©e pÃ©cedemment
-		parcours de A pour stoquer les valeurs dans une map temporaire (scope de la fonction) (clÃ© = id)
-		parcours de measurements, crÃ©ation des Measurements avec les attributs tirÃ©s de la map crÃ©e prÃ©cedemment
-		regroupement de 4 Measurements consÃ©cutifs (mÃªme timestamp) en (5) stoquÃ©e dans un Reading puis ajout Ã  (4) avec association Ã  un sensor de (2)
+		parcours simple de F pour créer (1) puis stoquer les valeurs dans une map temporaire (clé = sensorID, valeurs = users, mais attention à pas créer des users dupliquées))
+		parcours simple de E pour créer (2) avec chopage des owners dans la map crée précedemment
+		parcours de D pour stoquer les valeurs dans une map temporaire (clé = cleanerID)
+		parcours simple de B pour créer (3) avec chopage des providers depuis la map crée pécedemment
+		parcours de A pour stoquer les valeurs dans une map temporaire (scope de la fonction) (clé = id)
+		parcours de measurements, création des Measurements avec les attributs tirés de la map crée précedemment
+		regroupement de 4 Measurements consécutifs (même timestamp) en (5) stoquée dans un Reading puis ajout à (4) avec association à un sensor de (2)
 	*/
 
 	/* Read through the users.csv and create the existing Users */

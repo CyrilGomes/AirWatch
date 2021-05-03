@@ -1,33 +1,33 @@
 #include "Date.h"
 
-int Model::Date::getYear() {
+int Date::getYear() {
 	return Year;
 }
 
-void Model::Date::setYear(int Year) {
+void Date::setYear(int Year) {
 	this->Year = Year;
 }
 
-int Model::Date::getMonth() {
+int Date::getMonth() {
 	return Month;
 }
 
-void Model::Date::setMonth(int Month) {
+void Date::setMonth(int Month) {
 	this->Month = Month;
 }
 
-int Model::Date::getDay() {
+int Date::getDay() {
 	return Day;
 }
 
-void Model::Date::setDay(int Day) {
+void Date::setDay(int Day) {
 	this->Day = Day;
 }
 
-int Model::Date::getHour() {
+int Date::getHour() {
 	return Hour;
 }
 
-void Model::Date::setHour(int Hour) {
+void Date::setHour(int Hour) {
 	this->Hour = Hour;
 }

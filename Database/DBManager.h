@@ -1,7 +1,6 @@
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
 
-namespace Database {
 	class DBManager {
 
 	private:
@@ -18,6 +17,5 @@ namespace Database {
 
 		void saveLocalData();
 	};
-}
 
 #endif

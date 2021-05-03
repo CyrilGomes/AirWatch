@@ -1,24 +1,22 @@
 #ifndef COMPANY_H
 #define COMPANY_H
 
-namespace Model {
-	class Company : Model::User {
+class Company : User {
 
 	private:
 		int companyId;
-		List cleanerList;
+		list cleanerList;
 
 	public:
-		Company(int id, String password, String mail, int companyId);
+		Company(int id, string password, string mail, int companyId);
 
 		int getCompanyId();
 
 		void setCompanyId(int companyId);
 
-		List getCleanerList();
+		list getCleanerList();
 
-		void setCleanerList(List cleanerList);
-	};
-}
+		void setCleanerList(list cleanerList);
+};
 
 #endif
