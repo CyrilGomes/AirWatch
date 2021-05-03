@@ -5,9 +5,7 @@
 #include "Reading.h"
 
 using namespace std;
-using namespace Model;
 
-namespace Model {
 	class Sensor {
 
 	private:
@@ -40,6 +38,6 @@ namespace Model {
 
 		void setReadings(list<Reading> readings);
 	};
-}
+
 
 #endif
