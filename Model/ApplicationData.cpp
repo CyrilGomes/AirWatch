@@ -4,7 +4,7 @@ List ApplicationData::getCleanerList() {
 	return this->cleanerList;
 }
 
-void ApplicationData::addCleaner(Model::Cleaner cleaner) {
+void ApplicationData::addCleaner(Cleaner cleaner) {
 	// TODO - implement ApplicationData::addCleaner
 	throw "Not yet implemented";
 }
@@ -13,7 +13,7 @@ List ApplicationData::getSensorList() {
 	return this->sensorList;
 }
 
-void ApplicationData::addSensor(Model::Sensor sensor) {
+void ApplicationData::addSensor(Sensor sensor) {
 	// TODO - implement ApplicationData::addSensor
 	throw "Not yet implemented";
 }
@@ -22,7 +22,7 @@ List ApplicationData::getUserList() {
 	return this->userList;
 }
 
-void ApplicationData::addUser(Model::User user) {
+void ApplicationData::addUser(User user) {
 	// TODO - implement ApplicationData::addUser
 	throw "Not yet implemented";
 }
