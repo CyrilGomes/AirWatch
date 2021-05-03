@@ -1,54 +1,54 @@
 #include "Cleaner.h"
 
-Model::Cleaner::Cleaner(int id, float latitude, float longitude) {
+Cleaner::Cleaner(int id, float latitude, float longitude) {
 	// TODO - implement Cleaner::Cleaner
 	throw "Not yet implemented";
 }
 
-int Model::Cleaner::getId() {
+int Cleaner::getId() {
 	return this->id;
 }
 
-void Model::Cleaner::setId(int id) {
+void Cleaner::setId(int id) {
 	this->id = id;
 }
 
-float Model::Cleaner::getLatitude() {
+float Cleaner::getLatitude() {
 	return this->latitude;
 }
 
-void Model::Cleaner::setLatitude(float latitude) {
+void Cleaner::setLatitude(float latitude) {
 	this->latitude = latitude;
 }
 
-float Model::Cleaner::getLongitude() {
+float Cleaner::getLongitude() {
 	return this->longitude;
 }
 
-void Model::Cleaner::setLongitude(float longitude) {
+void Cleaner::setLongitude(float longitude) {
 	this->longitude = longitude;
 }
 
-Date Model::Cleaner::getStartDate() {
+Date Cleaner::getStartDate() {
 	return this->startDate;
 }
 
-void Model::Cleaner::setStartDate(Date startDate) {
+void Cleaner::setStartDate(Date startDate) {
 	this->startDate = startDate;
 }
 
-Date Model::Cleaner::getStopDate() {
+Date Cleaner::getStopDate() {
 	return this->stopDate;
 }
 
-void Model::Cleaner::setStopDate(Date stopDate) {
+void Cleaner::setStopDate(Date stopDate) {
 	this->stopDate = stopDate;
 }
 
-Model::Company Model::Cleaner::getOwner() {
+Company Cleaner::getOwner() {
 	return this->owner;
 }
 
-void Model::Cleaner::setOwner(Model::Company owner) {
+void Cleaner::setOwner(Company owner) {
 	this->owner = owner;
 }
