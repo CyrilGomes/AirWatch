@@ -1,5 +1,7 @@
 #include "User.h"
 
+int User::ID = 0;
+
 int User::getId() {
 	return this->id;
 }

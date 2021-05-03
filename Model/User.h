@@ -10,7 +10,7 @@ class User {
 		int id;
 		string password;
 		string mail;
-		static int ID = 0;
+		static int ID;
 
 	public:
 		int getId();

@@ -4,11 +4,11 @@ Individual::Individual(int individualId, string mail, string password) : User(ma
 	this->individualId = individualId;
 }
 
-int Company::getIndividualId() {
+int Individual::getIndividualId() {
 	return this->individualId;
 }
 
-void Company::setIndividualId(int individualId) {
+void Individual::setIndividualId(int individualId) {
 	this->individualId = individualId;
 }
 
