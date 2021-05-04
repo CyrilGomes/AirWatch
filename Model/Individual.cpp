@@ -1,29 +1,41 @@
 #include "Individual.h"
 
-Individual::Individual(int individualId, string mail, string password) : User(mail, password) {
-	this->individualId = individualId;
+inline int max(unsigned int x, unsigned int y) {
+   return (x > y) ? x : y;
 }
 
-int Individual::getIndividualId() {
-	return this->individualId;
+unsigned int Individual::maxId = 0;
+
+Individual::Individual(unsigned int id, string mail, string password) : User(mail, password) {
+	this->id = id;
+	this->type = UserType::individual;
+	maxId = max(maxId, id);
 }
 
-void Individual::setIndividualId(int individualId) {
-	this->individualId = individualId;
+Individual::Individual(string mail, string password) : User(mail, password) {
+	this->id = maxId++;
 }
 
-int Individual::getScore() {
-	return this->score;
+int Individual::getPoints() {
+	return this->points;
 }
 
-void Individual::setScore(int score) {
-	this->score = score;
+void Individual::setPoints(int points) {
+	this->points = points;
 }
 
-list<Sensor> Individual::getSensorList() {
+ReliabilityFlag Individual::getReliabilityFlag() {
+	return this->reliabilityFlag;
+}
+
+void Individual::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
+	this->reliabilityFlag = reliabilityFlag;
+}
+
+list<Sensor*> Individual::getSensorList() {
 	return this->sensorList;
 }
 
 void Individual::addSensor(Sensor* sensor) {
-	// TODO
+	sensorList.push_back(sensor);
 }

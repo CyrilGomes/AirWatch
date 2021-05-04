@@ -1,21 +1,25 @@
 #include "Company.h"
 
-Company::Company(int companyId, string password, string mail) : User(mail, password) {
-	this->companyId = companyId;
+inline int max(unsigned int x, unsigned int y) {
+   return (x > y) ? x : y;
 }
 
-int Company::getCompanyId() {
-	return this->companyId;
+unsigned int Company::maxId = 0;
+
+Company::Company(unsigned int id, string mail, string password) : User(mail, password) {
+	this->id = id;
+	this->type = UserType::company;
+	maxId = max(maxId, id);
 }
 
-void Company::setCompanyId(int companyId) {
-	this->companyId = companyId;
+Company::Company(string mail, string password) : User(mail, password) {
+	this->id = maxId++;
 }
 
-list<Cleaner> Company::getCleanerList() {
+list<Cleaner*> Company::getCleanerList() {
 	return this->cleanerList;
 }
 
 void Company::addCleaner(Cleaner* cleaner) {
-	// TODO
+	cleanerList.push_back(cleaner);
 }

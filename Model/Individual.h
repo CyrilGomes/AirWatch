@@ -10,18 +10,19 @@ using namespace std;
 class Individual : public User {
 
 	private:
-		int individualId;
-		int score;
-		list<Sensor> sensorList;
+		int points;
+		ReliabilityFlag reliabilityFlag;
+		list<Sensor*> sensorList;
+		static unsigned int maxId;
 
 	public:
-		Individual(int individualId, string mail, string password);
-		Individual();
-		int getIndividualId();
-		void setIndividualId(int individualId);
-		int getScore();
-		void setScore(int score);
-		list<Sensor> getSensorList();
+		Individual(unsigned int id, string mail, string password);
+		Individual(string mail, string password);
+		int getPoints();
+		void setPoints(int points);
+		ReliabilityFlag getReliabilityFlag();
+		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
+		list<Sensor*> getSensorList();
 		void addSensor(Sensor* sensor);
 
 };

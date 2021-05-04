@@ -7,6 +7,9 @@ using namespace std;
 
 class Government : public User {
 
+	private:
+		static unsigned int maxId;
+
 	public:
 		Government(string mail, string password);
 

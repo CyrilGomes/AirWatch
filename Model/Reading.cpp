@@ -1,8 +1,12 @@
 #include "Reading.h"
 
-Reading::Reading(int id, Date timeStamp) {
-	// TODO - implement Reading::Reading
-	throw "Not yet implemented";
+Reading::Reading(Date timeStamp) : timeStamp(timeStamp) {
+}
+
+Reading::~Reading() {
+	for (auto i : measurements) {
+		delete i.second;
+	}
 }
 
 int Reading::getId() {
@@ -26,10 +30,10 @@ int Reading::getAtmoScore() {
 	throw "Not yet implemented";
 }
 
-list<Measurement> Reading::getMeasurements() {
+unordered_map<string, Measurement*> Reading::getMeasurements() {
 	return this->measurements;
 }
 
-void Reading::setMeasurements(list<Measurement> measurements) {
-	this->measurements = measurements;
+void Reading::addMeasurement(Measurement* measurement, string type) {
+	measurements[type] = measurement;
 }

@@ -2,11 +2,16 @@
 
 int User::ID = 0;
 
-int User::getId() {
+User::User(string mail, string password) {
+	this->mail = mail;
+	this->password = password;
+}
+
+unsigned int User::getId() {
 	return this->id;
 }
 
-void User::setId(int id) {
+void User::setId(unsigned int id) {
 	this->id = id;
 }
 
@@ -26,8 +31,6 @@ void User::setMail(string mail) {
 	this->mail = mail;
 }
 
-User::User(string mail, string password) {
-	this->mail = mail;
-	this->password = password;
-	this->id = ID++;
+UserType User::getType() {
+	return this->type;
 }

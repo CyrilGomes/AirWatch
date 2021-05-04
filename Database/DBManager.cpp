@@ -1,17 +1,20 @@
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <unordered_map>
 #include "CSVParser.h"
+#include "MagicEnum.hpp"
 #include "DBManager.h"
 #include "../Model/User.h"
-#include "../Model/Individual.h"
-#include "../Model/Company.h"
 #include "../Model/Sensor.h"
 #include "../Model/Cleaner.h"
 #include "../Model/Measurement.h"
 #include "../Model/Reading.h"
-
+#include "../Model/ApplicationData.h"
 using namespace std;
+
+DBManager::DBManager(string directory) : directory(directory) {
+}
 
 string DBManager::getDirectory() {
 	return this->directory;
@@ -22,30 +25,8 @@ void DBManager::setDirectory(string directory) {
 }
 
 void DBManager::importCentralServerData() {
-	// TODO - implement DBManager::importCentralServerData
-	/*
-		A- attributes
-		B- cleaners
-		C- measurements
-		D- providers
-		E- sensors
-		F- users
 
-		1- liste de users (map, cl� = ...)
-		2- liste de sensors (map, cl� = id), potentiellement associ�e � un user
-		3- liste de cleaners (map, cl� = id)
-		4- liste de readings (map, cl� = timestamp), associ�e � un sensor
-		5- liste de measurements (list), associ�e � un reading
-
-		parcours simple de F pour cr�er (1) puis stoquer les valeurs dans une map temporaire (cl� = sensorID, valeurs = users, mais attention � pas cr�er des users dupliqu�es))
-		parcours simple de E pour cr�er (2) avec chopage des owners dans la map cr�e pr�cedemment
-		parcours de D pour stoquer les valeurs dans une map temporaire (cl� = cleanerID)
-		parcours simple de B pour cr�er (3) avec chopage des providers depuis la map cr�e p�cedemment
-		parcours de A pour stoquer les valeurs dans une map temporaire (scope de la fonction) (cl� = id)
-		parcours de measurements, cr�ation des Measurements avec les attributs tir�s de la map cr�e pr�cedemment
-		regroupement de 4 Measurements cons�cutifs (m�me timestamp) en (5) stoqu�e dans un Reading puis ajout � (4) avec association � un sensor de (2)
-	*/
-
+	// Main reading buffer variables
 	string eof;
 	string sUserID;
 	string sSensorID;
@@ -54,10 +35,8 @@ void DBManager::importCentralServerData() {
 	float latitude;
 	float longitude;
 
-	// Final Data Structures
-	unordered_map<string, User*> users; // Final map<userEmail, User>
-	unordered_map<int, Sensor*> sensors; // Final map<sensorID, Sensor>
-	unordered_map<int, Cleaner*> cleaners; // Final map<cleanerID, Cleaner>
+	// ApplicationData instance
+	ApplicationData* applicationData = ApplicationData::getInstance();
 
 	/*
 	Read through users.csv, create and store the Users found within
@@ -65,25 +44,28 @@ void DBManager::importCentralServerData() {
 	*/
 	unordered_map<int, Individual*> sensorIndividualAssociations; // Temporary association map<sensorID, Individual>
 	// CSV Reader
-	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> usersReader("Dataset/users.csv");
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> usersReader(directory + "Central/users.csv");
 	usersReader.set_header("userID", "sensorID", "EOF");
 	// For each row in the CSV...
 	while (usersReader.read_row(sUserID, sSensorID, eof)) {
 		// Extract integer ids
+		string fUserID = sUserID;
 		int userID = atoi(sUserID.erase(0, 4).c_str());
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
 		// If there's no entry with the ID in the users map, create it
 		Individual* individual;
-		if (users.count(sUserID) == 0) {
-			individual = new Individual(userID, sUserID, ""); // temporary email = userID string
+		unordered_map<string, User*> userList = applicationData->getUserList();
+		if (userList.count(fUserID) == 0) {
+			individual = new Individual(userID, fUserID, ""); // temporary email = userID string
 		}
 		else {
-			individual = (Individual*)users[sUserID];
+			individual = (Individual*)userList[fUserID];
 		}
-		// Add data to the temporary association map
+		// Add data to the temporary association maps
 		sensorIndividualAssociations[sensorID] = individual;
+		individualsMap[userID] = individual; //map that speeds up importLocalData()
 		// Save it to the users list
-		users[sUserID] = individual;
+		applicationData->addUser(individual);
 	}
 
 	/*
@@ -91,7 +73,7 @@ void DBManager::importCentralServerData() {
 	and fetch their owner from the previously created association map
 	*/
 	// CSV Reader
-	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> sensorsReader("Dataset/sensors.csv");
+	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> sensorsReader(directory + "Central/sensors.csv");
 	sensorsReader.set_header("sensorID", "latitude", "longitude", "EOF");
 	// For each row in the CSV...
 	while (sensorsReader.read_row(sSensorID, latitude, longitude, eof)) {
@@ -101,10 +83,12 @@ void DBManager::importCentralServerData() {
 		Sensor* sensor = new Sensor(sensorID, latitude, longitude);
 		// Fetch owner from association map and set it
 		Individual* owner = sensorIndividualAssociations[sensorID];
-		sensor->setOwner(owner);
-		owner->addSensor(sensor);
+		if (owner != nullptr) {
+			sensor->setOwner(owner);
+			owner->addSensor(sensor);
+		}
 		// Save it to the sensors list
-		sensors[sensorID] = sensor;
+		applicationData->addSensor(sensor);
 	}
 
 	/*
@@ -114,25 +98,28 @@ void DBManager::importCentralServerData() {
 	// Data structures
 	unordered_map<int, Company*> cleanerCompanyAssociations; // Temporary association map<cleanerID, Company>
 	// CSV Reader
-	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> providersReader("Dataset/providers.csv");
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> providersReader(directory + "Central/providers.csv");
 	providersReader.set_header("userID", "sensorID", "EOF");
 	// For each row in the CSV...
 	while (providersReader.read_row(sUserID, sCleanerID, eof)) {
 		// Extract integer ids
-		int userID = atoi(sUserID.erase(0, 4).c_str());
-		int cleanerID = atoi(sCleanerID.erase(0, 6).c_str());
+		string fUserID = sUserID;
+		int userID = atoi(sUserID.erase(0, 8).c_str());
+		int cleanerID = atoi(sCleanerID.erase(0, 7).c_str());
 		// If there's no entry with the ID in the users map, create it
 		Company* company;
-		if (users.count(sUserID) == 0) {
-			company = new Company(userID, sUserID, ""); // temporary email = userID string
+		unordered_map<string, User*> userList = applicationData->getUserList();
+		if (userList.count(fUserID) == 0) {
+			company = new Company(userID, fUserID, ""); // temporary email = userID string
 		}
 		else {
-			company = (Company*)users[sUserID];
+			company = (Company*)userList[fUserID];
 		}
 		// Add data to the temporary association map
 		cleanerCompanyAssociations[cleanerID] = company;
+		companiesMap[userID] = company; //map that speeds up importLocalData()
 		// Save it to the users list
-		users[sUserID] = company;
+		applicationData->addUser(company);
 	}
 
 	/*
@@ -140,23 +127,23 @@ void DBManager::importCentralServerData() {
 	and fetch their owner from the previously created association map
 	*/
 	// CSV Reader
-	io::CSVReader<6, io::trim_chars<>, io::no_quote_escape<';'>> cleanersReader("Dataset/cleaners.csv");
+	io::CSVReader<6, io::trim_chars<>, io::no_quote_escape<';'>> cleanersReader(directory + "Central/cleaners.csv");
 	cleanersReader.set_header("cleanerID", "latitude", "longitude", "startTime", "stopTime", "EOF");
 	// For each row in the CSV...
-	Date startTime; Date stopTime; // TODO
+	Date startTime; Date stopTime;
 	while (cleanersReader.read_row(sCleanerID, latitude, longitude, startTime, stopTime, eof)) {
 		// Extract integer ids
 		int cleanerID = atoi(sCleanerID.erase(0, 7).c_str());
-		// Extract dates
-		
 		// Create the Cleaner
 		Cleaner* cleaner = new Cleaner(cleanerID, latitude, longitude, startTime, stopTime);
 		// Fetch owner from association map and set it
 		Company* owner = cleanerCompanyAssociations[cleanerID];
-		cleaner->setOwner(owner);
-		owner->addCleaner(cleaner);
+		if (owner != nullptr) {
+			cleaner->setOwner(owner);
+			owner->addCleaner(cleaner);
+		}
 		// Save it to the cleaners list
-		cleaners[cleanerID] = cleaner;
+		applicationData->addCleaner(cleaner);
 	}
 
 	/*
@@ -164,12 +151,11 @@ void DBManager::importCentralServerData() {
 	*/
 	unordered_map<string, pair<string, string>> attributesAssociations;
 	// CSV Reader
-
-	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> attributesReader("Dataset/attributes.csv");
-	attributesReader.read_header(io::ignore_missing_column, "AttributeID", "Unit", "Description", "");
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> attributesReader(directory + "Central/attributes.csv");
+	attributesReader.read_header(io::ignore_extra_column, "AttributeID", "Unit", "Description");
 	// For each row in the CSV...
 	string unit; string description;
-	while (attributesReader.read_row(sAttributeID, unit, description, eof)) {
+	while (attributesReader.read_row(sAttributeID, unit, description)) {
 		// Add data to the temporary association map
 		attributesAssociations[sAttributeID] = make_pair(unit, description);
 	}
@@ -179,49 +165,150 @@ void DBManager::importCentralServerData() {
 	and fetch their attributes from the previously created association map
 	*/
 	// CSV Reader
-	io::CSVReader<5, io::trim_chars<>, io::no_quote_escape<';'>> measurementsReader("Dataset/measurements.csv");
+	io::CSVReader<5, io::trim_chars<>, io::no_quote_escape<';'>> measurementsReader(directory + "Central/measurements.csv");
 	measurementsReader.set_header("timestamp", "sensorID", "attributeID", "value", "EOF");
 	// For each row in the CSV...
-	Date timestamp; float value;
-	
-	while (measurementsReader.read_row(timestamp, sSensorID, sAttributeID, value, eof)) {
+	Reading* currentReading;
+	Date previousTimeStamp; previousTimeStamp.setYear(-1);
+	Date timeStamp; float value;
+	while (measurementsReader.read_row(timeStamp, sSensorID, sAttributeID, value, eof)) {
 		// Extract integer ids
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
-		// Extract dates
 		// Create the Measurement
 		pair<string, string> attributes = attributesAssociations[sAttributeID];
-
 		Measurement* measurement = new Measurement(attributes.first, attributes.second, value);
-
-		cout<<timestamp.getDay() << " "<<timestamp.getMonth()<<" "<< timestamp.getYear() << " "<<timestamp.getHour()<<endl;
-		break;
-
-
 		// Add it to a reading corresponding to the correct timestamp
-		// TODO
+		if (!(timeStamp == previousTimeStamp)) {
+			currentReading = new Reading(timeStamp);
+			previousTimeStamp = timeStamp;
+		}
+		currentReading->addMeasurement(measurement, sAttributeID);
 		// Save reading to the corresponding sensor's list
-		// TODO
-	}
-
-	//DEBUG delete instances
-	for(auto u : users) {
-		delete u.second;
-	}
-	for(auto s : sensors) {
-		delete s.second;
-	}
-	for(auto c : cleaners) {
-		delete c.second;
+		Sensor* sensor = applicationData->getSensorList()[sensorID];
+		sensor->addReading(currentReading);
 	}
 
 }
 
 void DBManager::importLocalData() {
-	// TODO - implement DBManager::importLocalData
-	throw "Not yet implemented";
+
+	// ApplicationData instance
+	ApplicationData* applicationData = ApplicationData::getInstance();
+
+	/*
+	Read through logins.csv, create and store the Users found within unless they already exist in individualsMap/companiesMap,
+	in which case update their email and password and change their userList map key.
+	If the user is an individual, add it to individualsMap for the next step
+	*/
+	// CSV Reader
+	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> loginsReader(directory + "Local/logins.csv");
+	loginsReader.read_header(io::ignore_extra_column, "userType", "id", "mail", "password");
+	// For each row in the CSV...
+	string userType; int id; string mail; string password;
+	while (loginsReader.read_row(userType, id, mail, password)) {
+		User* user;
+		UserType type = (magic_enum::enum_cast<UserType>(userType)).value();
+		// If the user already exists in individualsMap, fetch it from there
+		if (individualsMap.count(id) != 0 && type == UserType::individual) {
+			user = individualsMap[id];
+			// Delete old key, update attributes, save new key
+			string oldMail = user->getMail();
+			user->setMail(mail);
+			user->setPassword(password);
+			if (oldMail != mail) {
+				applicationData->updateUserList(oldMail);
+			}
+		}
+		// If the user already exists in companiesMap, fetch it from there
+		else if (companiesMap.count(id) != 0 && type == UserType::company) {
+			user = companiesMap[id];
+			// Delete old key, update attributes, save new key
+			string oldMail = user->getMail();
+			user->setMail(mail);
+			user->setPassword(password);
+			if (oldMail != mail) {
+				applicationData->updateUserList(oldMail);
+			}
+		}
+		// Otherwise, create it depending on its type
+		else {
+			//UserType type = (magic_enum::enum_cast<UserType>(userType)).value();
+			switch(type) {
+				case UserType::government:
+					user = new Government(mail, password);
+					break;
+				case UserType::company:
+					user = new Company(id, mail, password);
+					break;
+				case UserType::individual:
+					user = new Individual(id, mail, password);
+					// If it's an indivudual, save it to the individualsMap
+					individualsMap[id] = (Individual*)user;
+					break;
+			}
+			applicationData->addUser(user);
+		}
+	}
+
+	/*
+	Read through individuals.csv, fetch Individual from individualsMap,
+	and update its attributes
+	*/
+	// CSV Reader
+	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> individualsReader(directory + "Local/individuals.csv");
+	individualsReader.read_header(io::ignore_extra_column, "id", "points", "flag");
+	// For each row in the CSV...
+	int points; string userFlag;
+	while (individualsReader.read_row(id, points, userFlag)) {
+		// Fetch individual from individualsMap
+		Individual* individual = individualsMap[id];
+		// Update its attributes
+		ReliabilityFlag flag = (magic_enum::enum_cast<ReliabilityFlag>(userFlag)).value();
+		individual->setPoints(points);
+		individual->setReliabilityFlag(flag);
+	}
+
 }
 
 void DBManager::saveLocalData() {
-	// TODO - implement DBManager::saveLocalData
-	throw "Not yet implemented";
+
+	// ApplicationData instance
+	ApplicationData* applicationData = ApplicationData::getInstance();
+	unordered_map<string, User*> userList = applicationData->getUserList();
+
+	// Open csv files
+	ofstream loginsCsv;
+	ofstream individualsCsv;
+	loginsCsv.open(directory + "Local/logins.csv");
+	individualsCsv.open(directory + "Local/individuals.csv");
+
+	// Headers
+	loginsCsv << "userType;id;mail;password" << endl;
+	individualsCsv << "id;points;flag" << endl;
+
+	// Loop through all the users
+	for (pair<string, User*> i : userList) {
+		// Fetch user info
+		User* user = i.second;
+		string type = (string)magic_enum::enum_name(user->getType());
+		unsigned int id = user->getId();
+		string mail = user->getMail();
+		string password = user->getPassword();
+		// Write it in the first csv
+		loginsCsv << type << ";" << id << ";" << mail << ";" << password << endl;
+		// In the case of an individual:
+		if (user->getType() == UserType::individual) {
+			// Fetch individual info
+			Individual* individual = (Individual*)user;
+			int points = individual->getPoints();
+			string flag = (string)magic_enum::enum_name(individual->getReliabilityFlag());
+			// Write it in the second csv
+			individualsCsv << id << ";" << points << ";" << flag << endl;
+		}
+	}
+
+	// Close files
+	loginsCsv.close();
+	individualsCsv.close();
+
 }
