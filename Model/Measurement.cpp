@@ -1,8 +1,8 @@
 #include "Measurement.h"
 
-Measurement::Measurement(string unitType, string description, float value) {
+Measurement::Measurement(string unitType, string description, float value) : unitType(unitType),description(description),value(value)  {
 	// TODO - implement Measurement::Measurement
-	throw "Not yet implemented";
+	
 }
 
 string Measurement::getUnitType() {

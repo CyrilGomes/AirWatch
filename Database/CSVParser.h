@@ -48,7 +48,7 @@
 #include <cassert>
 #include <cerrno>
 #include <istream>
-
+#include "../Model/Date.h"
 namespace io{
         ////////////////////////////////////////////////////////////////////////////
         //                                 LineReader                             //
@@ -1091,6 +1091,47 @@ namespace io{
                 template<class overflow_policy> void parse(char*col, float&x) { parse_float(col, x); }
                 template<class overflow_policy> void parse(char*col, double&x) { parse_float(col, x); }
                 template<class overflow_policy> void parse(char*col, long double&x) { parse_float(col, x); }
+                
+
+                template<class overflow_policy, class T>
+                void parse_date(const char*col, T&x){
+                        char subDay[3];
+                        char subMonth[3];
+                        char subYear[5];
+                        char subHour[3];
+
+                        strncpy(subDay,col+8,2);
+                        subDay[2] = '\0';
+                        strncpy(subMonth,col+5,2);
+                        subMonth[2] = '\0';
+
+                        strncpy(subYear,col,4);
+                        subYear[4] = '\0';
+
+                        strncpy(subHour,col+11,2);
+                        subHour[2] = '\0';
+
+
+
+                        int day = atoi(subDay);
+                        
+                        int month = atoi(subMonth);
+
+                        int year = atoi(subYear);
+
+                        int hour = atoi(subHour);
+
+
+                        x.setDay(day);
+                        x.setMonth(month);
+                        x.setYear(year);
+                        x.setHour(hour);
+
+
+
+
+                }
+                template<class overflow_policy> void parse(char*col, Date&x) { parse_date<overflow_policy>(col, x); }
 
                 template<class overflow_policy, class T>
                 void parse(char*col, T&x){

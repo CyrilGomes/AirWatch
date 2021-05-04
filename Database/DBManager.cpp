@@ -143,12 +143,12 @@ void DBManager::importCentralServerData() {
 	io::CSVReader<6, io::trim_chars<>, io::no_quote_escape<';'>> cleanersReader("Dataset/cleaners.csv");
 	cleanersReader.set_header("cleanerID", "latitude", "longitude", "startTime", "stopTime", "EOF");
 	// For each row in the CSV...
-	string sStartTime; string sStopTime;
-	while (cleanersReader.read_row(sCleanerID, latitude, longitude, sStartTime, sStopTime, eof)) {
+	Date startTime; Date stopTime; // TODO
+	while (cleanersReader.read_row(sCleanerID, latitude, longitude, startTime, stopTime, eof)) {
 		// Extract integer ids
 		int cleanerID = atoi(sCleanerID.erase(0, 7).c_str());
 		// Extract dates
-		Date startTime; Date stopTime; // TODO
+		
 		// Create the Cleaner
 		Cleaner* cleaner = new Cleaner(cleanerID, latitude, longitude, startTime, stopTime);
 		// Fetch owner from association map and set it
@@ -164,8 +164,9 @@ void DBManager::importCentralServerData() {
 	*/
 	unordered_map<string, pair<string, string>> attributesAssociations;
 	// CSV Reader
+
 	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> attributesReader("Dataset/attributes.csv");
-	attributesReader.read_header(io::ignore_missing_column, "attributeID", "unit", "description", "EOF");
+	attributesReader.read_header(io::ignore_missing_column, "AttributeID", "Unit", "Description", "");
 	// For each row in the CSV...
 	string unit; string description;
 	while (attributesReader.read_row(sAttributeID, unit, description, eof)) {
@@ -181,15 +182,21 @@ void DBManager::importCentralServerData() {
 	io::CSVReader<5, io::trim_chars<>, io::no_quote_escape<';'>> measurementsReader("Dataset/measurements.csv");
 	measurementsReader.set_header("timestamp", "sensorID", "attributeID", "value", "EOF");
 	// For each row in the CSV...
-	string sTimestamp; float value;
-	while (measurementsReader.read_row(sTimestamp, sSensorID, sAttributeID, value, eof)) {
+	Date timestamp; float value;
+	
+	while (measurementsReader.read_row(timestamp, sSensorID, sAttributeID, value, eof)) {
 		// Extract integer ids
 		int sensorID = atoi(sSensorID.erase(0, 6).c_str());
 		// Extract dates
-		Date timestamp; // TODO
 		// Create the Measurement
 		pair<string, string> attributes = attributesAssociations[sAttributeID];
+
 		Measurement* measurement = new Measurement(attributes.first, attributes.second, value);
+
+		cout<<timestamp.getDay() << " "<<timestamp.getMonth()<<" "<< timestamp.getYear() << " "<<timestamp.getHour()<<endl;
+		break;
+
+
 		// Add it to a reading corresponding to the correct timestamp
 		// TODO
 		// Save reading to the corresponding sensor's list
