@@ -5,14 +5,14 @@ G++ = g++
 G++FLAGS = -std=c++17 -pthread
 
 # Declaring the sources
-EXE = AirWatch
+EXE = AirWatch.exe
 DB_CLASSES = DBManager
 DISP_CLASSES = Console DisplayManager
 MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Sensor User Date
 SERV_CLASSES = ApplicationServices UserManagement
 
 # Assembling the list of sources in a single variable
-SRC = $(EXE).cpp $(DB) $(DISP) $(MODEL) $(SERV)
+SRC = $(EXE:.exe=.cpp) $(DB) $(DISP) $(MODEL) $(SERV)
 DB = $(addprefix Database/, $(addsuffix .cpp, $(DB_CLASSES)))
 DISP = $(addprefix Display/, $(addsuffix .cpp, $(DISP_CLASSES)))
 MODEL = $(addprefix Model/, $(addsuffix .cpp, $(MODEL_CLASSES)))
