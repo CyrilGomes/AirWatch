@@ -41,4 +41,4 @@ debug: $(EXE)
 # Cleaning rule to remove the executable and any .o file in the CWD
 clean:
 	$(ECHO) "Suppression des fichiers générés"
-	$(RM) $(RMFLAGS) $(EXE) *.o
+	$(RM) $(RMFLAGS) $(EXE) $(OBJ)
