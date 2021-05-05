@@ -1,37 +1,30 @@
 #ifndef READING_H
 #define READING_H
 
-#include <list>
+#include <unordered_map>
+#include <string>
 #include "Measurement.h"
 #include "Date.h"
-
 using namespace std;
 
-namespace Model {
-	class Reading {
+class Reading {
 
 	private:
 		int id;
 		Date timeStamp;
-		list<Model::Measurement> measurements;
+		unordered_map<string, Measurement*> measurements;
 
 	public:
-		Reading(int id, Date timeStamp);
-
+		Reading(Date timeStamp);
+		~Reading();
 		int getId();
-
 		void setId(int id);
-
 		Date getTimeStamp();
-
 		void setTimeStamp(Date timeStamp);
-
 		int getAtmoScore();
+		unordered_map<string, Measurement*> getMeasurements();
+		void addMeasurement(Measurement* measurement, string type);
 
-		list<Model::Measurement> getMeasurements();
-
-		void setMeasurements(list<Model::Measurement> measurements);
-	};
-}
+};
 
 #endif

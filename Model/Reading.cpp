@@ -1,35 +1,39 @@
 #include "Reading.h"
 
-Model::Reading::Reading(int id, Date timeStamp) {
-	// TODO - implement Reading::Reading
-	throw "Not yet implemented";
+Reading::Reading(Date timeStamp) : timeStamp(timeStamp) {
 }
 
-int Model::Reading::getId() {
+Reading::~Reading() {
+	for (auto i : measurements) {
+		delete i.second;
+	}
+}
+
+int Reading::getId() {
 	return this->id;
 }
 
-void Model::Reading::setId(int id) {
+void Reading::setId(int id) {
 	this->id = id;
 }
 
-Date Model::Reading::getTimeStamp() {
+Date Reading::getTimeStamp() {
 	return this->timeStamp;
 }
 
-void Model::Reading::setTimeStamp(Date timeStamp) {
+void Reading::setTimeStamp(Date timeStamp) {
 	this->timeStamp = timeStamp;
 }
 
-int Model::Reading::getAtmoScore() {
+int Reading::getAtmoScore() {
 	// TODO - implement Reading::getAtmoScore
 	throw "Not yet implemented";
 }
 
-list<Model::Measurement> Model::Reading::getMeasurements() {
+unordered_map<string, Measurement*> Reading::getMeasurements() {
 	return this->measurements;
 }
 
-void Model::Reading::setMeasurements(list<Model::Measurement> measurements) {
-	this->measurements = measurements;
+void Reading::addMeasurement(Measurement* measurement, string type) {
+	measurements[type] = measurement;
 }

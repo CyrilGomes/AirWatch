@@ -1,43 +1,38 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include <list>
+class Individual;
+#include <map>
 #include "Reading.h"
+#include "Date.h"
+#include "ReliabilityFlag.h"
 
-using namespace std;
-
-	class Sensor {
+class Sensor {
 
 	private:
 		int id;
 		float latitude;
 		float longitude;
-		User owner;
-		list<Reading> readings;
+		ReliabilityFlag reliabilityFlag;
+		Individual* owner;
+		map<Date, Reading*> readings;
 
 	public:
 		Sensor(int id, float latitude, float longitude);
-
+		~Sensor();
 		int getId();
-
 		void setId(int id);
-
 		float getLatitude();
-
 		void setLatitude(float latitude);
-
 		float getLongitude();
-
 		void setLongitude(float longitude);
+		ReliabilityFlag getReliabilityFlag();
+		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
+		Individual* getOwner();
+		void setOwner(Individual* owner);
+		map<Date, Reading*> getReadings();
+		void addReading(Reading* reading);
 
-		User getOwner();
-
-		void setOwner(User owner);
-
-		list<Reading> getReadings();
-
-		void setReadings(list<Reading> readings);
-	};
-
+};
 
 #endif

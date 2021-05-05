@@ -1,8 +1,15 @@
 #include "Sensor.h"
 
 Sensor::Sensor(int id, float latitude, float longitude) {
-	// TODO - implement Sensor::Sensor
-	throw "Not yet implemented";
+	this->id = id;
+	this->latitude = latitude;
+	this->longitude = longitude;
+}
+
+Sensor::~Sensor() {
+	for (auto i : readings) {
+		delete i.second;
+	}
 }
 
 int Sensor::getId() {
@@ -29,18 +36,26 @@ void Sensor::setLongitude(float longitude) {
 	this->longitude = longitude;
 }
 
-User Sensor::getOwner() {
+ReliabilityFlag Sensor::getReliabilityFlag() {
+	return this->reliabilityFlag;
+}
+
+void Sensor::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
+	this->reliabilityFlag = reliabilityFlag;
+}
+
+Individual* Sensor::getOwner() {
 	return this->owner;
 }
 
-void Sensor::setOwner(User owner) {
+void Sensor::setOwner(Individual* owner) {
 	this->owner = owner;
 }
 
-list<Reading> Sensor::getReadings() {
+map<Date, Reading*> Sensor::getReadings() {
 	return this->readings;
 }
 
-void Sensor::setReadings(list<Reading> readings) {
-	this->readings = readings;
+void Sensor::addReading(Reading* reading) {
+	readings[reading->getTimeStamp()] = reading;
 }

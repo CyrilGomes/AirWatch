@@ -2,28 +2,29 @@
 #define INDIVIDUAL_H
 
 #include <list>
+#include <string>
 #include "Sensor.h"
-
+#include "User.h"
 using namespace std;
 
-namespace Model {
-	class Individual : public Model::User {
+class Individual : public User {
 
 	private:
-		int score;
-		list<Sensor> sensorList;
+		int points;
+		ReliabilityFlag reliabilityFlag;
+		list<Sensor*> sensorList;
+		static unsigned int maxId;
 
 	public:
-		Individual(int id, string password, string mail);
+		Individual(unsigned int id, string mail, string password);
+		Individual(string mail, string password);
+		int getPoints();
+		void setPoints(int points);
+		ReliabilityFlag getReliabilityFlag();
+		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
+		list<Sensor*> getSensorList();
+		void addSensor(Sensor* sensor);
 
-		int getScore();
-
-		void setScore(int score);
-
-		list<Model::Sensor> getSensorList();
-
-		void setSensorList(list<Model::Sensor> sensorList);
-	};
-}
+};
 
 #endif

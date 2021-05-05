@@ -1,6 +1,8 @@
 #include "Government.h"
 
-Government::Government(int id, String password, String mail) {
-	// TODO - implement Government::Government
-	throw "Not yet implemented";
+unsigned int Government::maxId = 0;
+
+Government::Government(string mail, string password) : User(mail, password) {
+	this->id = maxId++;
+	this->type = UserType::government;
 }

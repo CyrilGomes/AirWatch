@@ -1,33 +1,59 @@
 #include "ApplicationData.h"
 
-List ApplicationData::getCleanerList() {
-	return this->cleanerList;
+ApplicationData* ApplicationData::singleton = nullptr;
+
+ApplicationData::ApplicationData() {}
+
+ApplicationData* ApplicationData::getInstance() {
+    if (singleton == nullptr) {
+        singleton = new ApplicationData();
+    }
+    return singleton;
 }
 
-void ApplicationData::addCleaner(Cleaner cleaner) {
-	// TODO - implement ApplicationData::addCleaner
-	throw "Not yet implemented";
+unordered_map<int, Cleaner*> ApplicationData::getCleanerList() {
+	return cleanerList;
 }
 
-List ApplicationData::getSensorList() {
-	return this->sensorList;
+void ApplicationData::addCleaner(Cleaner* cleaner) {
+	cleanerList[cleaner->getId()] = cleaner;
 }
 
-void ApplicationData::addSensor(Sensor sensor) {
-	// TODO - implement ApplicationData::addSensor
-	throw "Not yet implemented";
+unordered_map<int, Sensor*> ApplicationData::getSensorList() {
+	return sensorList;
 }
 
-List ApplicationData::getUserList() {
-	return this->userList;
+void ApplicationData::addSensor(Sensor* sensor) {
+	sensorList[sensor->getId()] = sensor;
 }
 
-void ApplicationData::addUser(User user) {
-	// TODO - implement ApplicationData::addUser
-	throw "Not yet implemented";
+unordered_map<string, User*> ApplicationData::getUserList() {
+	return userList;
+}
+
+void ApplicationData::addUser(User* user) {
+	userList[user->getMail()] = user;
+}
+
+void ApplicationData::updateUserList(string oldKey) {
+    User* user = userList[oldKey];
+    userList.erase(oldKey);
+    userList[user->getMail()] = user;
 }
 
 float ApplicationData::distance(float lat1, float lon1, float lat2, float lon2) {
 	// TODO - implement ApplicationData::distance
 	throw "Not yet implemented";
+}
+
+ApplicationData::~ApplicationData() {
+	for (auto i : userList) {
+		delete i.second;
+	}
+	for (auto i : cleanerList) {
+		delete i.second;
+	}
+	for (auto i : sensorList) {
+		delete i.second;
+	}
 }

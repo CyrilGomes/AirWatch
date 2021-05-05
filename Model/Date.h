@@ -1,32 +1,31 @@
 #ifndef DATE_H
 #define DATE_H
 
-namespace Model {
-	class Date {
+#include <string>
+using namespace std;
+
+class Date {
 
 	private:
-		int Year;
-		int Month;
-		int Day;
-		int Hour;
+		int year;
+		int month;
+		int day;
+		int hour;
 
 	public:
-		int getYear();
+		int getYear() const;
+		void setYear(int year);
+		int getMonth() const;
+		void setMonth(int month);
+		int getDay() const;
+		void setDay(int day);
+		int getHour() const;
+		void setHour(int hour);
+		string toString();
+		bool operator == (const Date& oDate) const;
+		bool operator < (const Date& oDate) const;
+		Date& operator = (const Date& oDate);
 
-		void setYear(int Year);
-
-		int getMonth();
-
-		void setMonth(int Month);
-
-		int getDay();
-
-		void setDay(int Day);
-
-		int getHour();
-
-		void setHour(int Hour);
-	};
-}
+};
 
 #endif

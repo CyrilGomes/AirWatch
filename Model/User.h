@@ -1,31 +1,29 @@
 #ifndef USER_H
 #define USER_H
 
+#include <string>
+#include "UserType.h"
 using namespace std;
 
-namespace Model {
-	class User {
+class User {
 
 	protected:
-		int id;
+		unsigned int id;
 		string password;
 		string mail;
+		UserType type;
+		static int ID;
 
 	public:
-		int getId();
-
-		void setId(int id);
-
+		User(string mail, string password);
+		unsigned int getId();
+		void setId(unsigned int id);
 		string getPassword();
-
 		void setPassword(string password);
-
 		string getMail();
-
 		void setMail(string mail);
+		UserType getType();
 
-		User(int id, string password, string mail);
-	};
-}
+};
 
 #endif

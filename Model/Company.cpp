@@ -1,22 +1,25 @@
 #include "Company.h"
 
-Company::Company(int id, String password, String mail, int companyId) {
-	// TODO - implement Company::Company
-	throw "Not yet implemented";
+inline int max(unsigned int x, unsigned int y) {
+   return (x > y) ? x : y;
 }
 
-int Company::getCompanyId() {
-	return this->companyId;
+unsigned int Company::maxId = 0;
+
+Company::Company(unsigned int id, string mail, string password) : User(mail, password) {
+	this->id = id;
+	this->type = UserType::company;
+	maxId = max(maxId, id);
 }
 
-void Company::setCompanyId(int companyId) {
-	this->companyId = companyId;
+Company::Company(string mail, string password) : User(mail, password) {
+	this->id = maxId++;
 }
 
-List Company::getCleanerList() {
+list<Cleaner*> Company::getCleanerList() {
 	return this->cleanerList;
 }
 
-void Company::setCleanerList(List cleanerList) {
-	this->cleanerList = cleanerList;
+void Company::addCleaner(Cleaner* cleaner) {
+	cleanerList.push_back(cleaner);
 }

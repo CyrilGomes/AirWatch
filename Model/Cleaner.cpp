@@ -1,8 +1,11 @@
 #include "Cleaner.h"
 
-Cleaner::Cleaner(int id, float latitude, float longitude) {
-	// TODO - implement Cleaner::Cleaner
-	throw "Not yet implemented";
+Cleaner::Cleaner(int id, float latitude, float longitude, Date startDate, Date stopDate) {
+	this->id = id;
+	this->latitude = latitude;
+	this->longitude = longitude;
+	this->startDate = startDate;
+	this->stopDate = stopDate;
 }
 
 int Cleaner::getId() {
@@ -45,10 +48,10 @@ void Cleaner::setStopDate(Date stopDate) {
 	this->stopDate = stopDate;
 }
 
-Company Cleaner::getOwner() {
+Company* Cleaner::getOwner() {
 	return this->owner;
 }
 
-void Cleaner::setOwner(Company owner) {
+void Cleaner::setOwner(Company* owner) {
 	this->owner = owner;
 }

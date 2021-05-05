@@ -1,30 +1,36 @@
 #include "User.h"
 
-int Model::User::getId() {
-	return this->id;
-}
+int User::ID = 0;
 
-void Model::User::setId(int id) {
-	this->id = id;
-}
-
-string Model::User::getPassword() {
-	return this->password;
-}
-
-void Model::User::setPassword(string password) {
+User::User(string mail, string password) {
+	this->mail = mail;
 	this->password = password;
 }
 
-string Model::User::getMail() {
+unsigned int User::getId() {
+	return this->id;
+}
+
+void User::setId(unsigned int id) {
+	this->id = id;
+}
+
+string User::getPassword() {
+	return this->password;
+}
+
+void User::setPassword(string password) {
+	this->password = password;
+}
+
+string User::getMail() {
 	return this->mail;
 }
 
-void Model::User::setMail(string mail) {
+void User::setMail(string mail) {
 	this->mail = mail;
 }
 
-Model::User::User(int id, string password, string mail) {
-	// TODO - implement User::User
-	throw "Not yet implemented";
+UserType User::getType() {
+	return this->type;
 }

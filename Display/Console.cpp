@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include<limits>
+#include <limits>
 #include "Console.h"
 using namespace std;
 
@@ -67,5 +67,3 @@ int Console::promptMenuChoice(string prompt, list<string> menuItems) {
     return promptInteger(">");
 
 }
-
-

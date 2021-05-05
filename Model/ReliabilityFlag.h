@@ -1,9 +1,9 @@
 #ifndef RELIABILITYFLAG_H
 #define RELIABILITYFLAG_H
 
-	enum ReliabilityFlag {
-		Reliable, 
-		Unreliable
+enum ReliabilityFlag {
+	reliable,
+	unreliable
 };
 
 #endif

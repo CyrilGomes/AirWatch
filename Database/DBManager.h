@@ -1,21 +1,28 @@
 #ifndef DBMANAGER_H
 #define DBMANAGER_H
 
-	class DBManager {
+#include <string>
+#include <unordered_map>
+#include "../Model/Individual.h"
+#include "../Model/Company.h"
+#include "../Model/Government.h"
+using namespace std;
+
+class DBManager {
 
 	private:
-		std::string directory;
+		string directory;
+		unordered_map<int, Individual*> individualsMap;
+		unordered_map<int, Company*> companiesMap;
 
 	public:
-		std::string getDirectory();
-
-		void setDirectory(std::string directory);
-
+		DBManager(string directory);
+		string getDirectory();
+		void setDirectory(string directory);
 		void importCentralServerData();
-
 		void importLocalData();
-
 		void saveLocalData();
-	};
+
+};
 
 #endif

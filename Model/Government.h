@@ -1,11 +1,18 @@
 #ifndef GOVERNMENT_H
 #define GOVERNMENT_H
 
-class Government : User {
+#include <string>
+#include "User.h"
+using namespace std;
 
+class Government : public User {
+
+	private:
+		static unsigned int maxId;
 
 	public:
-		Government(int id, string password, string mail);
+		Government(string mail, string password);
+
 };
 
 
