@@ -1,6 +1,6 @@
 userType;id;mail;password
-government;0;admin@mail.gov;password
-individual;0;user2@mail.com;1234
-individual;1;user1@mail.com;1234
-company;0;company1@mail.com;1234
 company;1;company2@mail.com;1234
+company;0;company1@mail.com;1234
+individual;1;user1@mail.com;1234
+individual;0;user2@mail.com;1234
+government;0;admin@mail.gov;password

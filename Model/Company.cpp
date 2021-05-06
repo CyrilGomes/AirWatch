@@ -14,6 +14,7 @@ Company::Company(unsigned int id, string mail, string password) : User(mail, pas
 
 Company::Company(string mail, string password) : User(mail, password) {
 	this->id = maxId++;
+	this->type = UserType::company;
 }
 
 list<Cleaner*> Company::getCleanerList() {

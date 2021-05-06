@@ -14,6 +14,7 @@ Individual::Individual(unsigned int id, string mail, string password) : User(mai
 
 Individual::Individual(string mail, string password) : User(mail, password) {
 	this->id = maxId++;
+	this->type = UserType::individual;
 }
 
 int Individual::getPoints() {

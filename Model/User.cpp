@@ -2,6 +2,10 @@
 
 int User::ID = 0;
 
+User::User(){
+	
+}
+
 User::User(string mail, string password) {
 	this->mail = mail;
 	this->password = password;

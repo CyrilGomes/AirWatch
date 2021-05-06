@@ -1,33 +1,35 @@
 #ifndef DISPLAYMANAGEMENT_H
 #define DISPLAYMANAGEMENT_H
 
+#include <vector>
 #include <string>
-#include <list>
+#include <functional>
 using namespace std;
 
 class DisplayManager {
     public:
         // Menu displays
-        static void displayLoginMenu();
-        static void displayMainMenu();
-        static void displaySensorMenu();
+        void displayMenu(string menuTitle, vector<pair<string, function<void()>>> optionsList);
+        void loginMenu();
+        void mainMenu();
+        void sensorMenu();
 
         // Sensor queries
-        static void querySensorReliability();
-        static void querySensorFlag();
-        static void querySensorSimilarity();
-        static void queryAreaAirQuality();
-        static void queryPunctualAirQuality();
+        void querySensorReliability();
+        void querySensorFlag();
+        void querySensorSimilarity();
+        void queryAreaAirQuality();
+        void queryPunctualAirQuality();
 
         // Cleaner queries
-        static void queryCleanerContribution();
+        void queryCleanerContribution();
 
         // User queries
-        static void queryIndividualPoints();
-        static void queryLogin();
-        static void queryLogout();
-        static void queryIndividualRegister();
-        static void queryCompanyRegister();
+        void queryIndividualPoints();
+        void queryLogin();
+        void queryLogout();
+        void queryIndividualRegister();
+        void queryCompanyRegister();
 };
 
 #endif

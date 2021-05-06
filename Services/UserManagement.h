@@ -8,14 +8,14 @@ using namespace std;
 class UserManagement {
 
 	private:
-		User currentUser;
+		static User currentUser;
 
 	public:
-		User getCurrentUser();
-		void setCurrentUser(User currentUser);
-		User authenticate(string uEmail, string uPassword);
-		bool registerCompany(int companyId);
-		bool registerIndividual(string uEmail, string uPassword);
+		static User getCurrentUser();
+		static void setCurrentUser(User user);
+		static User authenticate(string uEmail, string uPassword);
+		static bool registerCompany(int companyId);
+		static bool registerIndividual(string uEmail, string uPassword);
 
 };
 
