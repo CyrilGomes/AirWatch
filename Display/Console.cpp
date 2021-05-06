@@ -52,16 +52,3 @@ float Console::promptFloat(string prompt) {
     cout << endl;
 	return valueIn;
 }
-
-int Console::promptMenuChoice(string prompt, list<string> menuItems) {
-
-    cout << prompt << " :" << endl;
-    int count = 1;
-    for (string item : menuItems)
-    {
-        cout << count << ". "<< item << endl;
-        count++;
-    }
-    return promptInteger(">");
-
-}

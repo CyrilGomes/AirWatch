@@ -2,12 +2,23 @@
 #include "Console.h"
 #include "../Model/User.h"
 
-#include <list>
-#include <string>
-#include <functional>
+#include <iostream>
 using namespace std;
 
 // Menu displays
+int DisplayManager::promptMenuChoice(string prompt, vector<pair<string, function<void()>>> menuItems) {
+
+    cout << prompt << " :" << endl;
+    int count = 1;
+    for (pair<string, function<void()>> item : menuItems)
+    {
+        cout << count << ". " << item.first << endl;
+        count++;
+    }
+    return Console::promptInteger(">");
+
+}
+
 void DisplayManager::displayLoginMenu()
 {
 }
@@ -33,6 +44,8 @@ void DisplayManager::displayMainMenu()
     }
 
     optionsList.insert(optionsList.end(), pair<string, function<void()>>("Log out", function(queryLogout)));
+
+    
 }
 
 void DisplayManager::displaySensorMenu()

@@ -1,13 +1,15 @@
 #ifndef DISPLAYMANAGEMENT_H
 #define DISPLAYMANAGEMENT_H
 
+#include <vector>
 #include <string>
-#include <list>
+#include <functional>
 using namespace std;
 
 class DisplayManager {
     public:
         // Menu displays
+        static int promptMenuChoice(string prompt, vector<pair<string, function<void()>>> menuItems);
         static void displayLoginMenu();
         static void displayMainMenu();
         static void displaySensorMenu();
