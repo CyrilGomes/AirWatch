@@ -12,7 +12,7 @@ class UserManagement {
 
 	public:
 		static User getCurrentUser();
-		static void setCurrentUser(User currentUser);
+		static void setCurrentUser(User user);
 		static User authenticate(string uEmail, string uPassword);
 		static bool registerCompany(int companyId);
 		static bool registerIndividual(string uEmail, string uPassword);

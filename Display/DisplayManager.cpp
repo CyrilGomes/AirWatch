@@ -1,6 +1,7 @@
 #include "DisplayManager.h"
 #include "Console.h"
 #include "../Model/User.h"
+#include "../Services/UserManagement.h"
 
 #include <iostream>
 using namespace std;
@@ -25,27 +26,28 @@ void DisplayManager::displayLoginMenu()
 
 void DisplayManager::displayMainMenu()
 {
-    User currentUser;
-    // TODO: Add call to UserManagement::getCurrentUser() when fixed
+    User currentUser = UserManagement::getCurrentUser();
 
-    list<pair<string, function<void()>>> optionsList;
-    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Sensor analytics", function(displaySensorMenu)));
-    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Cleaner analytics", function(queryCleanerContribution)));
+    vector<pair<string, function<void()>>> optionsList;    
 
-    switch (currentUser.getType())
+    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Sensor analytics", bind(&DisplayManager::displaySensorMenu, this)));
+    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Cleaner analytics", bind(&DisplayManager::queryCleanerContribution, this)));
+
+    UserType userType = currentUser.getType();
+    switch (userType)
     {
     case UserType::company:
-        optionsList.insert(optionsList.end(), pair<string, function<void()>>("Register Air Cleaning Company", function(queryCompanyRegister)));
+        optionsList.insert(optionsList.end(), pair<string, function<void()>>("Register Air Cleaning Company", bind(&DisplayManager::queryCompanyRegister, this)));
         break;
 
     case UserType::individual:
-        optionsList.insert(optionsList.end(), pair<string, function<void()>>("My user points", function(queryIndividualPoints)));
+        optionsList.insert(optionsList.end(), pair<string, function<void()>>("My user points", bind(&DisplayManager::queryIndividualPoints, this)));
         break;
     }
 
-    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Log out", function(queryLogout)));
+    optionsList.insert(optionsList.end(), pair<string, function<void()>>("Log out", bind(&DisplayManager::queryLogout, this)));
 
-    
+    optionsList[promptMenuChoice("Main menu:", optionsList) - 1].second();
 }
 
 void DisplayManager::displaySensorMenu()

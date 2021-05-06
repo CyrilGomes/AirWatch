@@ -3,10 +3,11 @@ using namespace std;
 
 #include "Database/DBManager.h"
 #include "Model/ApplicationData.h"
+#include "Display/DisplayManager.h"
+#include "Services/UserManagement.h"
 
 int main(int argc, char const *argv[])
 {
-
     // Import data from central and local server
     DBManager dbManager("Dataset/");
     dbManager.importCentralServerData();
@@ -32,6 +33,12 @@ int main(int argc, char const *argv[])
         Cleaner* c = i.second;
         cout << i.first << ": " << c->getLatitude() << "; " << c->getLongitude() << endl;
     }
+
+    // DEBUG: Using main menu
+    cout << (int)(Individual("abcd@ok.com", "12345").getType()) << endl;
+    UserManagement::setCurrentUser(Individual("abcd@ok.com", "12345"));
+    DisplayManager displayManager;
+    displayManager.displayMainMenu();
 
     // Save local data
     dbManager.saveLocalData();

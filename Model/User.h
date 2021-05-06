@@ -15,6 +15,7 @@ class User {
 		static int ID;
 
 	public:
+		User();
 		User(string mail, string password);
 		unsigned int getId();
 		void setId(unsigned int id);
