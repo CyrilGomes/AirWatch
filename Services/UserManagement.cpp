@@ -1,11 +1,11 @@
 #include "UserManagement.h"
 
 User UserManagement::getCurrentUser() {
-	return this->currentUser;
+	return currentUser;
 }
 
 void UserManagement::setCurrentUser(User currentUser) {
-	this->currentUser = currentUser;
+	currentUser = currentUser;
 }
 
 User UserManagement::authenticate(string uEmail, string uPassword) {
