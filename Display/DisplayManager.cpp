@@ -9,39 +9,37 @@ using namespace std;
 typedef pair<string, function<void()>> Option;
 
 // Menu displays
-int DisplayManager::promptMenuChoice(string prompt, vector<Option> menuItems) {
-
-    cout << prompt << " :" << endl;
+void DisplayManager::displayMenu(string menuTitle, vector<Option> optionsList)
+{
+    cout << menuTitle << " :" << endl;
     int count = 1;
-    for (Option item : menuItems)
+    for (Option item : optionsList)
     {
         cout << count << ". " << item.first << endl;
         count++;
     }
-    return Console::promptInteger(">");
+    optionsList[Console::promptInteger(">") - 1].second();
 }
 
-void DisplayManager::displayLoginMenu()
+void DisplayManager::loginMenu()
 {
     const string menuTitle = "WELCOME TO AIRWATCH";
 
     vector<Option> optionsList = {
         Option("Login", bind(&DisplayManager::queryLogin, this)),
-        Option("Register", bind(&DisplayManager::queryIndividualRegister, this))
-    };
+        Option("Register", bind(&DisplayManager::queryIndividualRegister, this))};
 
-    optionsList[promptMenuChoice(menuTitle, optionsList) - 1].second();
+    displayMenu(menuTitle, optionsList);
 }
 
-void DisplayManager::displayMainMenu()
+void DisplayManager::mainMenu()
 {
     const string menuTitle = "Main menu:";
 
     vector<Option> optionsList{
-        Option("Sensor analytics", bind(&DisplayManager::displaySensorMenu, this)),
+        Option("Sensor analytics", bind(&DisplayManager::sensorMenu, this)),
         Option("Cleaner analytics", bind(&DisplayManager::queryCleanerContribution, this)),
-        Option("Log out", bind(&DisplayManager::queryLogout, this))
-    };
+        Option("Log out", bind(&DisplayManager::queryLogout, this))};
 
     User currentUser = UserManagement::getCurrentUser();
     UserType userType = currentUser.getType();
@@ -56,10 +54,10 @@ void DisplayManager::displayMainMenu()
         break;
     }
 
-    optionsList[promptMenuChoice(menuTitle, optionsList) - 1].second();
+    displayMenu(menuTitle, optionsList);
 }
 
-void DisplayManager::displaySensorMenu()
+void DisplayManager::sensorMenu()
 {
     const string menuTitle = "Sensor analytics menu:";
 
@@ -68,10 +66,9 @@ void DisplayManager::displaySensorMenu()
         Option("Get the air quality of a given area", bind(&DisplayManager::queryAreaAirQuality, this)),
         Option("See sensor reliabilities", bind(&DisplayManager::querySensorReliability, this)),
         Option("Find data similarities", bind(&DisplayManager::querySensorSimilarity, this)),
-        Option("Go back", bind(&DisplayManager::displayMainMenu, this))
-    };
+        Option("Go back", bind(&DisplayManager::mainMenu, this))};
 
-    optionsList[promptMenuChoice(menuTitle, optionsList) - 1].second();
+    displayMenu(menuTitle, optionsList);
 }
 
 // Sensor queries

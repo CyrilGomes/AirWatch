@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 
     // DEBUG: Using main menu
     DisplayManager displayManager;
-    displayManager.displayLoginMenu();
+    displayManager.loginMenu();
 
     // Save local data
     dbManager.saveLocalData();

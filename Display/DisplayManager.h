@@ -9,7 +9,7 @@ using namespace std;
 class DisplayManager {
     public:
         // Menu displays
-        int displayMenu(string prompt, vector<pair<string, function<void()>>> menuItems);
+        void displayMenu(string menuTitle, vector<pair<string, function<void()>>> optionsList);
         void loginMenu();
         void mainMenu();
         void sensorMenu();
