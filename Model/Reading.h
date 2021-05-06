@@ -13,6 +13,7 @@ class Reading {
 		int id;
 		Date timeStamp;
 		unordered_map<string, Measurement*> measurements;
+		static unordered_map<string, int*> atmoTable;
 
 	public:
 		Reading(Date timeStamp);

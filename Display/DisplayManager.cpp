@@ -2,7 +2,7 @@
 #include "Console.h"
 #include "../Model/User.h"
 #include "../Model/Individual.h"
-#include "../Services/UserManagement.h"
+#include "../Services/UserServices.h"
 #include "../Services/ApplicationServices.h"
 
 #include <iostream>
@@ -43,7 +43,7 @@ void DisplayManager::mainMenu()
         Option("Cleaner analytics", bind(&DisplayManager::queryCleanerContribution, this)),
         Option("Log out", bind(&DisplayManager::queryLogout, this))};
 
-    User currentUser = UserManagement::getCurrentUser();
+    User currentUser = UserServices::getCurrentUser();
     UserType userType = currentUser.getType();
     switch (userType)
     {
@@ -83,7 +83,7 @@ void DisplayManager::querySensorReliability()
 
     const string menuTitle = "Sensor analytics menu:";
 
-    User currentUser = UserManagement::getCurrentUser();
+    User currentUser = UserServices::getCurrentUser();
     UserType userType = currentUser.getType();
     if (userType == UserType::government)
     {
@@ -105,7 +105,7 @@ void DisplayManager::querySensorFlag()
     int sensorId = Console::promptInteger("Sensor ID");
 
     ApplicationServices appServices;
-    appServices.flagSensor(sensorId, true);
+    appServices.flagSensor(sensorId, false);
 }
 
 void DisplayManager::querySensorSimilarity()
@@ -163,7 +163,17 @@ void DisplayManager::queryLogin()
     string email = Console::promptString("Email");
     string password = Console::promptString("Password");
 
-    // TODO: Implement when authenticate returns a User*
+    int res = UserServices::authenticate(email, password);
+
+    if (res == -1) {
+        Console::displayMessage("Given account does not exist, please try again");
+        queryIndividualRegister();
+    }
+    if (res == -2) {
+        Console::displayMessage("Incorrect password, please try again");
+        queryIndividualRegister();
+    }
+
 }
 
 void DisplayManager::queryLogout()
@@ -175,7 +185,9 @@ void DisplayManager::queryIndividualRegister()
     string email = Console::promptString("Email");
     string password = Console::promptString("Password");
 
-    if(!UserManagement::registerIndividual(email, password)){
+    int res = UserServices::registerIndividual(email, password);
+
+    if (res == -1) {
         Console::displayMessage("Given account already exists, please try again");
         queryIndividualRegister();
     }
@@ -186,5 +198,10 @@ void DisplayManager::queryCompanyRegister()
     string email = Console::promptString("Email");
     string password = Console::promptString("Password");
 
-    // TODO: Implement the rest when registerCompany is fixed
+    int res = UserServices::registerIndividual(email, password);
+
+    if (res == -1) {
+        Console::displayMessage("Given account already exists, please try again");
+        queryIndividualRegister();
+    }
 }
