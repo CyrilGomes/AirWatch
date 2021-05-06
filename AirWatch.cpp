@@ -4,7 +4,7 @@ using namespace std;
 #include "Database/DBManager.h"
 #include "Model/ApplicationData.h"
 #include "Display/DisplayManager.h"
-#include "Services/UserManagement.h"
+#include "Services/UserServices.h"
 
 int main(int argc, char const *argv[])
 {
@@ -15,33 +15,38 @@ int main(int argc, char const *argv[])
 
     // DEBUG: print data
     ApplicationData* applicationData = ApplicationData::getInstance();
-    cout << "-> User List: " << endl;
+    cout << "\n-> User List: " << endl;
     auto userList = applicationData->getUserList();
     for (auto i : userList) {
         User* u = i.second;
         cout << u->getType() << "; " << u->getId() << "; " << u->getMail() << "; " << u->getPassword() << endl;
     }
-    cout << "-> Sensor List: " << endl;
+    cout << "\n-> Sensor List: " << endl;
     auto sensorList = applicationData->getSensorList();
     for (auto i : sensorList) {
         Sensor* s = i.second;
         cout << i.first << ": " << s->getLatitude() << "; " << s->getLongitude() << "; " << s->getReadings().size() << " readings" << endl;
     }
-    cout << "-> Cleaner List: " << endl;
+    cout << "\n-> Cleaner List: " << endl;
     auto cleanerList = applicationData->getCleanerList();
     for (auto i : cleanerList) {
         Cleaner* c = i.second;
         cout << i.first << ": " << c->getLatitude() << "; " << c->getLongitude() << endl;
     }
+    cout << "\n-> ATMO check on sensor 80: " << endl;
+    Sensor* s0 = sensorList[80];
+    auto sensorReadings = s0->getReadings();
+    for (auto i : sensorReadings) {
+        cout << i.second->getTimeStamp().toString() << ": " << i.second->getAtmoScore() << endl;
+    }
+    cout << endl;
 
-    // DEBUG: Using main menu
+    // Launch the display
     DisplayManager displayManager;
     displayManager.loginMenu();
 
-    // Save local data
+    // At the end of execution, save local data and clean up
     dbManager.saveLocalData();
-
-    // Clean up
     delete applicationData;
 
     return 0;

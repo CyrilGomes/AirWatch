@@ -9,7 +9,7 @@ EXE = AirWatch.exe
 DB_CLASSES = DBManager
 DISP_CLASSES = Console DisplayManager
 MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Sensor User Date
-SERV_CLASSES = ApplicationServices UserManagement
+SERV_CLASSES = ApplicationServices UserServices
 
 # Assembling the list of sources in a single variable
 SRC = $(EXE:.exe=.cpp) $(DB) $(DISP) $(MODEL) $(SERV)

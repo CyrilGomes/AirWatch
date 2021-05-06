@@ -31,6 +31,9 @@ ReliabilityFlag Individual::getReliabilityFlag() {
 
 void Individual::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
 	this->reliabilityFlag = reliabilityFlag;
+    for (Sensor* i : sensorList) {
+        i->setReliabilityFlag(reliabilityFlag);
+    }
 }
 
 list<Sensor*> Individual::getSensorList() {

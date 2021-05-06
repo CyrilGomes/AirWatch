@@ -6,7 +6,11 @@ ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Dat
 }
 
 void ApplicationServices::flagSensor(int uSensorID, bool uFlag) {
-	// TODO - implement ApplicationServices::flagSensor
+	/*if (!uFlag) {
+		if (sensor->owner != nullptr) {
+			sensor->owner->setReliabilityFlag(reliabilityFlag);
+		}
+	}*/
 	throw "Not yet implemented";
 }
 
