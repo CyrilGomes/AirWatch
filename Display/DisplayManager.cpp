@@ -22,13 +22,19 @@ int DisplayManager::promptMenuChoice(string prompt, vector<pair<string, function
 
 void DisplayManager::displayLoginMenu()
 {
+    vector<pair<string, function<void()>>> optionsList = {
+        pair<string, function<void()>>("Login", bind(&DisplayManager::queryLogin, this)),
+        pair<string, function<void()>>("Register", bind(&DisplayManager::queryIndividualRegister, this))
+    };
+
+    optionsList[promptMenuChoice("WELCOME TO AIRWATCH:", optionsList) - 1].second();
 }
 
 void DisplayManager::displayMainMenu()
 {
     User currentUser = UserManagement::getCurrentUser();
 
-    vector<pair<string, function<void()>>> optionsList;    
+    vector<pair<string, function<void()>>> optionsList;
 
     optionsList.insert(optionsList.end(), pair<string, function<void()>>("Sensor analytics", bind(&DisplayManager::displaySensorMenu, this)));
     optionsList.insert(optionsList.end(), pair<string, function<void()>>("Cleaner analytics", bind(&DisplayManager::queryCleanerContribution, this)));

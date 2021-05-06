@@ -35,10 +35,8 @@ int main(int argc, char const *argv[])
     }
 
     // DEBUG: Using main menu
-    cout << (int)(Individual("abcd@ok.com", "12345").getType()) << endl;
-    UserManagement::setCurrentUser(Individual("abcd@ok.com", "12345"));
     DisplayManager displayManager;
-    displayManager.displayMainMenu();
+    displayManager.displayLoginMenu();
 
     // Save local data
     dbManager.saveLocalData();
