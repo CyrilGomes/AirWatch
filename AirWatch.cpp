@@ -9,6 +9,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     // Import data from central and local server
+    
     DBManager dbManager("Dataset/");
     dbManager.importCentralServerData();
     dbManager.importLocalData();
@@ -48,6 +49,6 @@ int main(int argc, char const *argv[])
     // At the end of execution, save local data and clean up
     dbManager.saveLocalData();
     delete applicationData;
-
+    
     return 0;
 }
