@@ -8,11 +8,11 @@ using namespace std;
 class Console {
 
 	public:
-		void displayMessage(string message);
-		int promptInteger(string prompt);
-		string promptString(string prompt);
-		float promptFloat(string prompt);
-		int promptMenuChoice(string prompt, list<string> menuItems);
+		static void displayMessage(string message);
+		static int promptInteger(string prompt);
+		static string promptString(string prompt);
+		static float promptFloat(string prompt);
+		static int promptMenuChoice(string prompt, list<string> menuItems);
 
 };
 
