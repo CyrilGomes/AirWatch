@@ -9,10 +9,10 @@ using namespace std;
 class DisplayManager {
     public:
         // Menu displays
-        int promptMenuChoice(string prompt, vector<pair<string, function<void()>>> menuItems);
-        void displayLoginMenu();
-        void displayMainMenu();
-        void displaySensorMenu();
+        int displayMenu(string prompt, vector<pair<string, function<void()>>> menuItems);
+        void loginMenu();
+        void mainMenu();
+        void sensorMenu();
 
         // Sensor queries
         void querySensorReliability();
