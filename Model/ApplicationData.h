@@ -26,7 +26,7 @@ class ApplicationData {
 		unordered_map<string, User*> getUserList();
 		void addUser(User* user);
 		void updateUserList(string oldKey);
-		float distance(float lat1, float lon1, float lat2, float lon2);
+		static float distance(float lat1, float lon1, float lat2, float lon2);
 		~ApplicationData();
 		ApplicationData(ApplicationData& other) = delete;
     	void operator = (const ApplicationData& other) = delete;

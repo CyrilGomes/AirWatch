@@ -38,6 +38,8 @@ int main(int argc, char const *argv[])
     for (auto i : sensorReadings) {
         cout << i.second->getTimeStamp().toString() << ": " << i.second->getAtmoScore() << endl;
     }
+    cout << "\n-> Distance check between (44.4, -0.3) and (46.8, 0.1): " << endl;
+    cout << ApplicationData::distance(44.4, -0.3, 46.8, 0.1) << "m" << endl;
 
     // Save local data
     dbManager.saveLocalData();

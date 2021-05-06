@@ -1,5 +1,6 @@
 #include "ApplicationData.h"
 #include <cmath>
+#include <math.h>
 
 ApplicationData* ApplicationData::singleton = nullptr;
 
@@ -43,8 +44,10 @@ void ApplicationData::updateUserList(string oldKey) {
 }
 
 float ApplicationData::distance(float lat1, float lon1, float lat2, float lon2) {
-	float earthRadius = 6 378 137;
-	return acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*earthRadius;
+	float earthRadius = 6378137;
+    float lat1_rad = lat1 * M_PI/180; float lon1_rad = lon1 * M_PI/180;
+    float lat2_rad = lat2 * M_PI/180; float lon2_rad = lon2 * M_PI/180;
+	return acos(sin(lat1_rad)*sin(lat2_rad)+cos(lat1_rad)*cos(lat2_rad)*cos(lon2_rad-lon1_rad))*earthRadius;
 }
 
 ApplicationData::~ApplicationData() {
