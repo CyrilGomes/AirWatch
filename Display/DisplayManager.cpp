@@ -13,6 +13,7 @@ typedef pair<string, function<void()>> Option;
 // Menu displays
 void DisplayManager::displayMenu(string menuTitle, vector<Option> optionsList)
 {
+    // Display Menu
     cout << menuTitle << " :" << endl;
     int count = 1;
     for (Option item : optionsList)
@@ -20,7 +21,19 @@ void DisplayManager::displayMenu(string menuTitle, vector<Option> optionsList)
         cout << count << ". " << item.first << endl;
         count++;
     }
-    optionsList[Console::promptInteger(">") - 1].second();
+
+    // Fetch menu choice
+    int menuChoice = Console::promptInteger(">") - 1;
+
+    // If choice is not within menu options, retry
+    if (menuChoice < 0 || menuChoice >= optionsList.size()) {
+        Console::displayMessage("Invalid choice, please try again\n");
+        displayMenu(menuTitle, optionsList);
+    }
+    // Otherwise, execute bound function
+    else {
+        optionsList[menuChoice].second();
+    }
 }
 
 void DisplayManager::loginMenu()
