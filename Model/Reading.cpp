@@ -1,4 +1,7 @@
 #include "Reading.h"
+#include "../Services/UserServices.h"
+#include "User.h"
+#include "Individual.h"
 
 int _atmo_O3   [] = {0, 30, 55, 80, 105, 130, 150, 180, 210, 240};
 int _atmo_SO2  [] = {0, 40, 80, 120, 160, 200, 250, 300, 400, 500};
@@ -36,8 +39,22 @@ void Reading::setTimeStamp(Date timeStamp) {
 	this->timeStamp = timeStamp;
 }
 
+Sensor* Reading::getSensor() {
+	return this->sensor;
+}
+
+void Reading::setSensor(Sensor* sensor) {
+	this->sensor = sensor;
+}
+
 int Reading::getAtmoScore() {
-	// TODO: give points to user
+	// Give points to owner (unless owner is current user)
+	User* currentUser = UserServices::getCurrentUser();
+	Individual* owner = sensor->getOwner();
+	if (currentUser != nullptr && owner != nullptr && currentUser->getMail() != owner->getMail()) {
+		owner->addPoint();
+	}
+	// Calculate ATMO
 	int atmo = 0;
 	for (pair<string, Measurement*> i : measurements) {
 		int subAtmo = 0;

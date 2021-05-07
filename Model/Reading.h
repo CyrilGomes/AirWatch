@@ -1,6 +1,7 @@
 #ifndef READING_H
 #define READING_H
 
+class Sensor;
 #include <unordered_map>
 #include <string>
 #include "Measurement.h"
@@ -12,6 +13,7 @@ class Reading {
 	private:
 		int id;
 		Date timeStamp;
+		Sensor* sensor;
 		unordered_map<string, Measurement*> measurements;
 		static unordered_map<string, int*> atmoTable;
 
@@ -22,6 +24,8 @@ class Reading {
 		void setId(int id);
 		Date getTimeStamp();
 		void setTimeStamp(Date timeStamp);
+		Sensor* getSensor();
+		void setSensor(Sensor* sensor);
 		int getAtmoScore();
 		unordered_map<string, Measurement*> getMeasurements();
 		void addMeasurement(Measurement* measurement, string type);

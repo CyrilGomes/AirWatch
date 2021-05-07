@@ -14,7 +14,7 @@ void ApplicationServices::flagSensor(int uSensorID, bool uFlag) {
 	throw "Not yet implemented";
 }
 
-list<Sensor> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd) {
+vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd) {
 	// TODO - implement ApplicationServices::compareSensorSimilarities
 	throw "Not yet implemented";
 }
@@ -29,7 +29,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 	throw "Not yet implemented";
 }
 
-float* ApplicationServices::getCleanerContribution(int uCleanerID) {
+pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID) {
 	// TODO - implement ApplicationServices::getCleanerContribution
 	throw "Not yet implemented";
 }

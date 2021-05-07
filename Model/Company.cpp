@@ -17,7 +17,7 @@ Company::Company(string mail, string password) : User(mail, password) {
 	this->type = UserType::company;
 }
 
-list<Cleaner*> Company::getCleanerList() {
+vector<Cleaner*> Company::getCleanerList() {
 	return this->cleanerList;
 }
 

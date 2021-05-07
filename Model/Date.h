@@ -2,11 +2,10 @@
 #define DATE_H
 
 #include <string>
-#include<iostream>
 #include <iostream>
 #include <locale>
 #include <iomanip>
- 
+
 using namespace std;
 
 class Date {
@@ -27,11 +26,12 @@ class Date {
 		int getHour() const;
 		void setHour(int hour);
 		string toString() const;
-		bool operator == (const Date& oDate) const;
-		bool operator < (const Date& oDate) const;
-		Date& operator = (const Date& oDate);
-		friend ostream &operator<<( ostream &output, const Date &d );
-		friend istream &operator>>( istream  &input, Date &d );
+		bool operator==(const Date& oDate) const;
+		bool operator<(const Date& oDate) const;
+		Date& operator=(const Date& oDate);
+		friend ostream& operator<<(ostream& output, const Date& date);
+		friend istream& operator>>(istream& input, Date& date);
+
 };
 
 #endif

@@ -3,8 +3,23 @@
 #include "Console.h"
 using namespace std;
 
-void Console::displayMessage(string message) {
-    cout << message << endl;
+void Console::displayHeader(string message, int level) {
+    const string headerBanner = "=========================";
+    switch (level) {
+        case 0:
+            cout << endl << headerBanner << endl << " " << message << " :" << endl << headerBanner << endl << endl;
+            break;
+        case 1:
+            cout << endl << message << endl;
+            for (int i = 0; i < message.length(); i++) {
+                cout << "-";
+            }
+            cout << endl << endl;
+            break;
+        default:
+            cout << endl << message << endl << endl;
+            break;
+    }
 }
 
 int Console::promptInteger(string prompt) {
@@ -13,19 +28,15 @@ int Console::promptInteger(string prompt) {
 	cout << prompt << " : ";
 	cin >> ref;
     valueIn = (int)ref;
-    // TODO - vérifier que l'entrée est un int;
-    while(cin.fail() || valueIn!=ref)
-    {
+    while(cin.fail() || valueIn != ref) {
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        cout<<"Please enter an integer value for "<< prompt <<endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) Please enter an integer value for " << prompt << endl;
         cout << prompt << " : ";
-        cin>>ref;
+        cin >> ref;
         valueIn = (int)ref;
     }
-    cout << endl;
 	return valueIn;
-
 }
 
 string Console::promptString(string prompt) {
@@ -33,22 +44,32 @@ string Console::promptString(string prompt) {
 	cout << prompt << " : ";
 	cin >> valueIn;
 	return valueIn;
-	// TODO - implement Console::promptString
 }
 
 float Console::promptFloat(string prompt) {
 	float valueIn = 0;
 	cout << prompt << " : ";
 	cin >> valueIn;
-    // TODO - vérifier que l'entrée est bien un float
-    while(cin.fail() )
-    {
+    while(cin.fail()) {
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        cout<<"Please enter a float value for "<< prompt <<endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) Please enter a float value for " << prompt << endl;
         cout << prompt << " : ";
-        cin>>valueIn;
+        cin >> valueIn;
     }
-    cout << endl;
+	return valueIn;
+}
+
+Date Console::promptDate(string prompt) {
+	Date valueIn;
+	cout << prompt << " : ";
+    cin >> valueIn;
+    while(cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) Please enter a date for " << prompt << endl;
+        cout << prompt << " : ";
+        cin >> valueIn;
+    }
 	return valueIn;
 }

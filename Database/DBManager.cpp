@@ -185,6 +185,7 @@ void DBManager::importCentralServerData() {
 		currentReading->addMeasurement(measurement, sAttributeID);
 		// Save reading to the corresponding sensor's list
 		Sensor* sensor = applicationData->getSensorList()[sensorID];
+		currentReading->setSensor(sensor);
 		sensor->addReading(currentReading);
 	}
 

@@ -20,6 +20,7 @@ class Individual : public User {
 		Individual(string mail, string password);
 		int getPoints();
 		void setPoints(int points);
+		void addPoint();
 		ReliabilityFlag getReliabilityFlag();
 		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
 		list<Sensor*> getSensorList();

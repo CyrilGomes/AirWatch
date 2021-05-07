@@ -5,13 +5,13 @@
 #include "../Model/Company.h"
 #include "../Model/Individual.h"
 
-User UserServices::currentUser;
+User* UserServices::currentUser;
 
-User UserServices::getCurrentUser() {
+User* UserServices::getCurrentUser() {
 	return currentUser;
 }
 
-void UserServices::setCurrentUser(User user) {
+void UserServices::setCurrentUser(User* user) {
 	currentUser = user;
 }
 
@@ -33,7 +33,7 @@ int UserServices::authenticate(string uEmail, string uPassword) {
         }
     }
 	// If everything went well, set the current user
-    setCurrentUser(*authenticatedUser);
+    setCurrentUser(authenticatedUser);
     return 0;
 }
 

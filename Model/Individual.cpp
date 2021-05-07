@@ -25,6 +25,10 @@ void Individual::setPoints(int points) {
 	this->points = points;
 }
 
+void Individual::addPoint() {
+    (this->points)++;
+}
+
 ReliabilityFlag Individual::getReliabilityFlag() {
 	return this->reliabilityFlag;
 }
