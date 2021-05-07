@@ -1,5 +1,6 @@
 #include "UserServices.h"
 #include <unordered_map>
+#include "../Database/DBManager.h"
 #include "../Model/ApplicationData.h"
 #include "../Model/User.h"
 #include "../Model/Company.h"
@@ -48,6 +49,8 @@ int UserServices::registerCompany(string uEmail, string uPassword) {
 	// If everything went well, create the new user and save it
 	User* newUser = new Company(uEmail, uPassword);
 	applicationData->addUser(newUser);
+	// Persist it
+	DBManager::getInstance()->saveNewUser(newUser);
 	return 0;
 }
 
@@ -61,5 +64,7 @@ int UserServices::registerIndividual(string uEmail, string uPassword) {
 	// If everything went well, create the new user and save it
     User* newUser = new Individual(uEmail, uPassword);
     applicationData->addUser(newUser);
+	// Persist it
+	DBManager::getInstance()->saveNewUser(newUser);
 	return 0;
 }

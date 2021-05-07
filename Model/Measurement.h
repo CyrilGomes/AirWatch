@@ -13,11 +13,11 @@ class Measurement {
 
 	public:
 		Measurement(string unitType, string description, float value);
-		string getUnitType();
+		string getUnitType() const;
 		void setUnitType(string unitType);
-		string getDescription();
+		string getDescription() const;
 		void setDescription(string description);
-		float getValue();
+		float getValue() const;
 		void setValue(float value);
 
 };

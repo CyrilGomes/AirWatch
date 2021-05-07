@@ -20,17 +20,17 @@ class Sensor {
 	public:
 		Sensor(int id, float latitude, float longitude);
 		~Sensor();
-		int getId();
+		int getId() const;
 		void setId(int id);
-		float getLatitude();
+		float getLatitude() const;
 		void setLatitude(float latitude);
-		float getLongitude();
+		float getLongitude() const;
 		void setLongitude(float longitude);
-		ReliabilityFlag getReliabilityFlag();
+		ReliabilityFlag getReliabilityFlag() const;
 		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
-		Individual* getOwner();
+		Individual* getOwner() const;
 		void setOwner(Individual* owner);
-		map<Date, Reading*> getReadings();
+		map<Date, Reading*> getReadings() const;
 		void addReading(Reading* reading);
 
 };

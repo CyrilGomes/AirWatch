@@ -3,7 +3,7 @@
 Measurement::Measurement(string unitType, string description, float value) : unitType(unitType), description(description), value(value)  {
 }
 
-string Measurement::getUnitType() {
+string Measurement::getUnitType() const {
 	return this->unitType;
 }
 
@@ -11,7 +11,7 @@ void Measurement::setUnitType(string unitType) {
 	this->unitType = unitType;
 }
 
-string Measurement::getDescription() {
+string Measurement::getDescription() const {
 	return this->description;
 }
 
@@ -19,7 +19,7 @@ void Measurement::setDescription(string description) {
 	this->description = description;
 }
 
-float Measurement::getValue() {
+float Measurement::getValue() const {
 	return this->value;
 }
 

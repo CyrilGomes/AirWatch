@@ -17,13 +17,13 @@ class User {
 	public:
 		User();
 		User(string mail, string password);
-		unsigned int getId();
+		unsigned int getId() const;
 		void setId(unsigned int id);
-		string getPassword();
+		string getPassword() const;
 		void setPassword(string password);
-		string getMail();
+		string getMail() const;
 		void setMail(string mail);
-		UserType getType();
+		UserType getType() const;
 
 };
 

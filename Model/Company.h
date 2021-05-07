@@ -16,7 +16,7 @@ class Company : public User {
 	public:
 		Company(unsigned int id, string mail, string password);
 		Company(string mail, string password);
-		vector<Cleaner*> getCleanerList();
+		vector<Cleaner*> getCleanerList() const;
 		void addCleaner(Cleaner* cleaner);
 
 };

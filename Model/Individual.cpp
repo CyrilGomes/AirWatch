@@ -17,7 +17,7 @@ Individual::Individual(string mail, string password) : User(mail, password) {
 	this->type = UserType::individual;
 }
 
-int Individual::getPoints() {
+int Individual::getPoints() const {
 	return this->points;
 }
 
@@ -29,7 +29,7 @@ void Individual::addPoint() {
     (this->points)++;
 }
 
-ReliabilityFlag Individual::getReliabilityFlag() {
+ReliabilityFlag Individual::getReliabilityFlag() const {
 	return this->reliabilityFlag;
 }
 
@@ -40,7 +40,7 @@ void Individual::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
     }
 }
 
-list<Sensor*> Individual::getSensorList() {
+list<Sensor*> Individual::getSensorList() const {
 	return this->sensorList;
 }
 

@@ -13,7 +13,7 @@ ApplicationData* ApplicationData::getInstance() {
     return singleton;
 }
 
-unordered_map<int, Cleaner*> ApplicationData::getCleanerList() {
+unordered_map<int, Cleaner*> ApplicationData::getCleanerList() const {
 	return cleanerList;
 }
 
@@ -21,7 +21,7 @@ void ApplicationData::addCleaner(Cleaner* cleaner) {
 	cleanerList[cleaner->getId()] = cleaner;
 }
 
-unordered_map<int, Sensor*> ApplicationData::getSensorList() {
+unordered_map<int, Sensor*> ApplicationData::getSensorList() const {
 	return sensorList;
 }
 
@@ -29,7 +29,7 @@ void ApplicationData::addSensor(Sensor* sensor) {
 	sensorList[sensor->getId()] = sensor;
 }
 
-unordered_map<string, User*> ApplicationData::getUserList() {
+unordered_map<string, User*> ApplicationData::getUserList() const {
 	return userList;
 }
 

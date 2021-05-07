@@ -7,7 +7,7 @@ G++FLAGS = -std=c++17 -pthread
 # Declaring the sources
 EXE = AirWatch.exe
 DB_CLASSES = DBManager
-DISP_CLASSES = Console DisplayManager
+DISP_CLASSES = InputManager HMIManager
 MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Sensor User Date
 SERV_CLASSES = ApplicationServices UserServices
 

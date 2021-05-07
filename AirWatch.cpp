@@ -3,20 +3,15 @@ using namespace std;
 
 #include "Database/DBManager.h"
 #include "Model/ApplicationData.h"
-#include "Display/DisplayManager.h"
+#include "Display/HMIManager.h"
 #include "Services/UserServices.h"
-
-void exiting() {
-
-}
 
 int main(int argc, char const *argv[])
 {
     // Import data from central and local server
-
-    DBManager dbManager("Dataset/");
-    dbManager.importCentralServerData();
-    dbManager.importLocalData();
+    DBManager db("Dataset/");
+    db.importCentralServerData();
+    db.importLocalData();
 
     // DEBUG: print data
     ApplicationData* applicationData = ApplicationData::getInstance();
@@ -42,16 +37,16 @@ int main(int argc, char const *argv[])
     Sensor* s0 = sensorList[80];
     auto sensorReadings = s0->getReadings();
     for (auto i : sensorReadings) {
-        cout << i.second->getTimeStamp() << ": " << i.second->getAtmoScore() << endl;
+        cout << i.second->getTimeStamp() << ": " << i.second->atmo() << endl;
     }
     cout << endl;
 
     // Launch the display
-    DisplayManager displayManager;
-    displayManager.loginMenu();
+    HMIManager hmi;
+    hmi.loginMenu();
 
     // At the end of execution, save local data and clean up
-    dbManager.saveLocalData();
+    db.saveLocalData();
     delete applicationData;
 
     return 0;

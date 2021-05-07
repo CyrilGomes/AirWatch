@@ -5,7 +5,6 @@
 #include "CSVParser.h"
 #include "MagicEnum.hpp"
 #include "DBManager.h"
-#include "../Model/User.h"
 #include "../Model/Sensor.h"
 #include "../Model/Cleaner.h"
 #include "../Model/Measurement.h"
@@ -13,10 +12,19 @@
 #include "../Model/ApplicationData.h"
 using namespace std;
 
+DBManager* DBManager::singleton;
+
 DBManager::DBManager(string directory) : directory(directory) {
 }
 
-string DBManager::getDirectory() {
+DBManager* DBManager::getInstance() {
+    if (singleton == nullptr) {
+        singleton = new DBManager("");
+    }
+    return singleton;
+}
+
+string DBManager::getDirectory() const {
 	return this->directory;
 }
 
@@ -313,3 +321,21 @@ void DBManager::saveLocalData() {
 	individualsCsv.close();
 
 }
+
+ void DBManager::saveNewUser(User* newUser) {
+
+	 // Open csv file
+ 	ofstream loginsCsv;
+ 	loginsCsv.open(directory + "Local/logins.csv", ios::app);
+
+	// Write a new line
+	string type = (string)magic_enum::enum_name(newUser->getType());
+	unsigned int id = newUser->getId();
+	string mail = newUser->getMail();
+	string password = newUser->getPassword();
+	loginsCsv << type << ";" << id << ";" << mail << ";" << password << endl;
+
+	// Close file
+	loginsCsv.close();
+
+ }

@@ -20,15 +20,15 @@ class Reading {
 	public:
 		Reading(Date timeStamp);
 		~Reading();
-		int getId();
+		int getId() const;
 		void setId(int id);
-		Date getTimeStamp();
+		Date getTimeStamp() const;
 		void setTimeStamp(Date timeStamp);
-		Sensor* getSensor();
+		Sensor* getSensor() const;
 		void setSensor(Sensor* sensor);
-		int getAtmoScore();
-		unordered_map<string, Measurement*> getMeasurements();
+		unordered_map<string, Measurement*> getMeasurements() const;
 		void addMeasurement(Measurement* measurement, string type);
+		int atmo();
 
 };
 

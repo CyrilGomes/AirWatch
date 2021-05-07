@@ -16,17 +16,17 @@ class Cleaner {
 
 	public:
 		Cleaner(int id, float latitude, float longitude, Date startDate, Date stopDate);
-		int getId();
+		int getId() const;
 		void setId(int id);
-		float getLatitude();
+		float getLatitude() const;
 		void setLatitude(float latitude);
-		float getLongitude();
+		float getLongitude() const;
 		void setLongitude(float longitude);
-		Date getStartDate();
+		Date getStartDate() const;
 		void setStartDate(Date startDate);
-		Date getStopDate();
+		Date getStopDate() const;
 		void setStopDate(Date stopDate);
-		Company* getOwner();
+		Company* getOwner() const;
 		void setOwner(Company* owner);
 
 };

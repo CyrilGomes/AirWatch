@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "../Model/User.h"
 #include "../Model/Individual.h"
 #include "../Model/Company.h"
 #include "../Model/Government.h"
@@ -14,14 +15,17 @@ class DBManager {
 		string directory;
 		unordered_map<int, Individual*> individualsMap;
 		unordered_map<int, Company*> companiesMap;
+		static DBManager* singleton;
 
 	public:
 		DBManager(string directory);
-		string getDirectory();
+		static DBManager* getInstance();
+		string getDirectory() const;
 		void setDirectory(string directory);
 		void importCentralServerData();
 		void importLocalData();
 		void saveLocalData();
+		void saveNewUser(User* newUser);
 
 };
 

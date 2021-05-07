@@ -18,12 +18,12 @@ class Individual : public User {
 	public:
 		Individual(unsigned int id, string mail, string password);
 		Individual(string mail, string password);
-		int getPoints();
+		int getPoints() const;
 		void setPoints(int points);
 		void addPoint();
-		ReliabilityFlag getReliabilityFlag();
+		ReliabilityFlag getReliabilityFlag() const;
 		void setReliabilityFlag(ReliabilityFlag reliabilityFlag);
-		list<Sensor*> getSensorList();
+		list<Sensor*> getSensorList() const;
 		void addSensor(Sensor* sensor);
 
 };

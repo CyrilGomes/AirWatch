@@ -23,7 +23,7 @@ Reading::~Reading() {
 	}
 }
 
-int Reading::getId() {
+int Reading::getId() const {
 	return this->id;
 }
 
@@ -31,7 +31,7 @@ void Reading::setId(int id) {
 	this->id = id;
 }
 
-Date Reading::getTimeStamp() {
+Date Reading::getTimeStamp() const {
 	return this->timeStamp;
 }
 
@@ -39,7 +39,7 @@ void Reading::setTimeStamp(Date timeStamp) {
 	this->timeStamp = timeStamp;
 }
 
-Sensor* Reading::getSensor() {
+Sensor* Reading::getSensor() const {
 	return this->sensor;
 }
 
@@ -47,7 +47,15 @@ void Reading::setSensor(Sensor* sensor) {
 	this->sensor = sensor;
 }
 
-int Reading::getAtmoScore() {
+unordered_map<string, Measurement*> Reading::getMeasurements() const {
+	return this->measurements;
+}
+
+void Reading::addMeasurement(Measurement* measurement, string type) {
+	measurements[type] = measurement;
+}
+
+int Reading::atmo() {
 	// Give points to owner (unless owner is current user)
 	User* currentUser = UserServices::getCurrentUser();
 	Individual* owner = sensor->getOwner();
@@ -67,12 +75,4 @@ int Reading::getAtmoScore() {
 		atmo = (subAtmo > atmo) ? subAtmo : atmo;
 	}
 	return atmo + 1; //ATMO indices start at 1
-}
-
-unordered_map<string, Measurement*> Reading::getMeasurements() {
-	return this->measurements;
-}
-
-void Reading::addMeasurement(Measurement* measurement, string type) {
-	measurements[type] = measurement;
 }
