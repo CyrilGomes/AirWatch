@@ -2,7 +2,7 @@
 
 # Compiler configuration (default)
 G++ = g++
-G++FLAGS = -std=c++17 -pthread
+G++FLAGS = -std=c++17 -pthread -O3
 
 # Declaring the sources
 EXE = AirWatch.exe
