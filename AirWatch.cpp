@@ -1,17 +1,15 @@
 #include <iostream>
 using namespace std;
 
-#include "Database/DBManager.h"
 #include "Model/ApplicationData.h"
 #include "Display/HMIManager.h"
 #include "Services/UserServices.h"
+#include "Services/ApplicationServices.h"
 
 int main(int argc, char const *argv[])
 {
     // Import data from central and local server
-    DBManager db("Dataset/");
-    db.importCentralServerData();
-    db.importLocalData();
+    ApplicationServices::importData();
 
     #ifdef DEBUG
         // DEBUG: print data
@@ -38,7 +36,11 @@ int main(int argc, char const *argv[])
         Sensor* s0 = sensorList[80];
         auto sensorReadings = s0->getReadings();
         for (auto i : sensorReadings) {
-            cout << i.second->getTimeStamp() << ": " << i.second->getAtmoScore() << endl;
+            cout << i.second->getTimeStamp() << ": " << i.second->atmo() << endl;
+            auto measurements = i.second->getMeasurements();
+            for (auto j : measurements) {
+                cout << "* " << j.first << ": " << j.second->getValue() << endl;
+            }
         }
         cout << endl;
     #endif
@@ -48,8 +50,8 @@ int main(int argc, char const *argv[])
     hmi.loginMenu();
 
     // At the end of execution, save local data and clean up
-    db.saveLocalData();
-    delete applicationData;
+    ApplicationServices::saveData();
+    delete ApplicationData::getInstance();
 
     return 0;
 }

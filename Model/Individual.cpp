@@ -9,12 +9,14 @@ unsigned int Individual::maxId = 0;
 Individual::Individual(unsigned int id, string mail, string password) : User(mail, password) {
 	this->id = id;
 	this->type = UserType::individual;
+    this->points = 0;
 	maxId = max(maxId, id);
 }
 
 Individual::Individual(string mail, string password) : User(mail, password) {
-	this->id = maxId++;
+	this->id = ++maxId;
 	this->type = UserType::individual;
+    this->points = 0;
 }
 
 int Individual::getPoints() const {

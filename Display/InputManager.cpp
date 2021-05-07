@@ -48,7 +48,7 @@ Date InputManager::promptDate(string prompt) {
     while(cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Please enter a date for " << prompt << endl;
+        cout << "(!) Please enter a DD/MM/YYYY date  for " << prompt << endl;
         cout << prompt << " : ";
         cin >> valueIn;
     }

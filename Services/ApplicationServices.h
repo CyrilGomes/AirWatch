@@ -10,13 +10,14 @@ using namespace std;
 class ApplicationServices {
 
 	public:
-		ReliabilityFlag checkSensorsReliabilities(Date uTBegin, Date uTEnd) const;
-		void flagSensor(int uSensorID, bool uFlag) const;
-		vector<Sensor*> compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd) const;
-		float getAreaAirQuality(float uLat, float uLon, float uRad, Date uTBegin, Date uTEnd) const;
-		float getPunctualAirQuality(float uLat, float uLon, Date uTBegin, Date uTEnd) const;
-		pair<float, float> getCleanerContribution(int uCleanerID) const;
-		void importData() const;
+		static ReliabilityFlag checkSensorsReliabilities(Date uTBegin, Date uTEnd);
+		static void flagSensor(int uSensorID, bool uFlag);
+		static vector<Sensor*> compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd);
+		static float getAreaAirQuality(float uLat, float uLon, float uRad, Date uTBegin, Date uTEnd);
+		static float getPunctualAirQuality(float uLat, float uLon, Date uTBegin, Date uTEnd);
+		static pair<float, float> getCleanerContribution(int uCleanerID);
+		static void importData();
+		static void saveData();
 
 };
 

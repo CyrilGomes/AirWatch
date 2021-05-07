@@ -53,7 +53,8 @@ void HMIManager::loginMenu() {
     // Build menu options
     vector<Option> optionsList = {
         Option("Login", bind(&HMIManager::queryLogin, this)),
-        Option("Register", bind(&HMIManager::queryIndividualRegister, this))
+        Option("Register", bind(&HMIManager::queryIndividualRegister, this)),
+        Option("Exit", bind(&HMIManager::queryExit, this))
     };
     // Display menu
     displayMenu(menuTitle, optionsList);
@@ -66,24 +67,21 @@ void HMIManager::mainMenu() {
     vector<Option> optionsList = {
         Option("Sensor analytics", bind(&HMIManager::sensorMenu, this)),
         Option("Cleaner analytics", bind(&HMIManager::queryCleanerContribution, this)),
-        Option("Log out", bind(&HMIManager::queryLogout, this))
     };
     // Build user-specific menu options
     User* currentUser = UserServices::getCurrentUser();
     UserType userType = currentUser->getType();
     switch (userType) {
-        case UserType::company:
-            optionsList.insert(optionsList.end() - 1, Option("Register Air Cleaning Company", bind(&HMIManager::queryCompanyRegister, this)));
+        case UserType::government:
+            optionsList.push_back(Option("Register Air Cleaning Company", bind(&HMIManager::queryCompanyRegister, this)));
             break;
         case UserType::individual:
-            optionsList.insert(optionsList.end() - 1, Option("My user points", bind(&HMIManager::queryIndividualPoints, this)));
-            break;
-        default:
-            // ...
+            optionsList.push_back(Option("My user points", bind(&HMIManager::queryIndividualPoints, this)));
             break;
         default:
             break;
     }
+    optionsList.push_back(Option("Log out", bind(&HMIManager::queryLogout, this)));
     // Display menu
     displayMenu(menuTitle, optionsList);
 }
@@ -120,15 +118,19 @@ void HMIManager::querySensorSimilarity() {
     int uSensorId = InputManager::promptInteger("Sensor ID");
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
+    // Check date coherence
+    while (uTEnd < uTBegin) {
+        cout << "(!) The entered time period is invalid, please try again" << endl;
+        uTBegin = InputManager::promptDate("Start Time");
+        uTEnd = InputManager::promptDate("End Time");
+    }
     // Call service
-    ApplicationServices appServices;
-    vector<Sensor*> similarSensors = appServices.compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
+    vector<Sensor*> similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
     for (Sensor* s : similarSensors) {
         cout << "Sensor " << s->getId() << " (" << s->getLatitude() << "; " << s->getLongitude() << ")" << endl;
     }
-    cout << endl;
     // Go back to menu
     sensorMenu();
 }
@@ -145,14 +147,18 @@ void HMIManager::queryPunctualAirQuality() {
     float uLon = InputManager::promptFloat("Longitude");
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
+    // Check date coherence
+    while (uTEnd < uTBegin) {
+        cout << "(!) The entered time period is invalid, please try again" << endl;
+        uTBegin = InputManager::promptDate("Start Time");
+        uTEnd = InputManager::promptDate("End Time");
+    }
     // Call service
-    ApplicationServices appServices;
-    float atmo = appServices.getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
+    float atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     // Handle service errors
     // TODO
     // Display result
     cout << "ATMO level : " << atmo << endl;
-    cout << endl;
     // Go back to menu
     sensorMenu();
 }
@@ -163,14 +169,12 @@ void HMIManager::queryCleanerContribution() {
     displayHeader("Cleaner Contribution", 1);
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
     // Call service
-    ApplicationServices appServices;
-    pair<float, float> cleanerContribution = appServices.getCleanerContribution(uCleanerId);
+    pair<float, float> cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     // Handle service errors
     // TODO
     // Display result
     cout << "Radius of effect : " << cleanerContribution.first << " m" << endl;
     cout << "ATMO level decrease : " << cleanerContribution.second << endl;
-    cout << endl;
     // Go back to menu
     mainMenu();
 }
@@ -184,7 +188,6 @@ void HMIManager::queryIndividualPoints() {
     int points = individual->getPoints();
     // Display result
     cout << "You have " << points << " points" << endl;
-    cout << endl;
     // Go back to menu
     mainMenu();
 }
@@ -199,11 +202,11 @@ void HMIManager::queryLogin() {
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account does not exist, please try again" << endl;
-        queryLogin();
+        loginMenu();
     }
     if (res == -2) {
         cout << "(!) Incorrect password, please try again" << endl;
-        queryLogin();
+        loginMenu();
     }
     // Go back to menu
     mainMenu();
@@ -231,7 +234,7 @@ void HMIManager::queryIndividualRegister() {
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account already exists, please try again" << endl;
-        queryIndividualRegister();
+        loginMenu();
     }
     // Display result
     cout << endl;
@@ -246,20 +249,24 @@ void HMIManager::queryCompanyRegister() {
     string uMail = InputManager::promptString("Email");
     string uPassword = InputManager::promptString("Password");
     // Check password length
-    if (uPassword.length() < 6 || uPassword.length() > 20) {
+    while (uPassword.length() < 6 || uPassword.length() > 20) {
         cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
-        queryCompanyRegister();
+        uPassword = InputManager::promptString("Password");
     }
     // Call service
-    int res = UserServices::registerIndividual(uMail, uPassword);
+    int res = UserServices::registerCompany(uMail, uPassword);
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account already exists, please try again" << endl;
-        queryCompanyRegister();
+        mainMenu();
     }
     // Display result
     cout << endl;
     cout << "Company successfully registered" << endl;
     // Go back to menu
     mainMenu();
+}
+
+void HMIManager::queryExit() {
+    cout << endl;
 }

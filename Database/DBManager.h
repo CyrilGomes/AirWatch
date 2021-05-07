@@ -12,20 +12,14 @@ using namespace std;
 class DBManager {
 
 	private:
-		string directory;
-		unordered_map<int, Individual*> individualsMap;
-		unordered_map<int, Company*> companiesMap;
-		static DBManager* singleton;
+		static string directory;
 
 	public:
-		DBManager(string directory);
-		static DBManager* getInstance();
-		string getDirectory() const;
-		void setDirectory(string directory);
-		void importCentralServerData();
-		void importLocalData();
-		void saveLocalData();
-		void saveNewUser(User* newUser);
+		static string getDirectory();
+		static void setDirectory(string directory);
+		static void importCentralAndLocalData();
+		static void saveLocalData();
+		static void updateLocalDataWithUser(User* newUser);
 
 };
 

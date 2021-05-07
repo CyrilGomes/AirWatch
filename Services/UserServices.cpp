@@ -50,7 +50,7 @@ int UserServices::registerCompany(string uEmail, string uPassword) {
 	User* newUser = new Company(uEmail, uPassword);
 	applicationData->addUser(newUser);
 	// Persist it
-	DBManager::getInstance()->saveNewUser(newUser);
+	DBManager::updateLocalDataWithUser(newUser);
 	return 0;
 }
 
@@ -65,6 +65,6 @@ int UserServices::registerIndividual(string uEmail, string uPassword) {
     User* newUser = new Individual(uEmail, uPassword);
     applicationData->addUser(newUser);
 	// Persist it
-	DBManager::getInstance()->saveNewUser(newUser);
+	DBManager::updateLocalDataWithUser(newUser);
 	return 0;
 }

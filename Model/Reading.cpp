@@ -66,7 +66,7 @@ int Reading::atmo() {
 	int atmo = 0;
 	for (pair<string, Measurement*> i : measurements) {
 		int subAtmo = 0;
-		for (int j = 1; j < 10; j++) {
+		for (int j = 0; j < 10; j++) {
 			if (Reading::atmoTable[i.first][j] > i.second->getValue()) {
 				subAtmo = j - 1;
 				break;

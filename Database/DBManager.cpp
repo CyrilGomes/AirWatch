@@ -12,39 +12,39 @@
 #include "../Model/ApplicationData.h"
 using namespace std;
 
-DBManager* DBManager::singleton;
+string DBManager::directory;
 
-DBManager::DBManager(string directory) : directory(directory) {
-}
-
-DBManager* DBManager::getInstance() {
-    if (singleton == nullptr) {
-        singleton = new DBManager("");
-    }
-    return singleton;
-}
-
-string DBManager::getDirectory() const {
-	return this->directory;
+string DBManager::getDirectory() {
+	return DBManager::directory;
 }
 
 void DBManager::setDirectory(string directory) {
-	this->directory = directory;
+	DBManager::directory = directory;
 }
 
-void DBManager::importCentralServerData() {
-
-	// Main reading buffer variables
-	string eof;
-	string sUserID;
-	string sSensorID;
-	string sCleanerID;
-	string sAttributeID;
-	float latitude;
-	float longitude;
+void DBManager::importCentralAndLocalData() {
 
 	// ApplicationData instance
 	ApplicationData* applicationData = ApplicationData::getInstance();
+
+    // Temporary join maps
+    unordered_map<int, Individual*> individualsMap;
+    unordered_map<int, Company*> companiesMap;
+
+    /*
+    ---------------------------------------------------
+     CENTRAL DATA
+    ---------------------------------------------------
+    */
+
+    // Main reading buffer variables
+    string eof;
+    string sUserID;
+    string sSensorID;
+    string sCleanerID;
+    string sAttributeID;
+    float latitude;
+    float longitude;
 
 	/*
 	Read through users.csv, create and store the Users found within
@@ -71,7 +71,7 @@ void DBManager::importCentralServerData() {
 		}
 		// Add data to the temporary association maps
 		sensorIndividualAssociations[sensorID] = individual;
-		individualsMap[userID] = individual; //map that speeds up importLocalData()
+		individualsMap[userID] = individual; //join map that speeds up the import of local data afterwards
 		// Save it to the users list
 		applicationData->addUser(individual);
 	}
@@ -125,7 +125,7 @@ void DBManager::importCentralServerData() {
 		}
 		// Add data to the temporary association map
 		cleanerCompanyAssociations[cleanerID] = company;
-		companiesMap[userID] = company; //map that speeds up importLocalData()
+		companiesMap[userID] = company; //join map that speeds up the import of local data afterwards
 		// Save it to the users list
 		applicationData->addUser(company);
 	}
@@ -199,90 +199,98 @@ void DBManager::importCentralServerData() {
 		}
 	}
 
-}
+    /*
+    ---------------------------------------------------
+     LOCAL DATA
+    ---------------------------------------------------
+    */
 
-void DBManager::importLocalData() {
+    ifstream loginsFile(directory + "Local/logins.csv");
+    if (loginsFile) {
 
-	// ApplicationData instance
-	ApplicationData* applicationData = ApplicationData::getInstance();
+    /*
+    Read through logins.csv, create and store the Users found within unless they already exist in individualsMap/companiesMap,
+    in which case update their email and password and change their userList map key.
+    If the user is an individual, add it to individualsMap for the next step
+    */
+    // CSV Reader
+    io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> loginsReader(directory + "Local/logins.csv");
+    loginsReader.read_header(io::ignore_extra_column, "userType", "id", "mail", "password");
+    // For each row in the CSV...
+    string userType; int id; string mail; string password;
+    while (loginsReader.read_row(userType, id, mail, password)) {
+        User* user;
+        UserType type = (magic_enum::enum_cast<UserType>(userType)).value();
+        // If the user already exists in individualsMap, fetch it from there
+        if (individualsMap.count(id) != 0 && type == UserType::individual) {
+            user = individualsMap[id];
+            // Delete old key, update attributes, save new key
+            string oldMail = user->getMail();
+            user->setMail(mail);
+            user->setPassword(password);
+            if (oldMail != mail) {
+                applicationData->updateUserList(oldMail);
+            }
+        }
+        // If the user already exists in companiesMap, fetch it from there
+        else if (companiesMap.count(id) != 0 && type == UserType::company) {
+            user = companiesMap[id];
+            // Delete old key, update attributes, save new key
+            string oldMail = user->getMail();
+            user->setMail(mail);
+            user->setPassword(password);
+            if (oldMail != mail) {
+                applicationData->updateUserList(oldMail);
+            }
+        }
+        // Otherwise, create it depending on its type
+        else {
+            switch (type) {
+                case UserType::government:
+                    user = new Government(mail, password);
+                    break;
+                case UserType::company:
+                    user = new Company(id, mail, password);
+                    break;
+                case UserType::individual:
+                    user = new Individual(id, mail, password);
+                    // If it's an indivudual, save it to the individualsMap
+                    individualsMap[id] = (Individual*)user;
+                    break;
+                default:
+                    user = nullptr;
+                    break;
+            }
+            if (user != nullptr) {
+                applicationData->addUser(user);
+            }
+        }
+    }
 
-	/*
-	Read through logins.csv, create and store the Users found within unless they already exist in individualsMap/companiesMap,
-	in which case update their email and password and change their userList map key.
-	If the user is an individual, add it to individualsMap for the next step
-	*/
-	// CSV Reader
-	io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<';'>> loginsReader(directory + "Local/logins.csv");
-	loginsReader.read_header(io::ignore_extra_column, "userType", "id", "mail", "password");
-	// For each row in the CSV...
-	string userType; int id; string mail; string password;
-	while (loginsReader.read_row(userType, id, mail, password)) {
-		User* user;
-		UserType type = (magic_enum::enum_cast<UserType>(userType)).value();
-		// If the user already exists in individualsMap, fetch it from there
-		if (individualsMap.count(id) != 0 && type == UserType::individual) {
-			user = individualsMap[id];
-			// Delete old key, update attributes, save new key
-			string oldMail = user->getMail();
-			user->setMail(mail);
-			user->setPassword(password);
-			if (oldMail != mail) {
-				applicationData->updateUserList(oldMail);
-			}
-		}
-		// If the user already exists in companiesMap, fetch it from there
-		else if (companiesMap.count(id) != 0 && type == UserType::company) {
-			user = companiesMap[id];
-			// Delete old key, update attributes, save new key
-			string oldMail = user->getMail();
-			user->setMail(mail);
-			user->setPassword(password);
-			if (oldMail != mail) {
-				applicationData->updateUserList(oldMail);
-			}
-		}
-		// Otherwise, create it depending on its type
-		else {
-			//UserType type = (magic_enum::enum_cast<UserType>(userType)).value();
-			switch(type) {
-				case UserType::government:
-					user = new Government(mail, password);
-					break;
-				case UserType::company:
-					user = new Company(id, mail, password);
-					break;
-				case UserType::individual:
-					user = new Individual(id, mail, password);
-					// If it's an indivudual, save it to the individualsMap
-					individualsMap[id] = (Individual*)user;
-					break;
-				default:
-					user = nullptr;
-					break;
-			}
-			if(user != nullptr){
-				applicationData->addUser(user);
-			}
-		}
-	}
+    }
 
-	/*
-	Read through individuals.csv, fetch Individual from individualsMap,
-	and update its attributes
-	*/
-	// CSV Reader
-	io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> individualsReader(directory + "Local/individuals.csv");
-	individualsReader.read_header(io::ignore_extra_column, "id", "points", "flag");
-	// For each row in the CSV...
-	int points; string userFlag;
-	while (individualsReader.read_row(id, points, userFlag)) {
-		// Fetch individual from individualsMap
-		Individual* individual = individualsMap[id];
-		// Update its attributes
-		ReliabilityFlag flag = (magic_enum::enum_cast<ReliabilityFlag>(userFlag)).value();
-		individual->setPoints(points);
-		individual->setReliabilityFlag(flag);
-	}
+    ifstream individualsFile(directory + "Local/individuals.csv");
+    if (individualsFile) {
+
+    /*
+    Read through individuals.csv, fetch Individual from individualsMap,
+    and update its attributes
+    */
+    // CSV Reader
+    io::CSVReader<3, io::trim_chars<>, io::no_quote_escape<';'>> individualsReader(directory + "Local/individuals.csv");
+    individualsReader.read_header(io::ignore_extra_column, "id", "points", "flag");
+    // For each row in the CSV...
+    int id; int points; string userFlag;
+    while (individualsReader.read_row(id, points, userFlag)) {
+        // Fetch individual from individualsMap
+        Individual* individual = individualsMap[id];
+        // Update its attributes
+        ReliabilityFlag flag = (magic_enum::enum_cast<ReliabilityFlag>(userFlag)).value();
+        individual->setPoints(points);
+        individual->setReliabilityFlag(flag);
+    }
+
+    }
 
 }
 
@@ -293,10 +301,8 @@ void DBManager::saveLocalData() {
 	unordered_map<string, User*> userList = applicationData->getUserList();
 
 	// Open csv files
-	ofstream loginsCsv;
-	ofstream individualsCsv;
-	loginsCsv.open(directory + "Local/logins.csv");
-	individualsCsv.open(directory + "Local/individuals.csv");
+	ofstream loginsCsv(directory + "Local/logins.csv");
+	ofstream individualsCsv(directory + "Local/individuals.csv");
 
 	// Headers
 	loginsCsv << "userType;id;mail;password" << endl;
@@ -329,11 +335,10 @@ void DBManager::saveLocalData() {
 
 }
 
- void DBManager::saveNewUser(User* newUser) {
+ void DBManager::updateLocalDataWithUser(User* newUser) {
 
 	 // Open csv file
- 	ofstream loginsCsv;
- 	loginsCsv.open(directory + "Local/logins.csv", ios::app);
+ 	ofstream loginsCsv(directory + "Local/logins.csv", ios::app);
 
 	// Write a new line
 	string type = (string)magic_enum::enum_name(newUser->getType());

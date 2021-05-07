@@ -29,6 +29,7 @@ class HMIManager {
         void queryIndividualRegister();
         void queryCompanyRegister();
         // Misc
+        void queryExit();
         static void displayHeader(string message, int level);
 };
 
