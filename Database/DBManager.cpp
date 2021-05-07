@@ -176,7 +176,7 @@ void DBManager::importCentralServerData() {
 	io::CSVReader<5, io::trim_chars<>, io::no_quote_escape<';'>> measurementsReader(directory + "Central/measurements.csv");
 	measurementsReader.set_header("timestamp", "sensorID", "attributeID", "value", "EOF");
 	// For each row in the CSV...
-	Reading* currentReading;
+	Reading* currentReading = nullptr;
 	Date previousTimeStamp; previousTimeStamp.setYear(-1);
 	Date timeStamp; float value;
 	while (measurementsReader.read_row(timeStamp, sSensorID, sAttributeID, value, eof)) {
@@ -194,7 +194,9 @@ void DBManager::importCentralServerData() {
 		// Save reading to the corresponding sensor's list
 		Sensor* sensor = applicationData->getSensorList()[sensorID];
 		currentReading->setSensor(sensor);
-		sensor->addReading(currentReading);
+		if(currentReading != nullptr){
+			sensor->addReading(currentReading);
+		}
 	}
 
 }
@@ -254,8 +256,13 @@ void DBManager::importLocalData() {
 					// If it's an indivudual, save it to the individualsMap
 					individualsMap[id] = (Individual*)user;
 					break;
+				default:
+					user = nullptr;
+					break;
 			}
-			applicationData->addUser(user);
+			if(user != nullptr){
+				applicationData->addUser(user);
+			}
 		}
 	}
 

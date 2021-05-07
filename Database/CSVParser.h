@@ -32,6 +32,8 @@
 #ifndef CSV_H
 #define CSV_H
 
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 #include <vector>
 #include <string>
 #include <cstring>

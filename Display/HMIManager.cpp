@@ -81,6 +81,8 @@ void HMIManager::mainMenu() {
         default:
             // ...
             break;
+        default:
+            break;
     }
     // Display menu
     displayMenu(menuTitle, optionsList);
