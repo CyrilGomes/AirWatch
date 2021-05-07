@@ -35,7 +35,7 @@ $(EXE): $(OBJ)
 	$(G++) -c -o $@ $(G++FLAGS) $<
 
 # Debug : No tolerance for warnings and debug capabilities
-debug: G++FLAGS += -g -Wall -Werror
+debug: G++FLAGS += -g -Wall -Werror -D DEBUG
 debug: $(EXE)
 
 # Cleaning rule to remove the executable and any .o file in the CWD
