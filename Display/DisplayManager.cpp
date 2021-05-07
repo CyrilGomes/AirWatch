@@ -20,7 +20,7 @@ void DisplayManager::displayMenu(string menuTitle, vector<Option> optionsList) {
     // Fetch menu choice
     int menuChoice = Console::promptInteger(">") - 1;
     // If choice is not within menu options, retry
-    while (menuChoice < 0 || menuChoice >= optionsList.size()) {
+    while (menuChoice < 0 || (size_t)menuChoice >= optionsList.size()) {
         cout << "(!) Invalid choice, please try again" << endl;
         menuChoice = Console::promptInteger(">") - 1;
     }
@@ -58,6 +58,8 @@ void DisplayManager::mainMenu() {
             break;
         case UserType::individual:
             optionsList.insert(optionsList.end() - 1, Option("My user points", bind(&DisplayManager::queryIndividualPoints, this)));
+            break;
+        default:
             break;
     }
     // Display menu

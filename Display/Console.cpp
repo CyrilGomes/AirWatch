@@ -11,7 +11,7 @@ void Console::displayHeader(string message, int level) {
             break;
         case 1:
             cout << endl << message << endl;
-            for (int i = 0; i < message.length(); i++) {
+            for (size_t i = 0; i < message.length(); i++) {
                 cout << "-";
             }
             cout << endl << endl;
