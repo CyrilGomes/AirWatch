@@ -195,18 +195,20 @@ void HMIManager::queryIndividualPoints() {
 void HMIManager::queryLogin() {
     // Display title and prompt parameters
     displayHeader("Login", 1);
-    string uMail = InputManager::promptString("Email");
-    string uPassword = InputManager::promptString("Password");
+    string uMail = InputManager::promptEmail("Email");
+    string uPassword = InputManager::promptPassword("Password");
     // Call service
     int res = UserServices::authenticate(uMail, uPassword);
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account does not exist, please try again" << endl;
         loginMenu();
+        return;
     }
     if (res == -2) {
         cout << "(!) Incorrect password, please try again" << endl;
         loginMenu();
+        return;
     }
     // Go back to menu
     mainMenu();
@@ -222,19 +224,15 @@ void HMIManager::queryLogout() {
 void HMIManager::queryIndividualRegister() {
     // Display title and prompt parameters
     displayHeader("Register as a private individual", 1);
-    string uMail = InputManager::promptString("Email");
-    string uPassword = InputManager::promptString("Password");
-    // Check password length
-    if (uPassword.length() < 6 || uPassword.length() > 20) {
-        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
-        queryIndividualRegister();
-    }
+    string uMail = InputManager::promptEmail("Email");
+    string uPassword = InputManager::promptPassword("Password");
     // Call service
     int res = UserServices::registerIndividual(uMail, uPassword);
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account already exists, please try again" << endl;
         loginMenu();
+        return;
     }
     // Display result
     cout << endl;
@@ -246,19 +244,15 @@ void HMIManager::queryIndividualRegister() {
 void HMIManager::queryCompanyRegister() {
     // Display title and prompt parameters
     displayHeader("Register company", 1);
-    string uMail = InputManager::promptString("Email");
-    string uPassword = InputManager::promptString("Password");
-    // Check password length
-    while (uPassword.length() < 6 || uPassword.length() > 20) {
-        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
-        uPassword = InputManager::promptString("Password");
-    }
+    string uMail = InputManager::promptEmail("Email");
+    string uPassword = InputManager::promptPassword("Password");
     // Call service
     int res = UserServices::registerCompany(uMail, uPassword);
     // Handle service errors
     if (res == -1) {
         cout << "(!) Given account already exists, please try again" << endl;
         mainMenu();
+        return;
     }
     // Display result
     cout << endl;

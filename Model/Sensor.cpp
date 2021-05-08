@@ -1,6 +1,8 @@
 #include "Sensor.h"
 
 Sensor::Sensor(int id, float latitude, float longitude) : id(id), latitude(latitude), longitude(longitude) {
+	this->reliabilityFlag = ReliabilityFlag::reliable;
+	this->owner = nullptr;
 }
 
 Sensor::~Sensor() {

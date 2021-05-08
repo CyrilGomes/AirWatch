@@ -1,6 +1,7 @@
 #include "Cleaner.h"
 
 Cleaner::Cleaner(int id, float latitude, float longitude, Date startDate, Date stopDate) : id(id), latitude(latitude), longitude(longitude), startDate(startDate), stopDate(stopDate) {
+	this->owner = nullptr;
 }
 
 int Cleaner::getId() const {

@@ -27,6 +27,41 @@ string InputManager::promptString(string prompt) {
 	return valueIn;
 }
 
+string InputManager::promptEmail(string prompt) {
+	string valueIn = "";
+	cout << prompt << " : ";
+	cin >> valueIn;
+	while (valueIn.find(";") != string::npos) {
+		cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
+        cout << prompt << " : ";
+        cin >> valueIn;
+	}
+	return valueIn;
+}
+
+string InputManager::promptPassword(string prompt) {
+	string valueIn = "";
+	cout << prompt << " : ";
+	cin >> valueIn;
+	while (valueIn.length() < 6 || valueIn.length() > 20) {
+		cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
+        cout << prompt << " : ";
+        cin >> valueIn;
+	}
+	while (valueIn.find(";") != string::npos) {
+		cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
+        cout << prompt << " : ";
+        cin >> valueIn;
+	}
+	return valueIn;
+}
+
 float InputManager::promptFloat(string prompt) {
 	float valueIn = 0;
 	cout << prompt << " : ";

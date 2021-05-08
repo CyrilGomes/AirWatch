@@ -15,20 +15,13 @@ unordered_map<string, int*> Reading::atmoTable = {
 };
 
 Reading::Reading(Date timeStamp) : timeStamp(timeStamp) {
+	this->sensor = nullptr;
 }
 
 Reading::~Reading() {
 	for (auto i : measurements) {
 		delete i.second;
 	}
-}
-
-int Reading::getId() const {
-	return this->id;
-}
-
-void Reading::setId(int id) {
-	this->id = id;
 }
 
 Date Reading::getTimeStamp() const {

@@ -13,6 +13,8 @@ class InputManager {
 		static void displayHeader(string message, int level);
 		static int promptInteger(string prompt);
 		static string promptString(string prompt);
+		static string promptEmail(string prompt);
+		static string promptPassword(string prompt);
 		static float promptFloat(string prompt);
 		static Date promptDate(string prompt);
 

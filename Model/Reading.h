@@ -11,7 +11,6 @@ using namespace std;
 class Reading {
 
 	private:
-		int id;
 		Date timeStamp;
 		Sensor* sensor;
 		unordered_map<string, Measurement*> measurements;
@@ -20,8 +19,6 @@ class Reading {
 	public:
 		Reading(Date timeStamp);
 		~Reading();
-		int getId() const;
-		void setId(int id);
 		Date getTimeStamp() const;
 		void setTimeStamp(Date timeStamp);
 		Sensor* getSensor() const;
