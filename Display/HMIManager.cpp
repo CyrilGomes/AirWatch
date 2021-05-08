@@ -171,8 +171,13 @@ void HMIManager::queryCleanerContribution() {
     // Call service
     pair<float, float> cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     // Handle service errors
-    // TODO
+    if (cleanerContribution.first == -1) {
+        cout << "(!) The entered Cleaner ID is unknown" << endl;
+        mainMenu();
+        return;
+    }
     // Display result
+    cout << endl;
     cout << "Radius of effect : " << cleanerContribution.first << " m" << endl;
     cout << "ATMO level decrease : " << cleanerContribution.second << endl;
     // Go back to menu
