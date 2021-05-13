@@ -8,3 +8,4 @@ government;0;admin@mail.gov;password
 individual;4;new;123456
 company;1;company2@mail.com;1234
 individual;3;omar@gmail.com;789456
+company;3;company3@mail.com;newPassword

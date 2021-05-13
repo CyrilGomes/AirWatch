@@ -41,16 +41,18 @@ string InputManager::promptEmail(string prompt) {
 	return valueIn;
 }
 
-string InputManager::promptPassword(string prompt) {
+string InputManager::promptPassword(string prompt, bool restrictLength) {
 	string valueIn = "";
 	cout << prompt << " : ";
 	cin >> valueIn;
-	while (valueIn.length() < 6 || valueIn.length() > 20) {
-		cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
-        cout << prompt << " : ";
-        cin >> valueIn;
+	if (restrictLength) {
+		while (valueIn.length() < 6 || valueIn.length() > 20) {
+			cin.clear();
+	        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
+	        cout << prompt << " : ";
+	        cin >> valueIn;
+		}
 	}
 	while (valueIn.find(";") != string::npos) {
 		cin.clear();
@@ -83,7 +85,7 @@ Date InputManager::promptDate(string prompt) {
     while(cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Please enter a DD/MM/YYYY date  for " << prompt << endl;
+        cout << "(!) Please enter a correct DD/MM/YYYY date  for " << prompt << endl;
         cout << prompt << " : ";
         cin >> valueIn;
     }

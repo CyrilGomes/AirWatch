@@ -1,9 +1,5 @@
 #include "Company.h"
 
-inline int max(unsigned int x, unsigned int y) {
-   return (x > y) ? x : y;
-}
-
 unsigned int Company::maxId = 0;
 
 Company::Company(unsigned int id, string mail, string password) : User(mail, password) {

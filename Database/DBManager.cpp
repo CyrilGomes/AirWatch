@@ -351,3 +351,12 @@ void DBManager::saveLocalData() {
 	loginsCsv.close();
 
  }
+
+ void DBManager::updateLocalDataWithPoints(Individual* user) {
+	 // TODO
+	 throw "Not yet implemented";
+ }
+
+ void DBManager::updateLocalDataWithReliabilityFlag(Individual* user) {
+	throw "Not yet implemented";
+ }

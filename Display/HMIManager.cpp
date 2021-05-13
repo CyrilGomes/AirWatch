@@ -156,8 +156,18 @@ void HMIManager::queryPunctualAirQuality() {
     // Call service
     float atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     // Handle service errors
-    // TODO
+    if (atmo == -1) {
+        cout << "(!) The entered location is too far away from any sensors" << endl;
+        sensorMenu();
+        return;
+    }
+    if (atmo == -2) {
+        cout << "(!) The time period you entered is not in the scope of the database" << endl;
+        sensorMenu();
+        return;
+    }
     // Display result
+    cout << endl;
     cout << "ATMO level : " << atmo << endl;
     // Go back to menu
     sensorMenu();
@@ -201,7 +211,7 @@ void HMIManager::queryLogin() {
     // Display title and prompt parameters
     displayHeader("Login", 1);
     string uMail = InputManager::promptEmail("Email");
-    string uPassword = InputManager::promptPassword("Password");
+    string uPassword = InputManager::promptPassword("Password", false);
     // Call service
     int res = UserServices::authenticate(uMail, uPassword);
     // Handle service errors
@@ -230,7 +240,7 @@ void HMIManager::queryIndividualRegister() {
     // Display title and prompt parameters
     displayHeader("Register as a private individual", 1);
     string uMail = InputManager::promptEmail("Email");
-    string uPassword = InputManager::promptPassword("Password");
+    string uPassword = InputManager::promptPassword("Password", true);
     // Call service
     int res = UserServices::registerIndividual(uMail, uPassword);
     // Handle service errors
@@ -250,7 +260,7 @@ void HMIManager::queryCompanyRegister() {
     // Display title and prompt parameters
     displayHeader("Register company", 1);
     string uMail = InputManager::promptEmail("Email");
-    string uPassword = InputManager::promptPassword("Password");
+    string uPassword = InputManager::promptPassword("Password", true);
     // Call service
     int res = UserServices::registerCompany(uMail, uPassword);
     // Handle service errors

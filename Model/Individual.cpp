@@ -1,9 +1,5 @@
 #include "Individual.h"
 
-inline int max(unsigned int x, unsigned int y) {
-   return (x > y) ? x : y;
-}
-
 unsigned int Individual::maxId = 0;
 
 Individual::Individual(unsigned int id, string mail, string password) : User(mail, password) {

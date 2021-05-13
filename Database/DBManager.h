@@ -20,6 +20,8 @@ class DBManager {
 		static void importCentralAndLocalData();
 		static void saveLocalData();
 		static void updateLocalDataWithUser(User* newUser);
+		static void updateLocalDataWithPoints(Individual* user);
+		static void updateLocalDataWithReliabilityFlag(Individual* user);
 
 };
 

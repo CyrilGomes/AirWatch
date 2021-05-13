@@ -1,3 +1,4 @@
+#include <math.h>
 #include <bits/stdc++.h>
 #include "ApplicationServices.h"
 #include "../Database/DBManager.h"
@@ -21,8 +22,82 @@ float ApplicationServices::getAreaAirQuality(float uLat, float uLon, float uRad,
 }
 
 float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uTBegin, Date uTEnd) {
-	// TODO - implement ApplicationServices::getPunctualAirQuality
-	throw "Not yet implemented";
+
+	// Vars
+	float average = 0;
+	float i = 0;
+	int j = 0;
+	int distThreshold = 100000;
+	float dist = 0;
+	int maxPoints = 6;
+
+	// Fetch data
+	ApplicationData* applicationData = ApplicationData::getInstance();
+	unordered_map<int, Sensor*> sensorList = applicationData->getSensorList();
+
+	// Put all sensors in a vector and sort them based by distance to given position
+    vector<Sensor*> sortedSensorsList;
+	for (pair<int, Sensor*> i : sensorList) {
+		sortedSensorsList.push_back(i.second);
+	}
+	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor* s1, const Sensor* s2) -> bool {
+		float d1 = ApplicationData::distance(
+			s1->getLatitude(), s1->getLongitude(),
+			uLat, uLon
+		);
+		float d2 = ApplicationData::distance(
+			s2->getLatitude(), s2->getLongitude(),
+			uLat, uLon
+		);
+		return d1 < d2;
+	});
+
+	// Loop through sorted sensor list
+	for (Sensor* s : sortedSensorsList) {
+		// Get distance to given position
+		float dist = ApplicationData::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
+		// If the sensor isn't too far away...
+		if (dist <= distThreshold) {
+			// Calculate the weight factor based on distance
+			float weight = 1000/pow(max(dist, 0.1f), 2);
+			// Loop through its readings starting from uTBegin to uTEnd
+			map<Date, Reading*> readings = s->getReadings();
+			map<Date, Reading*>::iterator readingsBegin = readings.lower_bound(uTBegin);
+			map<Date, Reading*>::iterator readingsEnd = readings.upper_bound(uTEnd);
+			for_each(readingsBegin, readingsEnd, [&](pair<Date, Reading*> r) {
+				Reading* reading = r.second;
+				// Compute average with weight factor
+				average += reading->atmo()*weight;
+				i += weight;
+	        });
+			j += 1;
+			// Break out of loop if we already used enough sensors
+			if (j > maxPoints) {
+				break;
+			}
+		}
+	}
+
+	// Average ATMO levels out
+	// If more than 2 sensors have been used...
+	if (j > 1) {
+		// If readings have been used...
+		if (i > 0) {
+			average /= i;
+		}
+		// If no readings have been used, the timestamps are out of scope
+		else {
+			average = -2;
+		}
+	}
+	// If less than 2 sensors have been used, the location is too far away
+	else {
+		average = -1;
+	}
+
+	// Return data
+	return average;
+
 }
 
 pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID) {

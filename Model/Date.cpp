@@ -99,10 +99,7 @@ ostream& operator<<(ostream& output, const Date& date) {
 istream& operator>>(istream& input, Date& date) {
 	tm t = {};
 	input >> get_time(&t, "%d/%m/%Y");
-	if (input.fail()) {
-		cout << "Parse failed\n";
-	}
-	else {
+	if (!input.fail()) {
 		date.setYear(1900 + t.tm_year); //tm_year corresponds to the number of years since 1900
 		date.setMonth(1 + t.tm_mon); //tm_mon starts at 0, not 1
 		date.setDay(t.tm_mday);
