@@ -28,7 +28,6 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 	float i = 0;
 	int j = 0;
 	int distThreshold = 100000;
-	float dist = 0;
 	int maxPoints = 6;
 
 	// Fetch data
@@ -126,7 +125,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID) {
 		return make_pair(-1.0, -1.0);
 	}
 
-	// Put all sensors in a vector and sort them based by distance to cleaner
+	// Put all sensors in a vector and sort them based on distance to cleaner
     vector<Sensor*> sortedSensorsList;
 	for (pair<int, Sensor*> i : sensorList) {
 		sortedSensorsList.push_back(i.second);

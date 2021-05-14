@@ -28,7 +28,7 @@ void Individual::setPoints(int points) {
 
 void Individual::addPoint() {
     (this->points)++;
-	DBManager::updateLocalDataWithPoints(this);
+	DBManager::saveLocalData();
 }
 
 ReliabilityFlag Individual::getReliabilityFlag() const {
@@ -40,7 +40,7 @@ void Individual::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
     for (Sensor* i : sensorList) {
         i->setReliabilityFlag(reliabilityFlag);
     }
-	DBManager::updateLocalDataWithReliabilityFlag(this);
+	DBManager::saveLocalData();
 }
 
 list<Sensor*> Individual::getSensorList() const {

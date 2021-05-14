@@ -338,7 +338,7 @@ void DBManager::saveLocalData() {
  void DBManager::updateLocalDataWithUser(User* newUser) {
 
 	 // Open csv file
- 	ofstream loginsCsv(directory + "Local/logins.csv", ios::app);
+ 	ofstream loginsCsv(directory + "Local/logins.csv");
 
 	// Write a new line
 	string type = (string)magic_enum::enum_name(newUser->getType());
@@ -350,13 +350,4 @@ void DBManager::saveLocalData() {
 	// Close file
 	loginsCsv.close();
 
- }
-
- void DBManager::updateLocalDataWithPoints(Individual* user) {
-	 // TODO
-	 throw "Not yet implemented";
- }
-
- void DBManager::updateLocalDataWithReliabilityFlag(Individual* user) {
-	throw "Not yet implemented";
  }
