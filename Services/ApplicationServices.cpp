@@ -3,6 +3,7 @@
 #include "ApplicationServices.h"
 #include "../Database/DBManager.h"
 #include "../Model/ApplicationData.h"
+#include "../Model/ReliabilityFlag.h"
 
 ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd) {
 	throw "Not yet implemented";
@@ -53,6 +54,10 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 
 	// Loop through sorted sensor list
 	for (Sensor* s : sortedSensorsList) {
+		// Skip if sensor is unreliable
+		if (s->getReliabilityFlag() == ReliabilityFlag::unreliable) {
+			continue;
+		}
 		// Get distance to given position
 		float dist = ApplicationData::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
 		// If the sensor isn't too far away...
@@ -145,6 +150,10 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID) {
 	int oCount = 0;
 	// Loop through sorted sensor list
 	for (Sensor* i : sortedSensorsList) {
+		// Skip if sensor is unreliable
+		if (i->getReliabilityFlag() == ReliabilityFlag::unreliable) {
+			continue;
+		}
 		// Get their atmo at the start and at the end of the cleaner's action
 		map<Date, Reading*> readings = i->getReadings();
 		int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
