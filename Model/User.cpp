@@ -1,9 +1,6 @@
 #include "User.h"
 
-int User::ID = 0;
-
 User::User(){
-
 }
 
 User::User(string mail, string password) {

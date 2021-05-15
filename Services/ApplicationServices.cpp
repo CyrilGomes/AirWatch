@@ -217,3 +217,7 @@ void ApplicationServices::importData() {
 void ApplicationServices::saveData() {
 	DBManager::saveLocalData();
 }
+
+void ApplicationServices::cleanup() {
+	delete ApplicationData::getInstance();
+}

@@ -51,7 +51,7 @@ int main(int argc, char const *argv[])
 
     // At the end of execution, save local data and clean up
     ApplicationServices::saveData();
-    delete ApplicationData::getInstance();
+    ApplicationServices::cleanup();
 
     return 0;
 }

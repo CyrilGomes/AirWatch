@@ -18,6 +18,7 @@ class ApplicationServices {
 		static pair<float, float> getCleanerContribution(int uCleanerID);
 		static void importData();
 		static void saveData();
+		static void cleanup();
 
 };
 

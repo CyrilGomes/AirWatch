@@ -10,7 +10,6 @@ using namespace std;
 class InputManager {
 
 	public:
-		static void displayHeader(string message, int level);
 		static int promptInteger(string prompt);
 		static string promptString(string prompt);
 		static string promptEmail(string prompt);

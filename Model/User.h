@@ -12,7 +12,6 @@ class User {
 		string password;
 		string mail;
 		UserType type;
-		static int ID;
 
 	public:
 		User();
