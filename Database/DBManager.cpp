@@ -338,7 +338,7 @@ void DBManager::saveLocalData() {
  void DBManager::updateLocalDataWithUser(User* newUser) {
 
 	 // Open csv file
- 	ofstream loginsCsv(directory + "Local/logins.csv");
+ 	ofstream loginsCsv(directory + "Local/logins.csv", ios::app);
 
 	// Write a new line
 	string type = (string)magic_enum::enum_name(newUser->getType());
