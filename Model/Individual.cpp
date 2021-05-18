@@ -28,7 +28,7 @@ void Individual::setPoints(int points) {
 
 void Individual::addPoint() {
     (this->points)++;
-	DBManager::saveLocalData();
+	//DBManager::saveLocalData();
 }
 
 ReliabilityFlag Individual::getReliabilityFlag() const {

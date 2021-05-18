@@ -9,37 +9,51 @@ using namespace std;
 
 typedef pair<string, function<void()>> Option;
 
-void HMIManager::displayHeader(string message, int level) {
+void HMIManager::displayHeader(string message, int level)
+{
     const string headerBanner = "=========================";
-    switch (level) {
-        case 0:
-            cout << endl << headerBanner << endl << " " << message << " :" << endl << headerBanner << endl << endl;
-            break;
-        case 1:
-            cout << endl << message << endl;
-            for (int i = 0; i < (int)message.length(); i++) {
-                cout << "-";
-            }
-            cout << endl << endl;
-            break;
-        default:
-            cout << endl << message << endl << endl;
-            break;
+    switch (level)
+    {
+    case 0:
+        cout << endl
+             << headerBanner << endl
+             << " " << message << " :" << endl
+             << headerBanner << endl
+             << endl;
+        break;
+    case 1:
+        cout << endl
+             << message << endl;
+        for (int i = 0; i < (int)message.length(); i++)
+        {
+            cout << "-";
+        }
+        cout << endl
+             << endl;
+        break;
+    default:
+        cout << endl
+             << message << endl
+             << endl;
+        break;
     }
 }
 
-void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList) {
+void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList)
+{
     // Display Menu
     displayHeader(menuTitle, 0);
     int count = 1;
-    for (Option item : optionsList) {
+    for (Option item : optionsList)
+    {
         cout << count << ". " << item.first << endl;
         count++;
     }
     // Fetch menu choice
     int menuChoice = InputManager::promptInteger(">") - 1;
     // If choice is not within menu options, retry
-    while (menuChoice < 0 || menuChoice >= (int)optionsList.size()) {
+    while (menuChoice < 0 || menuChoice >= (int)optionsList.size())
+    {
         cout << "(!) Invalid choice, please try again" << endl;
         menuChoice = InputManager::promptInteger(">") - 1;
     }
@@ -47,20 +61,21 @@ void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList) {
     optionsList[menuChoice].second();
 }
 
-void HMIManager::loginMenu() {
+void HMIManager::loginMenu()
+{
     // Set menu title
     const string menuTitle = "Welcome to AirWatch";
     // Build menu options
     vector<Option> optionsList = {
         Option("Login", bind(&HMIManager::queryLogin, this)),
         Option("Register", bind(&HMIManager::queryIndividualRegister, this)),
-        Option("Exit", bind(&HMIManager::queryExit, this))
-    };
+        Option("Exit", bind(&HMIManager::queryExit, this))};
     // Display menu
     displayMenu(menuTitle, optionsList);
 }
 
-void HMIManager::mainMenu() {
+void HMIManager::mainMenu()
+{
     // Set menu title
     const string menuTitle = "Main menu";
     // Build menu options
@@ -69,24 +84,26 @@ void HMIManager::mainMenu() {
         Option("Cleaner analytics", bind(&HMIManager::queryCleanerContribution, this)),
     };
     // Build user-specific menu options
-    User* currentUser = UserServices::getCurrentUser();
+    User *currentUser = UserServices::getCurrentUser();
     UserType userType = currentUser->getType();
-    switch (userType) {
-        case UserType::government:
-            optionsList.push_back(Option("Register Air Cleaning Company", bind(&HMIManager::queryCompanyRegister, this)));
-            break;
-        case UserType::individual:
-            optionsList.push_back(Option("My user points", bind(&HMIManager::queryIndividualPoints, this)));
-            break;
-        default:
-            break;
+    switch (userType)
+    {
+    case UserType::government:
+        optionsList.push_back(Option("Register Air Cleaning Company", bind(&HMIManager::queryCompanyRegister, this)));
+        break;
+    case UserType::individual:
+        optionsList.push_back(Option("My user points", bind(&HMIManager::queryIndividualPoints, this)));
+        break;
+    default:
+        break;
     }
     optionsList.push_back(Option("Log out", bind(&HMIManager::queryLogout, this)));
     // Display menu
     displayMenu(menuTitle, optionsList);
 }
 
-void HMIManager::sensorMenu() {
+void HMIManager::sensorMenu()
+{
     // Set menu title
     const string menuTitle = "Sensor analytics menu";
     // Build menu options
@@ -95,52 +112,58 @@ void HMIManager::sensorMenu() {
         Option("Get the air quality of a given area", bind(&HMIManager::queryAreaAirQuality, this)),
         Option("See sensor reliabilities", bind(&HMIManager::querySensorReliability, this)),
         Option("Find data similarities", bind(&HMIManager::querySensorSimilarity, this)),
-        Option("Go back", bind(&HMIManager::mainMenu, this))
-    };
+        Option("Go back", bind(&HMIManager::mainMenu, this))};
     // Display menu
     displayMenu(menuTitle, optionsList);
 }
 
 // Sensor queries
-void HMIManager::querySensorReliability() {
+void HMIManager::querySensorReliability()
+{
     cout << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
-void HMIManager::querySensorFlag() {
+void HMIManager::querySensorFlag()
+{
     cout << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
-void HMIManager::querySensorSimilarity() {
+void HMIManager::querySensorSimilarity()
+{
     // Display title and prompt parameters
     displayHeader("Sensor Data Similarities", 1);
     int uSensorId = InputManager::promptInteger("Sensor ID");
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
     // Check date coherence
-    while (uTEnd < uTBegin) {
+    while (uTEnd < uTBegin)
+    {
         cout << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
     // Call service
-    vector<Sensor*> similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
+    vector<Sensor *> similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
-    for (Sensor* s : similarSensors) {
+    for (Sensor *s : similarSensors)
+    {
         cout << "Sensor " << s->getId() << " (" << s->getLatitude() << "; " << s->getLongitude() << ")" << endl;
     }
     // Go back to menu
     sensorMenu();
 }
 
-void HMIManager::queryAreaAirQuality() {
+void HMIManager::queryAreaAirQuality()
+{
     cout << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
-void HMIManager::queryPunctualAirQuality() {
+void HMIManager::queryPunctualAirQuality()
+{
     // Display title and prompt parameters
     displayHeader("Punctual Air Quality", 1);
     float uLat = InputManager::promptFloat("Latitude");
@@ -148,7 +171,8 @@ void HMIManager::queryPunctualAirQuality() {
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
     // Check date coherence
-    while (uTEnd < uTBegin) {
+    while (uTEnd < uTBegin)
+    {
         cout << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
@@ -156,12 +180,14 @@ void HMIManager::queryPunctualAirQuality() {
     // Call service
     float atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     // Handle service errors
-    if (atmo == -1) {
+    if (atmo == -1)
+    {
         cout << "(!) The entered location is too far away from any sensors" << endl;
         sensorMenu();
         return;
     }
-    if (atmo == -2) {
+    if (atmo == -2)
+    {
         cout << "(!) The time period you entered is not in the scope of the database" << endl;
         sensorMenu();
         return;
@@ -174,14 +200,16 @@ void HMIManager::queryPunctualAirQuality() {
 }
 
 // Cleaner queries
-void HMIManager::queryCleanerContribution() {
+void HMIManager::queryCleanerContribution()
+{
     // Display title and prompt parameters
     displayHeader("Cleaner Contribution", 1);
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
     // Call service
     pair<float, float> cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     // Handle service errors
-    if (cleanerContribution.first == -1) {
+    if (cleanerContribution.first == -1)
+    {
         cout << "(!) The entered Cleaner ID is unknown" << endl;
         mainMenu();
         return;
@@ -195,11 +223,12 @@ void HMIManager::queryCleanerContribution() {
 }
 
 // User queries
-void HMIManager::queryIndividualPoints() {
+void HMIManager::queryIndividualPoints()
+{
     // Display title
     displayHeader("User Points", 1);
     // Call service
-    Individual* individual = (Individual*)UserServices::getCurrentUser();
+    Individual *individual = (Individual *)UserServices::getCurrentUser();
     int points = individual->getPoints();
     // Display result
     cout << "You have " << points << " points" << endl;
@@ -207,7 +236,8 @@ void HMIManager::queryIndividualPoints() {
     mainMenu();
 }
 
-void HMIManager::queryLogin() {
+void HMIManager::queryLogin()
+{
     // Display title and prompt parameters
     displayHeader("Login", 1);
     string uMail = InputManager::promptEmail("Email");
@@ -215,12 +245,14 @@ void HMIManager::queryLogin() {
     // Call service
     int res = UserServices::authenticate(uMail, uPassword);
     // Handle service errors
-    if (res == -1) {
+    if (res == -1)
+    {
         cout << "(!) Given account does not exist, please try again" << endl;
         loginMenu();
         return;
     }
-    if (res == -2) {
+    if (res == -2)
+    {
         cout << "(!) Incorrect password, please try again" << endl;
         loginMenu();
         return;
@@ -229,14 +261,16 @@ void HMIManager::queryLogin() {
     mainMenu();
 }
 
-void HMIManager::queryLogout() {
+void HMIManager::queryLogout()
+{
     // Call service
     UserServices::setCurrentUser(nullptr);
     // Go back to menu
     loginMenu();
 }
 
-void HMIManager::queryIndividualRegister() {
+void HMIManager::queryIndividualRegister()
+{
     // Display title and prompt parameters
     displayHeader("Register as a private individual", 1);
     string uMail = InputManager::promptEmail("Email");
@@ -244,7 +278,8 @@ void HMIManager::queryIndividualRegister() {
     // Call service
     int res = UserServices::registerIndividual(uMail, uPassword);
     // Handle service errors
-    if (res == -1) {
+    if (res == -1)
+    {
         cout << "(!) Given account already exists, please try again" << endl;
         loginMenu();
         return;
@@ -256,7 +291,8 @@ void HMIManager::queryIndividualRegister() {
     loginMenu();
 }
 
-void HMIManager::queryCompanyRegister() {
+void HMIManager::queryCompanyRegister()
+{
     // Display title and prompt parameters
     displayHeader("Register company", 1);
     string uMail = InputManager::promptEmail("Email");
@@ -264,7 +300,8 @@ void HMIManager::queryCompanyRegister() {
     // Call service
     int res = UserServices::registerCompany(uMail, uPassword);
     // Handle service errors
-    if (res == -1) {
+    if (res == -1)
+    {
         cout << "(!) Given account already exists, please try again" << endl;
         mainMenu();
         return;
@@ -276,6 +313,7 @@ void HMIManager::queryCompanyRegister() {
     mainMenu();
 }
 
-void HMIManager::queryExit() {
+void HMIManager::queryExit()
+{
     cout << endl;
 }
