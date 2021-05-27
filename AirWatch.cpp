@@ -8,8 +8,15 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
+
+    // Fetch Data directory from the arguments
+    string dataDirectory = "Dataset/";
+    if (argc > 1) {
+        dataDirectory = argv[1];
+    }
+
     // Import data from central and local server
-    ApplicationServices::importData();
+    ApplicationServices::importData(dataDirectory);
 
     #ifdef DEBUG
         // DEBUG: print data

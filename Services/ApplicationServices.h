@@ -16,7 +16,7 @@ class ApplicationServices {
 		static float getAreaAirQuality(float uLat, float uLon, float uRad, Date uTBegin, Date uTEnd);
 		static float getPunctualAirQuality(float uLat, float uLon, Date uTBegin, Date uTEnd);
 		static pair<float, float> getCleanerContribution(int uCleanerID);
-		static void importData();
+		static void importData(string dataDirectory);
 		static void saveData();
 		static void cleanup();
 
