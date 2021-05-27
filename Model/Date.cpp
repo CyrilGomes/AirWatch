@@ -1,5 +1,13 @@
 #include "Date.h"
 
+Date::Date(int h, int d, int m, int y) :  hour(h), day(d),month(m),year(y)
+{
+}
+
+Date::Date()
+{	
+}
+
 int Date::getYear() const {
 	return year;
 }

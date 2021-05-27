@@ -2,7 +2,7 @@
 
 # Compiler configuration (default)
 G++ = g++
-G++FLAGS = -std=c++17 -pthread -O3
+G++FLAGS = -std=c++17 -pthread -O3 -D TEST
 
 # Declaring the sources
 EXE = AirWatch.exe
@@ -10,13 +10,15 @@ DB_CLASSES = DBManager
 DISP_CLASSES = InputManager HMIManager
 MODEL_CLASSES = ApplicationData Cleaner Company Government Individual Measurement Reading Sensor User Date
 SERV_CLASSES = ApplicationServices UserServices
+TEST_CLASSES = Test
 
 # Assembling the list of sources in a single variable
-SRC = $(EXE:.exe=.cpp) $(DB) $(DISP) $(MODEL) $(SERV)
+SRC = $(EXE:.exe=.cpp) $(DB) $(DISP) $(MODEL) $(SERV) $(TEST)
 DB = $(addprefix Database/, $(addsuffix .cpp, $(DB_CLASSES)))
 DISP = $(addprefix Display/, $(addsuffix .cpp, $(DISP_CLASSES)))
 MODEL = $(addprefix Model/, $(addsuffix .cpp, $(MODEL_CLASSES)))
 SERV = $(addprefix Services/, $(addsuffix .cpp, $(SERV_CLASSES)))
+TEST = $(addprefix Test/, $(addsuffix .cpp, $(TEST_CLASSES)))
 
 # Essentials
 OBJ = $(SRC:.cpp=.o)
