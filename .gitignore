@@ -32,3 +32,8 @@
 
 # VsCode settings
 .vscode
+
+# Test files
+*.txt
+mktest
+Test/*/Dataset
