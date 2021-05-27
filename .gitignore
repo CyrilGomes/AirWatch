@@ -28,8 +28,12 @@
 
 # Executables
 *.exe
-*.out
 *.app
 
 # VsCode settings
 .vscode
+
+# Test files
+*.txt
+Test/mktest
+Test/*/Dataset/

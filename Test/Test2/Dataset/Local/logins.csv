@@ -1,0 +1,6 @@
+userType;id;mail;password
+individual;0;individual1@mail.com;123456
+company;1;company2@mail.com;123456
+individual;1;individual2@mail.com;123456
+company;0;company1@mail.com;123456
+government;0;government@mail.com;123456

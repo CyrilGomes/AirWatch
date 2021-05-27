@@ -55,7 +55,7 @@ void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList)
     // If choice is not within menu options, retry
     while (menuChoice < 0 || menuChoice >= (int)optionsList.size())
     {
-        cout << "(!) Invalid choice, please try again" << endl;
+        cerr << "(!) Invalid choice, please try again" << endl;
         menuChoice = InputManager::promptInteger(">") - 1;
     }
     // Execute bound function
@@ -121,13 +121,13 @@ void HMIManager::sensorMenu()
 // Sensor queries
 void HMIManager::querySensorReliability()
 {
-    cout << "This functionality is unavailable" << endl;
+    cerr << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
 void HMIManager::querySensorFlag()
 {
-    cout << "This functionality is unavailable" << endl;
+    cerr << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
@@ -141,7 +141,7 @@ void HMIManager::querySensorSimilarity()
     // Check date coherence
     while (uTEnd < uTBegin)
     {
-        cout << "(!) The entered time period is invalid, please try again" << endl;
+        cerr << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
@@ -157,12 +157,20 @@ void HMIManager::querySensorSimilarity()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
+    // Handle service errors
+    /*
+    if (similarSensors == nullptr)
+    {
+        cerr << "(!) The entered Sensor ID is unknown" << endl;
+        mainMenu();
+        return;
+    }
+    */
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
     for (Sensor *s : similarSensors)
@@ -190,7 +198,7 @@ void HMIManager::queryPunctualAirQuality()
     // Check date coherence
     while (uTEnd < uTBegin)
     {
-        cout << "(!) The entered time period is invalid, please try again" << endl;
+        cerr << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
@@ -206,22 +214,21 @@ void HMIManager::queryPunctualAirQuality()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Handle service errors
     if (atmo == -1)
     {
-        cout << "(!) The entered location is too far away from any sensors" << endl;
+        cerr << "(!) The entered location is too far away from any sensors" << endl;
         sensorMenu();
         return;
     }
     if (atmo == -2)
     {
-        cout << "(!) The time period you entered is not in the scope of the database" << endl;
+        cerr << "(!) The time period you entered is not in the scope of the database" << endl;
         sensorMenu();
         return;
     }
@@ -250,16 +257,15 @@ void HMIManager::queryCleanerContribution()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Handle service errors
     if (cleanerContribution.first == -1)
     {
-        cout << "(!) The entered Cleaner ID is unknown" << endl;
+        cerr << "(!) The entered Cleaner ID is unknown" << endl;
         mainMenu();
         return;
     }
@@ -296,13 +302,13 @@ void HMIManager::queryLogin()
     // Handle service errors
     if (res == -1)
     {
-        cout << "(!) Given account does not exist, please try again" << endl;
+        cerr << "(!) Given account does not exist, please try again" << endl;
         loginMenu();
         return;
     }
     if (res == -2)
     {
-        cout << "(!) Incorrect password, please try again" << endl;
+        cerr << "(!) Incorrect password, please try again" << endl;
         loginMenu();
         return;
     }
@@ -329,7 +335,7 @@ void HMIManager::queryIndividualRegister()
     // Handle service errors
     if (res == -1)
     {
-        cout << "(!) Given account already exists, please try again" << endl;
+        cerr << "(!) Given account already exists, please try again" << endl;
         loginMenu();
         return;
     }
@@ -351,7 +357,7 @@ void HMIManager::queryCompanyRegister()
     // Handle service errors
     if (res == -1)
     {
-        cout << "(!) Given account already exists, please try again" << endl;
+        cerr << "(!) Given account already exists, please try again" << endl;
         mainMenu();
         return;
     }

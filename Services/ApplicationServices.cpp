@@ -15,18 +15,25 @@ void ApplicationServices::flagSensor(int uSensorID, bool uFlag)
 	throw "Not yet implemented";
 }
 
-vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
+vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
 {
 
 	//Vars
-	vector<Sensor *> similarSensors;
+	vector<Sensor*> similarSensors;
 	Sensor *sensor;
 	
 	
 	float threshold = 0.1;
+
 	// Fetch data
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
+	// If no sensor is found, return error code -1
+	/*
+	if (uSensorID >= sensorList.size()) {
+		return;
+	}
+	*/
 	sensor = sensorList[uSensorID];
 
 	// Loop through its readings starting from uTBegin to uTEnd
