@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "-----------------------------------------------------------"
 
 execDir=`pwd`
@@ -6,10 +7,10 @@ if [ "$1" = "" ]
 then
   echo "No directory given, default to current"
   Directory="."
-else
+else  
   echo "| Test id : $1"
   if [ -d "$1" ]
-  then
+  then 
      Directory="$1"
   else
      echo "$1 is not a directory. Exiting."
@@ -20,7 +21,7 @@ fi
 cd $Directory
 
 if [ -r "description" ]
-then
+then 
   echo "-----------------------------------------------------------"
   echo "Description :"
   fold description -w 60 -s
@@ -43,13 +44,16 @@ echo $sRun
 
 # stdin has been specified
 if [ -r "std.in" ]
-then
-  sRun="$sRun <std.in"
+then 
+  text="abc"
+  sRun=abc${sRun}def
 fi
+
+echo "$sRun"
 
 # stdout has been specified
 if [ -r "std.out" ]
-then
+then 
   sRun="$sRun >temp.txt"
 fi
 
@@ -57,7 +61,7 @@ echo $sRun
 
 # stderr has been specified
 if [ -r "stderr.out" ]
-then
+then 
   sRun="$sRun 2>temperr.txt"
 fi
 
@@ -71,7 +75,7 @@ resultGlobal=1
 # compare return code if concerned
 resultRC=2
 if [ -r "returncode" ]
-then
+then 
   if [ "$returnCode" = `cat returncode` ]
   then
     echo "                                       Return Code : PASSED"
@@ -86,7 +90,7 @@ fi
 # compare stdout if concerned
 resultOut=2
 if [ -r "std.out" ]
-then
+then 
   diff -wB temp.txt std.out >/dev/null
   if [ $? -eq 0 ]
   then
@@ -104,7 +108,7 @@ fi
 # compare stderr if concerned
 resultErr=2
 if [ -r "stderr.out" ]
-then
+then 
   diff -wB temperr.txt stderr.out >/dev/null
   if [ $? -eq 0 ]
   then
@@ -137,9 +141,9 @@ then
         echo "                                       File #$number     : FAILED"
         resultFiles=0
         resultGlobal=0
-      fi
+      fi  
       rm $fileName
-    else
+    else  
       echo "                                       File #$number     : FAILED"
       resultFiles=0
       resultGlobal=0
@@ -160,9 +164,9 @@ else
   echo "                                       Global      : PASSED"
 fi
 echo "-----------------------------------------------------------"
-echo
+echo 
 
-cd "$execDir"
+cd $execDir
 
 # log result in $2 if filename provided
 if [ "$2" != "" ]
@@ -178,3 +182,4 @@ then
 fi
 
 exit $resultGlobal
+
