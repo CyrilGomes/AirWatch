@@ -35,5 +35,5 @@
 
 # Test files
 *.txt
-mktest
-Test/*/Dataset
+Test/mktest
+Test/*/Dataset/

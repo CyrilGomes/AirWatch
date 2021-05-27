@@ -45,9 +45,9 @@ bool checkFiles(const string &filename1, const string &filename2)
     string str2(std::istreambuf_iterator<char>{file2}, {});
     file2.close();
 
-    cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
-    
     rtrim(str1); rtrim(str2);
+    //cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
+
     return str1 == str2;
 }
 
@@ -68,6 +68,7 @@ int main()
 {
     int cptPassed = 0;
     int cptFailed = 0;
+    string separator = "-----------------------------------------------------------";
 
     for (const auto &file : directory_iterator("./"))
     {
@@ -81,98 +82,78 @@ int main()
 
             vector<filesystem::path> fileList = getFilesInDirectory(directoryName);
             string execCmd = "";
-            bool dumpStderr = true;
-            bool dumpStdout = true;
-            for (const auto &filePath : fileList)
-            {
+            bool takeInput = false;
+            bool compareOutput = false;
+            bool compareError = false;
+            for (const auto &filePath : fileList) {
                 string fileName = filePath.filename().string();
-                if (fileName == "description")
-                {
-                    cout << "-----------------------------------------------------------" << endl;
-                    cout << "| Test id : " << directoryName << endl;
-                    cout << "-----------------------------------------------------------" << endl;
+                if (fileName == "description") {
+                    cout << endl;
+                    cout << separator << endl;
+                    cout << "| TEST ID : " << directoryName << endl;
+                    cout << separator << endl;
 
                     ifstream descFile(filePath, ios::in);
                     string str(std::istreambuf_iterator<char>{descFile}, {});
                     descFile.close();
-
-                    cout << str << endl;
-                    cout << "-----------------------------------------------------------" << endl;
+                    rtrim(str);
+                    
+                    cout << "| DESCRIPTION : " + str << endl;
+                    cout << separator << endl;
                 }
-                else if (fileName == "run")
-                {
+                else if (fileName == "run") {
                     ifstream runFile(filePath, ios::in);
                     string str(std::istreambuf_iterator<char>{runFile}, {});
                     runFile.close();
                     rtrim(str);
                     execCmd += "cd ./" + directoryName + " && ./" + str;
                 }
-                else if (fileName == "std.in")
-                {
-                    execCmd += " <std.in";
+                else if (fileName == "std.in") {
+                    takeInput = true;
                 }
-                else if (fileName == "std.out")
-                {
-                    execCmd += " >temp.txt";
-                    dumpStdout = false;
+                else if (fileName == "std.out") {
+                    compareOutput = true;
                 }
-                else if (fileName == "stderr.out")
-                {
-                    execCmd += " 2>temperr.txt";
-                    dumpStderr = false;
+                else if (fileName == "stderr.out") {
+                    compareError = true;
                 }
             }
 
-            if (dumpStdout)
-            {
-                execCmd += " >dump.txt";
-            }
-
-            if (dumpStderr)
-            {
-                execCmd += " 2>dump.txt";
-            }
+            execCmd += (takeInput) ? " <std.in" : "";
+            execCmd += (compareOutput) ? " >temp.txt" : " >dump.txt";
+            execCmd += (compareError) ? " 2>temperr.txt" : " 2>dump.txt";
 
             system(execCmd.c_str());
 
             // TODO: Add remaining checking code
             bool passedTests = true;
-            for (const auto &filePath : fileList)
-            {
+            for (const auto &filePath : fileList) {
                 string fileName = filePath.filename().string();
-                if (fileName == "std.out")
-                {
-                    if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt"))
-                    {
+                if (fileName == "std.out") {
+                    if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt")) {
                         cout << "                                       Stdout\t: PASSED" << endl;
                     }
-                    else
-                    {
+                    else {
                         cout << "                                       Stdout\t: FAILED" << endl;
                         passedTests = false;
                     }
                 }
-                else if (fileName == "stderr.out")
-                {
-                    if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt"))
-                    {
+                else if (fileName == "stderr.out") {
+                    if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt")) {
                         cout << "                                       Stderr\t: PASSED" << endl;
                     }
-                    else
-                    {
+                    else {
                         cout << "                                       Stderr\t: FAILED" << endl;
                         passedTests = false;
                     }
                 }
             }
 
-            if (passedTests)
-            {
+            if (passedTests) {
                 cout << "                                       Global\t: PASSED" << endl;
                 cptPassed++;
             }
-            else
-            {
+            else {
                 cout << "                                       Global\t: FAILED" << endl;
                 cptFailed++;
             }
