@@ -4,8 +4,6 @@
 #include "../Database/DBManager.h"
 #include "../Model/ApplicationData.h"
 #include "../Model/ReliabilityFlag.h"
-#include <chrono>
-using namespace std::chrono;
 
 ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd)
 {
