@@ -4,8 +4,6 @@
 #include "../Database/DBManager.h"
 #include "../Model/ApplicationData.h"
 #include "../Model/ReliabilityFlag.h"
-#include <chrono>
-using namespace std::chrono;
 
 ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd)
 {
@@ -306,9 +304,9 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	return make_pair(rad, improvement);
 }
 
-void ApplicationServices::importData()
+void ApplicationServices::importData(string dataDirectory)
 {
-	DBManager::setDirectory("Dataset/");
+	DBManager::setDirectory(dataDirectory);
 	DBManager::importCentralAndLocalData();
 }
 
