@@ -72,6 +72,10 @@ int main()
         filesystem::path path = file.path();
         if (is_directory(file) && directoryName.find("Test") != string::npos)
         {
+            system(("mkdir -p ./" + directoryName + "/Dataset/Local").c_str());
+            system(("cp ./BaseLocalData/individuals.csv ./" + directoryName + "/Dataset/Local/individuals.csv").c_str());
+            system(("cp ./BaseLocalData/logins.csv ./" + directoryName + "/Dataset/Local/logins.csv").c_str());
+
             vector<filesystem::path> fileList = getFilesInDirectory(directoryName);
             string execCmd = "";
             bool dumpStderr = true;
