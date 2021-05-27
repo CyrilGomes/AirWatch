@@ -146,10 +146,10 @@ void HMIManager::querySensorSimilarity()
         uTEnd = InputManager::promptDate("End Time");
     }
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the starting time of the functionality
     auto start = chrono::high_resolution_clock::now();
-#endif
+    #endif
     vector<Sensor *> similarSensors;
     try
     {
@@ -159,19 +159,18 @@ void HMIManager::querySensorSimilarity()
     catch (const char *e)
     {
         // Handle service errors
-        std::cerr << e << endl;
-        mainMenu();
+        cerr << e << endl;
+        sensorMenu();
         return;
     }
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the ending time of the functionality
     auto end = chrono::high_resolution_clock::now();
     // Displaying the duration
     auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
-         << endl;
-#endif
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+    #endif
 
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
@@ -205,10 +204,10 @@ void HMIManager::queryPunctualAirQuality()
         uTEnd = InputManager::promptDate("End Time");
     }
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the starting time of the functionality
     auto start = chrono::high_resolution_clock::now();
-#endif
+    #endif
     float atmo;
     try
     {
@@ -223,14 +222,13 @@ void HMIManager::queryPunctualAirQuality()
         return;
     }
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the ending time of the functionality
     auto end = chrono::high_resolution_clock::now();
     // Displaying the duration
     auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
-         << endl;
-#endif
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+    #endif
 
     // Display result
     cout << endl;
@@ -246,10 +244,10 @@ void HMIManager::queryCleanerContribution()
     displayHeader("Cleaner Contribution", 1);
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the starting time of the functionality
     auto start = chrono::high_resolution_clock::now();
-#endif
+    #endif
     pair<float, float> cleanerContribution;
     try
     {
@@ -264,14 +262,13 @@ void HMIManager::queryCleanerContribution()
         return;
     }
 
-#ifdef DEBUG
+    #ifdef DEBUG
     // Getting the ending time of the functionality
     auto end = chrono::high_resolution_clock::now();
     // Displaying the duration
     auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
-         << endl;
-#endif
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+    #endif
 
     // Display result
     cout << endl;

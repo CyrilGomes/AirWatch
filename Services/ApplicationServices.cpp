@@ -28,12 +28,10 @@ vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Da
 	// Fetch data
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
-	// If no sensor is found, return error code -1
-	
+	// If no sensor is found, throw error
 	if (uSensorID >= sensorList.size()) {
 		throw "(!) The entered Sensor ID is unknown";
-	}
-	
+	}	
 	sensor = sensorList[uSensorID];
 
 	// Loop through its readings starting from uTBegin to uTEnd
@@ -47,10 +45,9 @@ vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Da
 		float diffAverage = 0;
 		int i = 0;
 		Sensor *os = ite.second;
-		if(os->getId() == uSensorID)
+		if (os->getId() == uSensorID)
 			continue;
 
-			
 		map<Date, Reading *> osReadings = os->getReadings();
 
 		int atmo1 = 0;
@@ -203,18 +200,16 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
 	unordered_map<int, Cleaner *> cleanerList = applicationData->getCleanerList();
+	// If no cleaner is found, return negative floats as error codes
+	if (uCleanerID >= cleanerList.size())
+	{
+		throw "(!) The entered Cleaner ID is unknown";
+	}
 	Cleaner *cleaner = cleanerList[uCleanerID];
 	float cleanerLat = cleaner->getLatitude();
 	float cleanerLon = cleaner->getLongitude();
 	Date cleanerStartDate = cleaner->getStartDate();
 	Date cleanerStopDate = cleaner->getStopDate();
-	
-	// If no cleaner is found, return negative floats as error codes
-	if (cleaner == nullptr)
-	{
-		throw "(!) The entered Cleaner ID is unknown";
-
-	}
 	
 	// Put all sensors in a vector and sort them based on distance to cleaner
 	vector<Sensor *> sortedSensorsList;

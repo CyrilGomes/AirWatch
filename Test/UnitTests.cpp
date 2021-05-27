@@ -1,11 +1,11 @@
-#include "Test.h"
 #include "../Model/ApplicationData.h"
 #include "../Services/ApplicationServices.h"
 #include "../Model/Date.h"
 #include <iostream>
 #include "assert.h"
 using namespace std;
-void Test::test()
+
+void doUnitTests()
 {
 
     if (abs(ApplicationData::distance(2, 6, 4, 7) - 248831) < 1)
@@ -251,4 +251,9 @@ void Test::test()
         cout << "Cleaner Contribution test: Fail !" << endl;
     }
 
+}
+
+int main() {
+    doUnitTests();
+    return 0;
 }

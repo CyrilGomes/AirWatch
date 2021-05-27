@@ -12,19 +12,6 @@
 using namespace std;
 using std::filesystem::directory_iterator;
 
-// https://helloacm.com/how-to-split-a-string-in-c/
-vector<string> split(const string &text)
-{
-    string tmp;
-    vector<string> stk;
-    stringstream ss(text);
-    while (getline(ss, tmp, ' '))
-    {
-        stk.push_back(tmp);
-    }
-    return stk;
-}
-
 // trim from end (in place)
 // From StackOverflow: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 inline void rtrim(std::string &s)
@@ -45,14 +32,13 @@ bool checkFiles(const string &filename1, const string &filename2)
     string str2(std::istreambuf_iterator<char>{file2}, {});
     file2.close();
 
-    rtrim(str1); rtrim(str2);
-    //str1.erase(remove(str1.begin(),str1.end(),' '),str1.end());
     str1.erase(remove(str1.begin(),str1.end(),'\n'),str1.end());
     str1.erase(remove(str1.begin(),str1.end(),'\r'),str1.end());
-    //str2.erase(remove(str2.begin(),str2.end(),' '),str2.end());
     str2.erase(remove(str2.begin(),str2.end(),'\n'),str2.end());
     str2.erase(remove(str2.begin(),str2.end(),'\r'),str2.end());
-    //cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
+    if (str1 != str2) {
+        cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
+    }
 
     return str1 == str2;
 }
@@ -133,25 +119,22 @@ int main()
 
             // TODO: Add remaining checking code
             bool passedTests = true;
-            for (const auto &filePath : fileList) {
-                string fileName = filePath.filename().string();
-                if (fileName == "std.out") {
-                    if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt")) {
-                        cout << "                                       Stdout\t: PASSED" << endl;
-                    }
-                    else {
-                        cout << "                                       Stdout\t: FAILED" << endl;
-                        passedTests = false;
-                    }
+            if (compareOutput) {
+                if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt")) {
+                    cout << "                                       Stdout\t: PASSED" << endl;
                 }
-                else if (fileName == "stderr.out") {
-                    if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt")) {
-                        cout << "                                       Stderr\t: PASSED" << endl;
-                    }
-                    else {
-                        cout << "                                       Stderr\t: FAILED" << endl;
-                        passedTests = false;
-                    }
+                else {
+                    cout << "                                       Stdout\t: FAILED" << endl;
+                    passedTests = false;
+                }
+            }
+            if (compareError) {
+                if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt")) {
+                    cout << "                                       Stderr\t: PASSED" << endl;
+                }
+                else {
+                    cout << "                                       Stderr\t: FAILED" << endl;
+                    passedTests = false;
                 }
             }
 
