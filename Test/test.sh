@@ -39,6 +39,8 @@ else
   exit 2
 fi
 
+echo $sRun
+
 # stdin has been specified
 if [ -r "std.in" ]
 then
@@ -50,6 +52,8 @@ if [ -r "std.out" ]
 then
   sRun="$sRun >temp.txt"
 fi
+
+echo $sRun
 
 # stderr has been specified
 if [ -r "stderr.out" ]

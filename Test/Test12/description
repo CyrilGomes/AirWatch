@@ -1,0 +1,1 @@
+getCleanerContribution functionality test: given cleaner id is not formatted correctly (float), then successful execution

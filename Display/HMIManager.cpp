@@ -157,12 +157,20 @@ void HMIManager::querySensorSimilarity()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
+    // Handle service errors
+    /*
+    if (similarSensors == nullptr)
+    {
+        cerr << "(!) The entered Sensor ID is unknown" << endl;
+        mainMenu();
+        return;
+    }
+    */
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
     for (Sensor *s : similarSensors)
@@ -206,10 +214,9 @@ void HMIManager::queryPunctualAirQuality()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Handle service errors
@@ -250,10 +257,9 @@ void HMIManager::queryCleanerContribution()
     #ifdef DEBUG
         // Getting the ending time of the functionality
         auto end = chrono::high_resolution_clock::now();
-
         // Displaying the duration
         auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Handle service errors

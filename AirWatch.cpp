@@ -19,6 +19,7 @@ int main(int argc, char const *argv[])
     ApplicationServices::importData(dataDirectory);
 
     #ifdef DEBUG
+        /*
         // DEBUG: print data
         ApplicationData* applicationData = ApplicationData::getInstance();
         cout << "\n-> User List: " << endl;
@@ -50,6 +51,7 @@ int main(int argc, char const *argv[])
             }
         }
         cout << endl;
+        */
     #endif
 
     // Launch the display

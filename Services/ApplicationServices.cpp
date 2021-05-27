@@ -15,18 +15,25 @@ void ApplicationServices::flagSensor(int uSensorID, bool uFlag)
 	throw "Not yet implemented";
 }
 
-vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
+vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
 {
 
 	//Vars
-	vector<Sensor *> similarSensors;
+	vector<Sensor*> similarSensors;
 	Sensor *sensor;
 	float diffAverage = 0;
 	int i = 0;
 	float threshold = 0.1;
+
 	// Fetch data
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
+	// If no sensor is found, return error code -1
+	/*
+	if (uSensorID >= sensorList.size()) {
+		return;
+	}
+	*/
 	sensor = sensorList[uSensorID];
 
 	// Loop through its readings starting from uTBegin to uTEnd
@@ -169,16 +176,15 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	ApplicationData* applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor*> sensorList = applicationData->getSensorList();
 	unordered_map<int, Cleaner*> cleanerList = applicationData->getCleanerList();
+	// If no cleaner is found, return negative floats as error codes
+	if (uCleanerID >= cleanerList.size()) {
+		return make_pair(-1.0, -1.0);
+	}
 	Cleaner* cleaner = cleanerList[uCleanerID];
 	float cleanerLat = cleaner->getLatitude();
 	float cleanerLon = cleaner->getLongitude();
 	Date cleanerStartDate = cleaner->getStartDate();
 	Date cleanerStopDate = cleaner->getStopDate();
-
-	// If no cleaner is found, return negative floats as error codes
-	if (cleaner == nullptr) {
-		return make_pair(-1.0, -1.0);
-	}
 
 	// Put all sensors in a vector and sort them based on distance to cleaner
 	vector<Sensor*> sortedSensorsList;

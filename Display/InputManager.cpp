@@ -85,7 +85,7 @@ Date InputManager::promptDate(string prompt) {
     while(cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cerr << "(!) Please enter a correct DD/MM/YYYY date  for " << prompt << endl;
+        cerr << "(!) Please enter a correct DD/MM/YYYY date for " << prompt << endl;
         cout << prompt << " : ";
         cin >> valueIn;
     }
