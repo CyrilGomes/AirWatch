@@ -5,18 +5,26 @@ using namespace std;
 #include "Display/HMIManager.h"
 #include "Services/UserServices.h"
 #include "Services/ApplicationServices.h"
-
+#include "Test/Test.h"
 int main(int argc, char const *argv[])
 {
 
+#ifdef TEST
+    Test test;
+    test.test();
+
+    return 0;
+#endif
+
     // Fetch Data directory from the arguments
     string dataDirectory = "Dataset/";
-    if (argc > 1) {
+    if (argc > 1)
+    {
         dataDirectory = argv[1];
     }
 
     // Import data from central and local server
-    ApplicationServices::importData(dataDirectory);
+    ApplicationServices::importData();
 
     #ifdef DEBUG
         /*

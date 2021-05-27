@@ -17,6 +17,8 @@ class Date {
 		int hour;
 
 	public:
+		Date();
+		Date(int hour, int day, int month, int year);
 		int getYear() const;
 		void setYear(int year);
 		int getMonth() const;
