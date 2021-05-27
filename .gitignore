@@ -34,6 +34,7 @@
 .vscode
 
 # Test files
-*.txt
+Test/*/*.txt
 Test/mktest
 Test/*/Dataset/
+Test/*/Dataset/*/*.csv

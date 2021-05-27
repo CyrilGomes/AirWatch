@@ -46,6 +46,12 @@ bool checkFiles(const string &filename1, const string &filename2)
     file2.close();
 
     rtrim(str1); rtrim(str2);
+    //str1.erase(remove(str1.begin(),str1.end(),' '),str1.end());
+    str1.erase(remove(str1.begin(),str1.end(),'\n'),str1.end());
+    str1.erase(remove(str1.begin(),str1.end(),'\r'),str1.end());
+    //str2.erase(remove(str2.begin(),str2.end(),' '),str2.end());
+    str2.erase(remove(str2.begin(),str2.end(),'\n'),str2.end());
+    str2.erase(remove(str2.begin(),str2.end(),'\r'),str2.end());
     //cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
 
     return str1 == str2;
