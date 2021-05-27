@@ -29,18 +29,18 @@ vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Da
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
 	// If no sensor is found, return error code -1
-	/*
+	
 	if (uSensorID >= sensorList.size()) {
-		return;
+		throw "(!) The entered Sensor ID is unknown";
 	}
-	*/
+	
 	sensor = sensorList[uSensorID];
 
 	// Loop through its readings starting from uTBegin to uTEnd
 	map<Date, Reading *> readings = sensor->getReadings();
 	map<Date, Reading *>::iterator readingsBegin = readings.lower_bound(uTBegin);
 	map<Date, Reading *>::iterator readingsEnd = readings.upper_bound(uTEnd);
-	cout << readingsEnd->first << "&&"<< uTEnd << endl;
+
 	for (pair<int, Sensor *> ite : sensorList)
 	{
 		
@@ -168,13 +168,13 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 		// If no readings have been used, the timestamps are out of scope
 		else
 		{
-			average = -2;
+			throw "(!) The time period you entered is not in the scope of the database";
 		}
 	}
 	// If less than 2 sensors have been used, the location is too far away
 	else
 	{
-		average = -1;
+		throw "(!) The entered location is too far away from any sensors";
 	}
 
 #ifndef TEST
@@ -212,7 +212,8 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	// If no cleaner is found, return negative floats as error codes
 	if (cleaner == nullptr)
 	{
-		return make_pair(-1.0, -1.0);
+		throw "(!) The entered Cleaner ID is unknown";
+
 	}
 	
 	// Put all sensors in a vector and sort them based on distance to cleaner

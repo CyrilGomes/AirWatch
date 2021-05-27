@@ -13,9 +13,9 @@ class UserServices {
 	public:
 		static User* getCurrentUser();
 		static void setCurrentUser(User* user);
-		static int authenticate(string uEmail, string uPassword);
-		static int registerCompany(string uEmail, string uPassword);
-		static int registerIndividual(string uEmail, string uPassword);
+		static void authenticate(string uEmail, string uPassword);
+		static void registerCompany(string uEmail, string uPassword);
+		static void registerIndividual(string uEmail, string uPassword);
 
 };
 
