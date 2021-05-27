@@ -25,6 +25,16 @@ vector<string> split(const string &text)
     return stk;
 }
 
+// trim from end (in place)
+// From StackOverflow: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+inline void rtrim(std::string &s)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+                         std::not1(std::ptr_fun<int, int>(std::isspace)))
+                .base(),
+            s.end());
+}
+
 bool checkFiles(const string &filename1, const string &filename2)
 {
     ifstream file1(filename1, ios::in);
@@ -35,17 +45,10 @@ bool checkFiles(const string &filename1, const string &filename2)
     string str2(std::istreambuf_iterator<char>{file2}, {});
     file2.close();
 
+    cout << "STR1: " << endl << str1 + "\n" + "STR2: " << endl << str2 << endl;
+    
+    rtrim(str1); rtrim(str2);
     return str1 == str2;
-}
-
-// trim from end (in place)
-// From StackOverflow: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
-inline void rtrim(std::string &s)
-{
-    s.erase(std::find_if(s.rbegin(), s.rend(),
-                         std::not1(std::ptr_fun<int, int>(std::isspace)))
-                .base(),
-            s.end());
 }
 
 vector<filesystem::path> getFilesInDirectory(string directoryName)
@@ -139,7 +142,7 @@ int main()
                 string fileName = filePath.filename().string();
                 if (fileName == "std.out")
                 {
-                    if (checkFiles("./std.out", "./temp.txt"))
+                    if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt"))
                     {
                         cout << "                                       Stdout\t: PASSED" << endl;
                     }
@@ -151,7 +154,7 @@ int main()
                 }
                 else if (fileName == "stderr.out")
                 {
-                    if (checkFiles("./stderr.out", "./temperr.txt"))
+                    if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt"))
                     {
                         cout << "                                       Stderr\t: PASSED" << endl;
                     }
