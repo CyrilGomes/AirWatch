@@ -12,7 +12,7 @@ int InputManager::promptInteger(string prompt) {
     while(cin.fail() || valueIn != ref) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Please enter an integer value for " << prompt << endl;
+        cerr << "(!) Please enter an integer value for " << prompt << endl;
         cout << prompt << " : ";
         cin >> ref;
         valueIn = (int)ref;
@@ -34,7 +34,7 @@ string InputManager::promptEmail(string prompt) {
 	while (valueIn.find(";") != string::npos) {
 		cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
+        cerr << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
         cout << prompt << " : ";
         cin >> valueIn;
 	}
@@ -49,7 +49,7 @@ string InputManager::promptPassword(string prompt, bool restrictLength) {
 		while (valueIn.length() < 6 || valueIn.length() > 20) {
 			cin.clear();
 	        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	        cout << "(!) The password must have 6 to 20 characters, please try again" << endl;
+	        cerr << "(!) The password must have 6 to 20 characters, please try again" << endl;
 	        cout << prompt << " : ";
 	        cin >> valueIn;
 		}
@@ -57,7 +57,7 @@ string InputManager::promptPassword(string prompt, bool restrictLength) {
 	while (valueIn.find(";") != string::npos) {
 		cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
+        cerr << "(!) Invalid " << prompt << ", ';' is a forbidden character" << endl;
         cout << prompt << " : ";
         cin >> valueIn;
 	}
@@ -71,7 +71,7 @@ float InputManager::promptFloat(string prompt) {
     while(cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Please enter a float value for " << prompt << endl;
+        cerr << "(!) Please enter a float value for " << prompt << endl;
         cout << prompt << " : ";
         cin >> valueIn;
     }
@@ -85,7 +85,7 @@ Date InputManager::promptDate(string prompt) {
     while(cin.fail()) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "(!) Please enter a correct DD/MM/YYYY date  for " << prompt << endl;
+        cerr << "(!) Please enter a correct DD/MM/YYYY date  for " << prompt << endl;
         cout << prompt << " : ";
         cin >> valueIn;
     }
