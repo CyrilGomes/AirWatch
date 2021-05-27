@@ -170,9 +170,9 @@ int main()
                 cptFailed++;
             }
 
-            remove(("./" + directoryName + "/temperr.txt").c_str());
-            remove(("./" + directoryName + "/temp.txt").c_str());
-            remove(("./" + directoryName + "/dump.txt").c_str());
+            //remove(("./" + directoryName + "/temperr.txt").c_str());
+            //remove(("./" + directoryName + "/temp.txt").c_str());
+            //remove(("./" + directoryName + "/dump.txt").c_str());
         }
     }
 
