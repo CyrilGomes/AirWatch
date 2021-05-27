@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "HMIManager.h"
 #include "InputManager.h"
 #include "../Model/User.h"
@@ -144,8 +145,24 @@ void HMIManager::querySensorSimilarity()
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
+
+    #ifdef DEBUG
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
+    #endif
+
     // Call service
     vector<Sensor *> similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
+
+    #ifdef DEBUG
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+    #endif
+
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
     for (Sensor *s : similarSensors)
@@ -177,8 +194,24 @@ void HMIManager::queryPunctualAirQuality()
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
+
+    #ifdef DEBUG
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
+    #endif
+
     // Call service
     float atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
+
+    #ifdef DEBUG
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+    #endif
+
     // Handle service errors
     if (atmo == -1)
     {
@@ -205,8 +238,24 @@ void HMIManager::queryCleanerContribution()
     // Display title and prompt parameters
     displayHeader("Cleaner Contribution", 1);
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
+
+    #ifdef DEBUG
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
+    #endif
+
     // Call service
     pair<float, float> cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
+
+    #ifdef DEBUG
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        std::cout << "Execution time: " << timeTaken.count() << " milliseconds" << std::endl << std::endl;
+    #endif
+
     // Handle service errors
     if (cleanerContribution.first == -1)
     {
