@@ -1,2 +1,0 @@
-(!) Given account does not exist, please try again
-(!) Incorrect password, please try again
