@@ -16,7 +16,7 @@ void UserServices::setCurrentUser(User* user) {
 	currentUser = user;
 }
 
-int UserServices::authenticate(string uEmail, string uPassword) {
+void UserServices::authenticate(string uEmail, string uPassword) {
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
     unordered_map<string, User*> userList = applicationData->getUserList();
@@ -24,47 +24,47 @@ int UserServices::authenticate(string uEmail, string uPassword) {
     User* authenticatedUser = userList[uEmail];
 	// If it doesn't exist, error code -1
     if (authenticatedUser == nullptr) {
-        return -1;
+        throw "(!) Given account does not exist, please try again";
     }
 	// If it does exist, check passwords
     else {
 		// If it's the wrong password, error code -2
         if (authenticatedUser->getPassword() != uPassword) {
-            return -2;
+            throw "(!) Incorrect password, please try again";
         }
     }
 	// If everything went well, set the current user
     setCurrentUser(authenticatedUser);
-    return 0;
+
 }
 
-int UserServices::registerCompany(string uEmail, string uPassword) {
+void UserServices::registerCompany(string uEmail, string uPassword) {
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
 	unordered_map<string, User*> userList = applicationData->getUserList();
 	// If the email already exists, error code -1
 	if (userList.count(uEmail) != 0) {
-	   return -1;
+	   throw "(!) Given account already exists, please try again";
 	}
 	// If everything went well, create the new user and save it
 	User* newUser = new Company(uEmail, uPassword);
 	applicationData->addUser(newUser);
 	// Persist it
 	DBManager::updateLocalDataWithUser(newUser);
-	return 0;
+
 }
 
-int UserServices::registerIndividual(string uEmail, string uPassword) {
+void UserServices::registerIndividual(string uEmail, string uPassword) {
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
     unordered_map<string, User*> userList = applicationData->getUserList();
     if (userList.count(uEmail) != 0) {
-        return -1;
+        throw "(!) Given account already exists, please try again";
     }
 	// If everything went well, create the new user and save it
     User* newUser = new Individual(uEmail, uPassword);
     applicationData->addUser(newUser);
 	// Persist it
 	DBManager::updateLocalDataWithUser(newUser);
-	return 0;
+
 }

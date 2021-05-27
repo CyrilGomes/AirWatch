@@ -146,31 +146,33 @@ void HMIManager::querySensorSimilarity()
         uTEnd = InputManager::promptDate("End Time");
     }
 
-    #ifdef DEBUG
-        // Getting the starting time of the functionality
-        auto start = chrono::high_resolution_clock::now();
-    #endif
-
-    // Call service
-    vector<Sensor *> similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
-
-    #ifdef DEBUG
-        // Getting the ending time of the functionality
-        auto end = chrono::high_resolution_clock::now();
-        // Displaying the duration
-        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
-    #endif
-
-    // Handle service errors
-    /*
-    if (similarSensors == nullptr)
+#ifdef DEBUG
+    // Getting the starting time of the functionality
+    auto start = chrono::high_resolution_clock::now();
+#endif
+    vector<Sensor *> similarSensors;
+    try
     {
-        cerr << "(!) The entered Sensor ID is unknown" << endl;
+        // Call service
+        similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        std::cerr << e << endl;
         mainMenu();
         return;
     }
-    */
+
+#ifdef DEBUG
+    // Getting the ending time of the functionality
+    auto end = chrono::high_resolution_clock::now();
+    // Displaying the duration
+    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
+         << endl;
+#endif
+
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
     for (Sensor *s : similarSensors)
@@ -203,35 +205,33 @@ void HMIManager::queryPunctualAirQuality()
         uTEnd = InputManager::promptDate("End Time");
     }
 
-    #ifdef DEBUG
-        // Getting the starting time of the functionality
-        auto start = chrono::high_resolution_clock::now();
-    #endif
-
-    // Call service
-    float atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
-
-    #ifdef DEBUG
-        // Getting the ending time of the functionality
-        auto end = chrono::high_resolution_clock::now();
-        // Displaying the duration
-        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
-    #endif
-
-    // Handle service errors
-    if (atmo == -1)
+#ifdef DEBUG
+    // Getting the starting time of the functionality
+    auto start = chrono::high_resolution_clock::now();
+#endif
+    float atmo;
+    try
     {
-        cerr << "(!) The entered location is too far away from any sensors" << endl;
+        // Call service
+        atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        cerr << e << endl;
         sensorMenu();
         return;
     }
-    if (atmo == -2)
-    {
-        cerr << "(!) The time period you entered is not in the scope of the database" << endl;
-        sensorMenu();
-        return;
-    }
+
+#ifdef DEBUG
+    // Getting the ending time of the functionality
+    auto end = chrono::high_resolution_clock::now();
+    // Displaying the duration
+    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
+         << endl;
+#endif
+
     // Display result
     cout << endl;
     cout << "ATMO level : " << atmo << endl;
@@ -246,29 +246,33 @@ void HMIManager::queryCleanerContribution()
     displayHeader("Cleaner Contribution", 1);
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
 
-    #ifdef DEBUG
-        // Getting the starting time of the functionality
-        auto start = chrono::high_resolution_clock::now();
-    #endif
-
-    // Call service
-    pair<float, float> cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
-
-    #ifdef DEBUG
-        // Getting the ending time of the functionality
-        auto end = chrono::high_resolution_clock::now();
-        // Displaying the duration
-        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
-    #endif
-
-    // Handle service errors
-    if (cleanerContribution.first == -1)
+#ifdef DEBUG
+    // Getting the starting time of the functionality
+    auto start = chrono::high_resolution_clock::now();
+#endif
+    pair<float, float> cleanerContribution;
+    try
     {
-        cerr << "(!) The entered Cleaner ID is unknown" << endl;
+        // Call service
+        cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        cerr << e << endl;
         mainMenu();
         return;
     }
+
+#ifdef DEBUG
+    // Getting the ending time of the functionality
+    auto end = chrono::high_resolution_clock::now();
+    // Displaying the duration
+    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl
+         << endl;
+#endif
+
     // Display result
     cout << endl;
     cout << "Radius of effect : " << cleanerContribution.first << " m" << endl;
@@ -297,21 +301,19 @@ void HMIManager::queryLogin()
     displayHeader("Login", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", false);
-    // Call service
-    int res = UserServices::authenticate(uMail, uPassword);
-    // Handle service errors
-    if (res == -1)
+    try
     {
-        cerr << "(!) Given account does not exist, please try again" << endl;
+        // Call service
+        UserServices::authenticate(uMail, uPassword);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        cerr << e << endl;
         loginMenu();
         return;
     }
-    if (res == -2)
-    {
-        cerr << "(!) Incorrect password, please try again" << endl;
-        loginMenu();
-        return;
-    }
+
     // Go back to menu
     mainMenu();
 }
@@ -330,15 +332,19 @@ void HMIManager::queryIndividualRegister()
     displayHeader("Register as a private individual", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", true);
-    // Call service
-    int res = UserServices::registerIndividual(uMail, uPassword);
-    // Handle service errors
-    if (res == -1)
+    try
     {
-        cerr << "(!) Given account already exists, please try again" << endl;
+        // Call service
+        UserServices::registerIndividual(uMail, uPassword);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        cerr << e << endl;
         loginMenu();
         return;
     }
+
     // Display result
     cout << endl;
     cout << "Account successfully registered, please log in" << endl;
@@ -352,15 +358,19 @@ void HMIManager::queryCompanyRegister()
     displayHeader("Register company", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", true);
-    // Call service
-    int res = UserServices::registerCompany(uMail, uPassword);
-    // Handle service errors
-    if (res == -1)
+    try
     {
-        cerr << "(!) Given account already exists, please try again" << endl;
+        // Call service
+        UserServices::registerCompany(uMail, uPassword);
+    }
+    catch (const char *e)
+    {
+        // Handle service errors
+        cerr << e << endl;
         mainMenu();
         return;
     }
+
     // Display result
     cout << endl;
     cout << "Company successfully registered" << endl;

@@ -22,9 +22,11 @@ int main(int argc, char const *argv[])
     {
         dataDirectory = argv[1];
     }
+    
+
 
     // Import data from central and local server
-    ApplicationServices::importData();
+    ApplicationServices::importData("Dataset/");
 
     #ifdef DEBUG
         /*
