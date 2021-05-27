@@ -1,4 +1,3 @@
-#!/bin/bash
 echo "-----------------------------------------------------------"
 
 execDir=`pwd`
@@ -45,11 +44,8 @@ echo $sRun
 # stdin has been specified
 if [ -r "std.in" ]
 then 
-  text="abc"
-  sRun=abc${sRun}def
+  sRun="$sRun <std.in"
 fi
-
-echo "$sRun"
 
 # stdout has been specified
 if [ -r "std.out" ]
