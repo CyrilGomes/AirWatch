@@ -49,15 +49,12 @@ void Reading::addMeasurement(Measurement* measurement, string type) {
 }
 
 int Reading::atmo() {
-	#ifndef TEST
 	// Give points to owner (unless owner is current user)
 	User* currentUser = UserServices::getCurrentUser();
 	Individual* owner = sensor->getOwner();
 	if (currentUser != nullptr && owner != nullptr && currentUser->getMail() != owner->getMail()) {
 		owner->addPoint();
 	}
-	#endif
-
 	// Calculate ATMO
 	int atmo = 0;
 	for (pair<string, Measurement*> i : measurements) {

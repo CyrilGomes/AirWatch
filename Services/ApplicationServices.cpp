@@ -75,10 +75,8 @@ vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Da
 		}
 	}
 
-#ifndef TEST
 	// Save the data (in case some individual points were updated)
 	saveData();
-#endif
 
 	// Returns similar Sensors
 	return similarSensors;
@@ -174,10 +172,8 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 		throw "(!) The entered location is too far away from any sensors";
 	}
 
-#ifndef TEST
 	// Save the data (in case some individual points were updated)
 	saveData();
-#endif
 
 	// Return data
 	return average;
@@ -298,10 +294,8 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		improvement = atmoAverageAtStop - atmoAverageAtStart;
 	}
 
-#ifndef TEST
 	// Save the data (in case some individual points were updated)
 	saveData();
-#endif
 
 	// Return data
 	return make_pair(rad, improvement);

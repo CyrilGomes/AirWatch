@@ -12,7 +12,7 @@
 #include "../Model/ApplicationData.h"
 using namespace std;
 
-string DBManager::directory;
+string DBManager::directory = "";
 
 string DBManager::getDirectory() {
 	return DBManager::directory;
@@ -296,6 +296,10 @@ void DBManager::importCentralAndLocalData() {
 }
 
 void DBManager::saveLocalData() {
+
+	// Don't save if no directory is specified 
+	if (directory == "") 
+		return;
 
 	// ApplicationData instance
 	ApplicationData* applicationData = ApplicationData::getInstance();
