@@ -24,7 +24,6 @@ void DBManager::setDirectory(string directory) {
 
 void DBManager::importCentralAndLocalData() {
 
-
 	// ApplicationData instance
 	ApplicationData* applicationData = ApplicationData::getInstance();
 

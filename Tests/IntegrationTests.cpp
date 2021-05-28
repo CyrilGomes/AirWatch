@@ -12,14 +12,10 @@
 using namespace std;
 using std::filesystem::directory_iterator;
 
-// trim from end (in place)
 // From StackOverflow: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 inline void rtrim(std::string &s)
 {
-    s.erase(std::find_if(s.rbegin(), s.rend(),
-                         std::not1(std::ptr_fun<int, int>(std::isspace)))
-                .base(),
-            s.end());
+    s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
 }
 
 bool checkFiles(const string &filename1, const string &filename2)

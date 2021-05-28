@@ -7,7 +7,6 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-
     // Fetch Data directory from the arguments
     string dataDirectory = "Dataset/";
     if (argc > 1)
