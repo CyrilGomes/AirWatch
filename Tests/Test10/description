@@ -1,1 +1,1 @@
-compareSensorSimilarities functionality test: given latitude is not formatted correctly (string), then successful execution
+getPunctualAirQuality functionality test: given latitude is not formatted correctly (string), then successful execution

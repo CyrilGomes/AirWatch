@@ -58,37 +58,42 @@ int main()
     int cptFailed = 0;
     string separator = "-----------------------------------------------------------";
 
+    // For each Test directory
     for (const auto &file : directory_iterator("./"))
     {
         string directoryName = file.path().filename().string();
         filesystem::path path = file.path();
         if (is_directory(file) && directoryName.find("Test") != string::npos)
         {
-            system(("mkdir -p ./" + directoryName + "/Dataset/Local").c_str());
-            system(("cp ./BaseLocalData/individuals.csv ./" + directoryName + "/Dataset/Local/individuals.csv").c_str());
-            system(("cp ./BaseLocalData/logins.csv ./" + directoryName + "/Dataset/Local/logins.csv").c_str());
-
+            
+            // Reset local files
+            system("cp ./BaseDataSet/Local/individuals_reference.csv ./BaseDataSet/Local/individuals.csv");
+            system("cp ./BaseDataSet/Local/logins_reference.csv ./BaseDataSet/Local/logins.csv");
+            
+            // Initialize variables
             vector<filesystem::path> fileList = getFilesInDirectory(directoryName);
             string execCmd = "";
             bool takeInput = false;
             bool compareOutput = false;
             bool compareError = false;
+            
+            // For each file within the directory
             for (const auto &filePath : fileList) {
                 string fileName = filePath.filename().string();
+                // Print description
                 if (fileName == "description") {
                     cout << endl;
                     cout << separator << endl;
                     cout << "| TEST ID : " << directoryName << endl;
                     cout << separator << endl;
-
                     ifstream descFile(filePath, ios::in);
                     string str(std::istreambuf_iterator<char>{descFile}, {});
                     descFile.close();
                     rtrim(str);
-                    
                     cout << "| DESCRIPTION : " + str << endl;
                     cout << separator << endl;
                 }
+                // Save the run command
                 else if (fileName == "run") {
                     ifstream runFile(filePath, ios::in);
                     string str(std::istreambuf_iterator<char>{runFile}, {});
@@ -96,6 +101,7 @@ int main()
                     rtrim(str);
                     execCmd += "cd ./" + directoryName + " && ./" + str;
                 }
+                // Determine intput / output / error output check flags
                 else if (fileName == "std.in") {
                     takeInput = true;
                 }
@@ -107,13 +113,15 @@ int main()
                 }
             }
 
+            // Redirect outputs
             execCmd += (takeInput) ? " <std.in" : "";
             execCmd += (compareOutput) ? " >temp.txt" : " >dump.txt";
             execCmd += (compareError) ? " 2>temperr.txt" : " 2>dump.txt";
 
+            // Execute the test
             system(execCmd.c_str());
 
-            // TODO: Add remaining checking code
+            // Check outputs, error logs, and csvs (TODO)
             bool passedTests = true;
             if (compareOutput) {
                 if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt")) {
@@ -133,7 +141,6 @@ int main()
                     passedTests = false;
                 }
             }
-
             if (passedTests) {
                 cout << "                                       Global\t: PASSED" << endl;
                 cptPassed++;
