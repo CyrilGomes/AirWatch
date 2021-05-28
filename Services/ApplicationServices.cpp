@@ -21,8 +21,6 @@ vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Da
 	//Vars
 	vector<Sensor*> similarSensors;
 	Sensor *sensor;
-	
-	
 	float threshold = 0.1;
 
 	// Fetch data
@@ -94,7 +92,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 	float average = 0;
 	float i = 0;
 	int j = 0;
-	int distThreshold = 100000;
+	int distThreshold = 120000;
 	int maxPoints = 6;
 
 	// Fetch data
@@ -182,10 +180,9 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 {
 
-	
 	// Vars
 	float atmoThreshold = 2;
-	float distThreshold = 50000;
+	float distThreshold = 60000;
 	float atmoAverageAtStart = 0;
 	float atmoAverageAtStop = 0;
 	float rad = 0;
@@ -272,7 +269,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		
 		// If there's a significant difference of ATMO at that point before and after the cleaner's action,
 		// Mark that as an improvement
-		if (atmoAtStop - atmoAtStart > atmoThreshold)
+		if (atmoAtStart - atmoAtStop >= atmoThreshold)
 		{
 			// Save the radius
 			rad = dist;
@@ -291,7 +288,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	{
 		atmoAverageAtStart /= count;
 		atmoAverageAtStop /= count;
-		improvement = atmoAverageAtStop - atmoAverageAtStart;
+		improvement = atmoAverageAtStart - atmoAverageAtStop;
 	}
 
 	// Save the data (in case some individual points were updated)
