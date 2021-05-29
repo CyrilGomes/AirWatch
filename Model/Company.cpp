@@ -20,3 +20,7 @@ vector<Cleaner*> Company::getCleanerList() const {
 void Company::addCleaner(Cleaner* cleaner) {
 	cleanerList.push_back(cleaner);
 }
+
+Company::~Company() {
+	vector<Cleaner*>().swap(cleanerList);
+}

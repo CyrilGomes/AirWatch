@@ -16,6 +16,7 @@ class User {
 	public:
 		User();
 		User(string mail, string password);
+		virtual ~User() {};
 		unsigned int getId() const;
 		void setId(unsigned int id);
 		string getPassword() const;

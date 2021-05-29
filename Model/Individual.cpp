@@ -43,10 +43,14 @@ void Individual::setReliabilityFlag(ReliabilityFlag reliabilityFlag) {
 	DBManager::saveLocalData();
 }
 
-list<Sensor*> Individual::getSensorList() const {
+vector<Sensor*> Individual::getSensorList() const {
 	return this->sensorList;
 }
 
 void Individual::addSensor(Sensor* sensor) {
 	sensorList.push_back(sensor);
+}
+
+Individual::~Individual() {
+	vector<Sensor*>().swap(sensorList);
 }

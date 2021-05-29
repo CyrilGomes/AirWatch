@@ -211,7 +211,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 
 	// Vars
 	float atmoThreshold = 2;
-	float distThreshold = 60000;
+	float distThreshold = 600000;
 	float atmoAverageAtStart = 0;
 	float atmoAverageAtStop = 0;
 	float rad = 0;
