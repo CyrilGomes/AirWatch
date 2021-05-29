@@ -12,7 +12,20 @@
 using namespace std;
 using std::filesystem::directory_iterator;
 
-// From StackOverflow: https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+// https://helloacm.com/how-to-split-a-string-in-c/
+inline vector<string> split(const string &text, const char &sep)
+{
+    string tmp;
+    vector<string> stk;
+    stringstream ss(text);
+    while (getline(ss, tmp, sep))
+    {
+        stk.push_back(tmp);
+    }
+    return stk;
+}
+
+// https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 inline void rtrim(std::string &s)
 {
     s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
@@ -20,14 +33,15 @@ inline void rtrim(std::string &s)
 
 bool checkFiles(const string &filename1, const string &filename2)
 {
+    // Get strings contained in each file
     ifstream file1(filename1, ios::in);
     string str1(std::istreambuf_iterator<char>{file1}, {});
     file1.close();
-
     ifstream file2(filename2, ios::in);
     string str2(std::istreambuf_iterator<char>{file2}, {});
     file2.close();
-
+    
+    // Remove whitespace characters and spaces (facilitates tests)
     str1.erase(remove(str1.begin(),str1.end(),'\n'),str1.end());
     str1.erase(remove(str1.begin(),str1.end(),'\r'),str1.end());
     str1.erase(remove(str1.begin(),str1.end(),' '),str1.end());
@@ -35,7 +49,39 @@ bool checkFiles(const string &filename1, const string &filename2)
     str2.erase(remove(str2.begin(),str2.end(),'\r'),str2.end());
     str2.erase(remove(str2.begin(),str2.end(),' '),str2.end());
 
+    // Check equality
     return str1 == str2;
+}
+
+bool checkCSVs(const string &filename1, const string &filename2)
+{
+    // Get strings contained in each file
+    ifstream file1(filename1, ios::in);
+    string str1(std::istreambuf_iterator<char>{file1}, {});
+    file1.close();
+    ifstream file2(filename2, ios::in);
+    string str2(std::istreambuf_iterator<char>{file2}, {});
+    file2.close();
+    
+    // Split files in lines 
+    vector<string> file1Lines = split(str1, '\n');
+    vector<string> file2Lines = split(str2, '\n');
+    
+    // Check if number of lines from file 2 = the number specified in line 1 of file 1
+    bool lineNumberCheck = file2Lines.size() == atoi(file1Lines[0].c_str());
+    if (!lineNumberCheck) return false;
+    
+    // For each line > 1 in file 1
+    bool linesContained = true;
+    int len = file1Lines.size();
+    for (int i = 1; i < len; i++) {
+        // Check that it is contained in file 2 (if not, end test)
+        if (str2.find(file1Lines[i]) == string::npos) {
+            linesContained = false;
+            break;
+        }
+    }
+    return linesContained;
 }
 
 vector<filesystem::path> getFilesInDirectory(string directoryName)
@@ -66,8 +112,9 @@ int main()
         {
             
             // Reset local files
-            system("cp ./BaseDataSet/Local/individuals_reference.csv ./BaseDataSet/Local/individuals.csv");
-            system("cp ./BaseDataSet/Local/logins_reference.csv ./BaseDataSet/Local/logins.csv");
+            system(("mkdir -p ./" + directoryName + "/Dataset").c_str());
+            system(("cp -r ./BaseDataset/Central ./" + directoryName + "/Dataset/").c_str());
+            system(("cp -r ./BaseDataset/Local ./" + directoryName + "/Dataset/").c_str());
             
             // Initialize variables
             vector<filesystem::path> fileList = getFilesInDirectory(directoryName);
@@ -75,6 +122,8 @@ int main()
             bool takeInput = false;
             bool compareOutput = false;
             bool compareError = false;
+            bool compareLoginsCSV = false;
+            bool compareIndividualsCSV = false;
             
             // For each file within the directory
             for (const auto &filePath : fileList) {
@@ -110,6 +159,12 @@ int main()
                 else if (fileName == "stderr.out") {
                     compareError = true;
                 }
+                else if (fileName == "logins.csv.outfile") {
+                    compareLoginsCSV = true;
+                }
+                else if (fileName == "individuals.csv.outfile") {
+                    compareIndividualsCSV = true;
+                }
             }
 
             // Redirect outputs
@@ -120,8 +175,9 @@ int main()
             // Execute the test
             system(execCmd.c_str());
 
-            // Check outputs, error logs, and csvs (TODO)
+            // Determine whether the test passed or not
             bool passedTests = true;
+            // Check outputs (if applicable)
             if (compareOutput) {
                 if (checkFiles("./" + directoryName + "/std.out", "./" + directoryName + "/temp.txt")) {
                     cout << "                                       Stdout\t: PASSED" << endl;
@@ -131,6 +187,7 @@ int main()
                     passedTests = false;
                 }
             }
+            // Check errors (if applicable)
             if (compareError) {
                 if (checkFiles("./" + directoryName + "/stderr.out", "./" + directoryName + "/temperr.txt")) {
                     cout << "                                       Stderr\t: PASSED" << endl;
@@ -140,6 +197,27 @@ int main()
                     passedTests = false;
                 }
             }
+            // Check csvs (if applicable)
+            if (compareLoginsCSV) {
+                if (checkCSVs("./" + directoryName + "/logins.csv.outfile", "./" + directoryName + "/Dataset/Local/logins.csv")) {
+                    cout << "                                       CSV 1\t: PASSED" << endl;
+                }
+                else {
+                    cout << "                                       CSV 1\t: FAILED" << endl;
+                    passedTests = false;
+                }
+            }
+            if (compareIndividualsCSV) {
+                if (checkCSVs("./" + directoryName + "/individuals.csv.outfile", "./" + directoryName + "/Dataset/Local/individuals.csv")) {
+                    cout << "                                       CSV 2\t: PASSED" << endl;
+                }
+                else {
+                    cout << "                                       CSV 2\t: FAILED" << endl;
+                    passedTests = false;
+                }
+            }
+            
+            // Show global results
             if (passedTests) {
                 cout << "                                       Global\t: PASSED" << endl;
                 cptPassed++;
@@ -149,9 +227,9 @@ int main()
                 cptFailed++;
             }
 
-            //remove(("./" + directoryName + "/temperr.txt").c_str());
-            //remove(("./" + directoryName + "/temp.txt").c_str());
-            //remove(("./" + directoryName + "/dump.txt").c_str());
+            remove(("./" + directoryName + "/temperr.txt").c_str());
+            remove(("./" + directoryName + "/temp.txt").c_str());
+            remove(("./" + directoryName + "/dump.txt").c_str());
         }
     }
 

@@ -93,8 +93,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 
 	// Put all sensors in a vector and sort them based by distance to given position
 	vector<Sensor *> sortedSensorsList;
-	for (pair<int, Sensor *> i : sensorList)
-	{
+	for (pair<int, Sensor *> i : sensorList) {
 		sortedSensorsList.push_back(i.second);
 	}
 	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool {
@@ -108,18 +107,15 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 	});
 
 	// Loop through sorted sensor list
-	for (Sensor *s : sortedSensorsList)
-	{
+	for (Sensor *s : sortedSensorsList) {
 		// Skip if sensor is unreliable
-		if (s->getReliabilityFlag() == ReliabilityFlag::unreliable)
-		{
+		if (s->getReliabilityFlag() == ReliabilityFlag::unreliable) {
 			continue;
 		}
 		// Get distance to given position
 		float dist = ApplicationData::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
 		// If the sensor isn't too far away...
-		if (dist <= distThreshold)
-		{
+		if (dist <= distThreshold) {
 			// Calculate the weight factor based on distance
 			float weight = 1000 / pow(max(dist, 0.1f), 2);
 			// Loop through its readings starting from uTBegin to uTEnd
@@ -134,8 +130,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			});
 			j += 1;
 			// Break out of loop if we already used enough sensors
-			if (j > maxPoints)
-			{
+			if (j > maxPoints) {
 				break;
 			}
 		}
@@ -143,22 +138,18 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 
 	// Average ATMO levels out
 	// If more than 2 sensors have been used...
-	if (j > 1)
-	{
+	if (j > 1) {
 		// If readings have been used...
-		if (i > 0)
-		{
+		if (i > 0) {
 			average /= i;
 		}
 		// If no readings have been used, the timestamps are out of scope
-		else
-		{
+		else {
 			throw "(!) The time period you entered is not in the scope of the database";
 		}
 	}
 	// If less than 2 sensors have been used, the location is too far away
-	else
-	{
+	else {
 		throw "(!) The entered location is too far away from any sensors";
 	}
 
