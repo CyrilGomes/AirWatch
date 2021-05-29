@@ -55,6 +55,7 @@ void UserServices::registerCompany(string uEmail, string uPassword) {
 
 }
 
+
 void UserServices::registerIndividual(string uEmail, string uPassword) {
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();

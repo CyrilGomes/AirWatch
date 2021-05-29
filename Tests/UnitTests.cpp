@@ -1,20 +1,22 @@
 #include "../Model/ApplicationData.h"
-#include "../Services/ApplicationServices.h"
 #include "../Model/Date.h"
+#include "../Services/ApplicationServices.h"
+#include "../Services/Exceptions.h"
+
 #include <iostream>
 #include "assert.h"
 using namespace std;
 
 int main()
 {
-    
+
     /* --------------------------------------------------------------------- */
     /* ------------------------------- DATA ---------------------------------*/
     /* --------------------------------------------------------------------- */
-    
+
     // Get Data
     ApplicationData *appData = ApplicationData::getInstance();
-    
+
     // DATES
     Date tmpDate1(12, 27, 5, 2021);
     Date tmpDate2(12, 28, 5, 2021);
@@ -24,7 +26,7 @@ int main()
 
     // SENSOR 1
     Sensor *sensor1 = new Sensor(1, 0.0, 0.0);
-    
+
     Reading *reading1 = new Reading(tmpDate1);
     reading1->setSensor(sensor1);
     reading1->addMeasurement(new Measurement("µg/m3", "Desc 1", 34.5), "O3");
@@ -56,10 +58,10 @@ int main()
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 3", 79.5), "NO2");
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 4", 39.9), "PM10");
     sensor1->addReading(reading4); //6
-    
+
     appData->addSensor(sensor1);
     // ---
-    
+
     // Compute and save atmo values for later testing
     int tAtmo1 = reading1->atmo(); //8
     int tAtmo2 = reading2->atmo(); //7
@@ -68,7 +70,7 @@ int main()
 
     // SENSOR 2
     Sensor *sensor2 = new Sensor(2, 1.0, 0.0);
-    
+
     reading1 = new Reading(tmpDate1);
     reading1->setSensor(sensor2);
     reading1->addMeasurement(new Measurement("µg/m3", "Desc 1", 105.5), "O3");
@@ -100,13 +102,13 @@ int main()
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 3", 165.8), "NO2");
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 4", 25.7), "PM10");
     sensor2->addReading(reading4); //7
-    
+
     appData->addSensor(sensor2);
     // ---
 
     // SENSOR 3
     Sensor *sensor3 = new Sensor(3, 1.0, 1.0);
-    
+
     reading1 = new Reading(tmpDate1);
     reading1->setSensor(sensor3);
     reading1->addMeasurement(new Measurement("µg/m3", "Desc 1", 106.6), "O3");
@@ -138,7 +140,7 @@ int main()
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 3", 272.2), "NO2");
     reading4->addMeasurement(new Measurement("µg/m3", "Desc 4", 46.1), "PM10");
     sensor3->addReading(reading4); //9
-    
+
     appData->addSensor(sensor3);
     // ---
 
@@ -158,17 +160,22 @@ int main()
     /* DISTANCE TESTS */
     float tDist = ApplicationData::distance(2, 6, 4, 7);
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "distance() from ApplicationData" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "distance() from ApplicationData" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "2, 6, 4, 7" << endl;
-    cout << "| EXPECTED OUTPUT : " << "248831" << endl;
+    cout << "| INPUTS          : "
+         << "2, 6, 4, 7" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "248831" << endl;
     cout << "| ACTUAL OUTPUT   : " << tDist << endl;
     cout << separator << endl;
-    if (abs(tDist - 248831) < 1) {
+    if (abs(tDist - 248831) < 1)
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
@@ -178,17 +185,22 @@ int main()
     /* ATMO TESTS */
     // atmo values computed after defining sensor 1
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "atmo() from Reading" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "atmo() from Reading" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "none" << endl;
-    cout << "| EXPECTED OUTPUT : " << "8 \t 7 \t 6 \t 6" << endl;
+    cout << "| INPUTS          : "
+         << "none" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "8 \t 7 \t 6 \t 6" << endl;
     cout << "| ACTUAL OUTPUT   : " << tAtmo1 << " \t " << tAtmo2 << " \t " << tAtmo3 << " \t " << tAtmo4 << endl;
     cout << separator << endl;
-    if (tAtmo1 == 8 && tAtmo2 == 7 && tAtmo3 == 6 && tAtmo4 == 6) {
+    if (tAtmo1 == 8 && tAtmo2 == 7 && tAtmo3 == 6 && tAtmo4 == 6)
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
@@ -196,36 +208,85 @@ int main()
     /* ------------------------------- */
 
     /* SENSOR SIMILARITY TESTS */
-    vector<Sensor*> tSensorSimilarities1 = ApplicationServices::compareSensorSimilarities(2, tmpDate1, tmpDate2); //similar sensor: 3
-    vector<Sensor*> tSensorSimilarities2 = ApplicationServices::compareSensorSimilarities(2, tmpDate3, tmpDate4); //no similar sensors
+    vector<Sensor *> tSensorSimilarities1 = ApplicationServices::compareSensorSimilarities(2, tmpDate1, tmpDate2); //similar sensor: 3
+    vector<Sensor *> tSensorSimilarities2 = ApplicationServices::compareSensorSimilarities(2, tmpDate3, tmpDate4); //no similar sensors
+    string tSensorSimilarities3 = "none";
+    try
+    {
+        ApplicationServices::compareSensorSimilarities(99, tmpDate1, tmpDate2); //sensor does not exists
+    }
+    catch (UnknownSensorException &e)
+    {
+        tSensorSimilarities3 = "UnknownSensorException";
+    }
+    catch (EmptyReadingsException &e)
+    {
+        tSensorSimilarities3 = "EmptyReadingsException";
+    }
+    catch (TimeSpanOutOfBoundException &e)
+    {
+        tSensorSimilarities3 = "TimeSpanOutOfBoundException";
+    }
+
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "compareSensorSimilarities() from ApplicationServices" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "compareSensorSimilarities() from ApplicationServices" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "2, 27/05/2021, 28/05/2021" << endl;
-    cout << "| EXPECTED OUTPUT : " << "3" << endl;
+    cout << "| INPUTS          : "
+         << "2, 27/05/2021, 28/05/2021" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "3" << endl;
     cout << "| ACTUAL OUTPUT   : " << (tSensorSimilarities1.size() > 0 ? to_string(tSensorSimilarities1.at(0)->getId()) : "none") << endl;
     cout << separator << endl;
-    if (tSensorSimilarities1.size() == 1 && tSensorSimilarities1.at(0)->getId() == 3) {
+    if (tSensorSimilarities1.size() == 1 && tSensorSimilarities1.at(0)->getId() == 3)
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
     cout << endl;
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "compareSensorSimilarities() from ApplicationServices" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "compareSensorSimilarities() from ApplicationServices" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "2, 29/05/2021, 30/05/2021" << endl;
-    cout << "| EXPECTED OUTPUT : " << "none" << endl;
+    cout << "| INPUTS          : "
+         << "2, 29/05/2021, 30/05/2021" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "none" << endl;
     cout << "| ACTUAL OUTPUT   : " << (tSensorSimilarities2.size() > 0 ? to_string(tSensorSimilarities2.at(0)->getId()) : "none") << endl;
     cout << separator << endl;
-    if (tSensorSimilarities2.size() == 0) {
+    if (tSensorSimilarities2.size() == 0)
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
+        cout << "                                       Test\t: FAILED" << endl;
+        cptFailed++;
+    }
+    cout << endl;
+    cout << separator << endl;
+    cout << "| TESTED FUNCTION : "
+         << "compareSensorSimilarities() from ApplicationServices" << endl;
+    cout << separator << endl;
+    cout << "| INPUTS          : "
+         << "99, 27/05/2021, 28/05/2021" << endl;
+    cout << "| EXPECTED EXCEPTION : "
+         << "UnknownSensorException" << endl;
+    cout << "| ACTUAL EXCEPTION   : " << tSensorSimilarities3 << endl;
+    cout << separator << endl;
+    if (tSensorSimilarities3 == "UnknownSensorException")
+    {
+        cout << "                                       Test\t: PASSED" << endl;
+        cptPassed++;
+    }
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
@@ -233,19 +294,99 @@ int main()
     /* ------------------------------- */
 
     /* PUNCTUAL AIR QUALITY TESTS */
-    float tPunctualAirQuality = ApplicationServices::getPunctualAirQuality(0.3, 0.4, tmpDate1, tmpDate4); //6.66575970342
+    float tPunctualAirQuality1 = ApplicationServices::getPunctualAirQuality(0.3, 0.4, tmpDate1, tmpDate4); //6.66575970342
+
+    Date wrongStartDate(12, 4, 5, 2020);
+    Date wrongEndDate(12, 6, 5, 2020);
+    string tPunctualAirQuality2 = "none";
+    try
+    {
+        ApplicationServices::getPunctualAirQuality(0.3, 0.4, wrongStartDate, wrongEndDate); //Wrong time span
+    }
+    catch (TimeSpanOutOfBoundException &e)
+    {
+        tPunctualAirQuality2 = "TimeSpanOutOfBoundException";
+    }
+    catch (LocationTooFarAwayException &e)
+    {
+        tPunctualAirQuality2 = "LocationTooFarAwayException";
+    }
+
+    string tPunctualAirQuality3 = "none";
+    try
+    {
+        ApplicationServices::getPunctualAirQuality(48, 68, tmpDate1, tmpDate4); //Point too far away
+    }
+    catch (TimeSpanOutOfBoundException &e)
+    {
+        tPunctualAirQuality3 = "TimeSpanOutOfBoundException";
+    }
+    catch (LocationTooFarAwayException &e)
+    {
+        tPunctualAirQuality3 = "LocationTooFarAwayException";
+    }
+
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "getPunctualAirQuality() from ApplicationServices" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "getPunctualAirQuality() from ApplicationServices" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "0.3, 0.4, 27/05/2021, 30/05/2021" << endl;
-    cout << "| EXPECTED OUTPUT : " << "6.66575970342" << endl;
-    cout << "| ACTUAL OUTPUT   : " << tPunctualAirQuality << endl;
+    cout << "| INPUTS          : "
+         << "0.3, 0.4, 27/05/2021, 30/05/2021" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "6.66575970342" << endl;
+    cout << "| ACTUAL OUTPUT   : " << tPunctualAirQuality1 << endl;
     cout << separator << endl;
-    if (abs(tPunctualAirQuality - 6.66575970342) < 0.1) {
+    if (abs(tPunctualAirQuality1 - 6.66575970342) < 0.1)
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
+        cout << "                                       Test\t: FAILED" << endl;
+        cptFailed++;
+    }
+    cout << endl;
+    
+    cout << separator << endl;
+    cout << "| TESTED FUNCTION : "
+         << "getPunctualAirQuality() from ApplicationServices" << endl;
+    cout << separator << endl;
+    cout << "| INPUTS          : "
+         << "0.3, 0.4, 04/05/2020, 06/05/2020" << endl;
+    cout << "| EXPECTED EXCEPTION : "
+         << "TimeSpanOutOfBoundException" << endl;
+    cout << "| ACTUAL EXCEPTION   : " << tPunctualAirQuality2 << endl;
+    cout << separator << endl;
+    if (tPunctualAirQuality2 == "TimeSpanOutOfBoundException")
+    {
+        cout << "                                       Test\t: PASSED" << endl;
+        cptPassed++;
+    }
+    else
+    {
+        cout << "                                       Test\t: FAILED" << endl;
+        cptFailed++;
+    }
+
+    cout << endl;
+        cout << separator << endl;
+    cout << "| TESTED FUNCTION : "
+         << "getPunctualAirQuality() from ApplicationServices" << endl;
+    cout << separator << endl;
+    cout << "| INPUTS          : "
+         << "48, 68, 27/05/2021, 30/05/2021" << endl;
+    cout << "| EXPECTED EXCEPTION : "
+         << "LocationTooFarAwayException" << endl;
+    cout << "| ACTUAL EXCEPTION   : " << tPunctualAirQuality3 << endl;
+    cout << separator << endl;
+    if (tPunctualAirQuality3 == "LocationTooFarAwayException")
+    {
+        cout << "                                       Test\t: PASSED" << endl;
+        cptPassed++;
+    }
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
@@ -253,24 +394,29 @@ int main()
     /* ------------------------------- */
 
     /* CLEANER CONTRIBUTION TESTS */
-    pair<float,float> tCleanerContribution = ApplicationServices::getCleanerContribution(1);
+    pair<float, float> tCleanerContribution = ApplicationServices::getCleanerContribution(1);
     cout << separator << endl;
-    cout << "| TESTED FUNCTION : " << "getCleanerContribution() from ApplicationServices" << endl;
+    cout << "| TESTED FUNCTION : "
+         << "getCleanerContribution() from ApplicationServices" << endl;
     cout << separator << endl;
-    cout << "| INPUTS          : " << "1" << endl;
-    cout << "| EXPECTED OUTPUT : " << "55667 \t 2" << endl;
+    cout << "| INPUTS          : "
+         << "1" << endl;
+    cout << "| EXPECTED OUTPUT : "
+         << "55667 \t 2" << endl;
     cout << "| ACTUAL OUTPUT   : " << tCleanerContribution.first << " \t " << tCleanerContribution.second << endl;
     cout << separator << endl;
-    if(abs(tCleanerContribution.first - 55667) < 1 && (abs(tCleanerContribution.second - 2) < 0.1)) {
+    if (abs(tCleanerContribution.first - 55667) < 1 && (abs(tCleanerContribution.second - 2) < 0.1))
+    {
         cout << "                                       Test\t: PASSED" << endl;
         cptPassed++;
     }
-    else {
+    else
+    {
         cout << "                                       Test\t: FAILED" << endl;
         cptFailed++;
     }
     /* ------------------------------- */
-    
+
     cout << "Passed tests     : " << cptPassed << endl;
     cout << "Failed tests     : " << cptFailed << endl;
     cout << "-----------------------" << endl;

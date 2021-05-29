@@ -40,8 +40,8 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 		throw EmptyReadingsException();
 	}
 
-	Date minDate = readings.rbegin()->first;
-	Date maxDate = readings.rend()->first;
+	Date minDate = readings.begin()->first;
+	Date maxDate = readings.rbegin()->first;
 
 	if (uTBegin < minDate || maxDate < uTEnd)
 	{
@@ -60,7 +60,8 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 		if (os->getId() == uSensorID)
 			continue;
 
-		int atmo1 = 0; int atmo2 = 0;
+		int atmo1 = 0;
+		int atmo2 = 0;
 		map<Date, Reading *> osReadings = os->getReadings();
 		for (auto r = readingsBegin; r != readingsEnd; ++r)
 		{
@@ -139,14 +140,20 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			// Calculate the weight factor based on distance
 			float weight = 1000 / pow(max(dist, 0.1f), 2);
 
+			j += 1;
+			// Break out of loop if we already used enough sensors
+			if (j > maxPoints)
+			{
+				break;
+			}
 			map<Date, Reading *> readings = s->getReadings();
 			if (readings.empty())
 			{
 				continue;
 			}
 
-			Date minDate = readings.rbegin()->first;
-			Date maxDate = readings.rend()->first;
+			Date minDate = readings.begin()->first;
+			Date maxDate = readings.rbegin()->first;
 
 			if (uTBegin < minDate || maxDate < uTEnd)
 			{
@@ -163,12 +170,6 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 						 average += reading->atmo() * weight;
 						 i += weight;
 					 });
-			j += 1;
-			// Break out of loop if we already used enough sensors
-			if (j > maxPoints)
-			{
-				break;
-			}
 		}
 	}
 
@@ -254,7 +255,6 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			continue;
 		}
 
-
 		//Checks if the map is empty and if the time period is in bounds
 		map<Date, Reading *> readings = i->getReadings();
 		if (readings.empty())
@@ -262,8 +262,8 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			continue;
 		}
 
-		Date minDate = readings.rbegin()->first;
-		Date maxDate = readings.rend()->first;
+		Date minDate = readings.begin()->first;
+		Date maxDate = readings.rbegin()->first;
 
 		if (cleanerStartDate < minDate || maxDate < cleanerStopDate || maxDate == cleanerStopDate)
 		{

@@ -6,7 +6,7 @@
 #include "../Model/Individual.h"
 #include "../Services/UserServices.h"
 #include "../Services/ApplicationServices.h"
-
+#include "../Services/Exceptions.h"
 using namespace std;
 
 typedef pair<string, function<void()>> Option;
@@ -157,10 +157,24 @@ void HMIManager::querySensorSimilarity()
         // Call service
         similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
     }
-    catch (exception &e)
+    catch (UnknownSensorException &e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) The entered Sensor ID is unknown" << endl;
+        sensorMenu();
+        return;
+    }
+        catch (EmptyReadingsException &e)
+    {
+        // Handle service errors
+        cerr << "(!) There is no readings in this Sensor" << endl;
+        sensorMenu();
+        return;
+    }
+        catch (TimeSpanOutOfBoundException &e)
+    {
+        // Handle service errors
+        cerr << "(!) The time period you entered is not in the scope of the database" << endl;
         sensorMenu();
         return;
     }
@@ -215,10 +229,17 @@ void HMIManager::queryPunctualAirQuality()
         // Call service
         atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     }
-    catch (exception &e)
+    catch (TimeSpanOutOfBoundException &e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) The time period you entered is not in the scope of the database" << endl;
+        sensorMenu();
+        return;
+    }
+        catch (LocationTooFarAwayException &e)
+    {
+        // Handle service errors
+        cerr << "(!) The entered location is too far away from any sensors" << endl;
         sensorMenu();
         return;
     }
@@ -255,10 +276,10 @@ void HMIManager::queryCleanerContribution()
         // Call service
         cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     }
-    catch (exception &e)
+    catch (UnknownCleanerException &e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) The entered Cleaner ID is unknown" << endl;
         mainMenu();
         return;
     }
@@ -304,10 +325,17 @@ void HMIManager::queryLogin()
         // Call service
         UserServices::authenticate(uMail, uPassword);
     }
-    catch (exception& e)
+    catch (AccountDoNoExistException& e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) Given account does not exist, please try again" << endl;
+        loginMenu();
+        return;
+    }
+        catch (IncorrectPasswordException& e)
+    {
+        // Handle service errors
+        cerr << "(!) Incorrect password, please try again" << endl;
         loginMenu();
         return;
     }
@@ -335,10 +363,10 @@ void HMIManager::queryIndividualRegister()
         // Call service
         UserServices::registerIndividual(uMail, uPassword);
     }
-    catch (exception &e)
+    catch (AccountAlreadyExistsException &e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) Given account already exists, please try again" << endl;
         loginMenu();
         return;
     }
@@ -361,10 +389,10 @@ void HMIManager::queryCompanyRegister()
         // Call service
         UserServices::registerCompany(uMail, uPassword);
     }
-    catch (exception &e)
+    catch (AccountAlreadyExistsException &e)
     {
         // Handle service errors
-        cerr << e.what() << endl;
+        cerr << "(!) Given account already exists, please try again" << endl;
         mainMenu();
         return;
     }
