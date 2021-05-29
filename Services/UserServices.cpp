@@ -36,7 +36,6 @@ void UserServices::authenticate(string uEmail, string uPassword) {
     }
 	// If everything went well, set the current user
     setCurrentUser(authenticatedUser);
-
 }
 
 void UserServices::registerCompany(string uEmail, string uPassword) {
@@ -52,7 +51,6 @@ void UserServices::registerCompany(string uEmail, string uPassword) {
 	applicationData->addUser(newUser);
 	// Persist it
 	DBManager::updateLocalDataWithUser(newUser);
-
 }
 
 
@@ -68,5 +66,4 @@ void UserServices::registerIndividual(string uEmail, string uPassword) {
     applicationData->addUser(newUser);
 	// Persist it
 	DBManager::updateLocalDataWithUser(newUser);
-
 }

@@ -151,6 +151,7 @@ void HMIManager::querySensorSimilarity()
     // Getting the starting time of the functionality
     auto start = chrono::high_resolution_clock::now();
     #endif
+    
     vector<Sensor *> similarSensors;
     try
     {

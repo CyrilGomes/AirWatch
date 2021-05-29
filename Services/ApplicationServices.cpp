@@ -16,11 +16,11 @@ void ApplicationServices::flagSensor(int uSensorID, bool uFlag)
 	throw "Not yet implemented";
 }
 
-vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
+vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
 {
 
 	//Vars
-	vector<Sensor *> similarSensors;
+	vector<Sensor*> similarSensors;
 	Sensor *sensor;
 	float threshold = 0.1;
 
@@ -28,10 +28,9 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
 	// If no sensor is found, throw error
-	if (uSensorID >= sensorList.size())
-	{
-		throw UnknownSensorException();
-	}
+	if (uSensorID >= sensorList.size()) {
+		throw "(!) The entered Sensor ID is unknown";
+	}	
 	sensor = sensorList[uSensorID];
 
 	map<Date, Reading *> readings = sensor->getReadings();
@@ -49,6 +48,7 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 	}
 
 	// Loop through its readings starting from uTBegin to uTEnd
+	map<Date, Reading *> readings = sensor->getReadings();
 	map<Date, Reading *>::iterator readingsBegin = readings.lower_bound(uTBegin);
 	map<Date, Reading *>::iterator readingsEnd = readings.upper_bound(uTEnd);
 
@@ -109,34 +109,29 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 
 	// Put all sensors in a vector and sort them based by distance to given position
 	vector<Sensor *> sortedSensorsList;
-	for (pair<int, Sensor *> i : sensorList)
-	{
+	for (pair<int, Sensor *> i : sensorList) {
 		sortedSensorsList.push_back(i.second);
 	}
-	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool
-		 {
-			 float d1 = ApplicationData::distance(
-				 s1->getLatitude(), s1->getLongitude(),
-				 uLat, uLon);
-			 float d2 = ApplicationData::distance(
-				 s2->getLatitude(), s2->getLongitude(),
-				 uLat, uLon);
-			 return d1 < d2;
-		 });
+	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool {
+		float d1 = ApplicationData::distance(
+			s1->getLatitude(), s1->getLongitude(),
+			uLat, uLon);
+		float d2 = ApplicationData::distance(
+			s2->getLatitude(), s2->getLongitude(),
+			uLat, uLon);
+		return d1 < d2;
+	});
 
 	// Loop through sorted sensor list
-	for (Sensor *s : sortedSensorsList)
-	{
+	for (Sensor *s : sortedSensorsList) {
 		// Skip if sensor is unreliable
-		if (s->getReliabilityFlag() == ReliabilityFlag::unreliable)
-		{
+		if (s->getReliabilityFlag() == ReliabilityFlag::unreliable) {
 			continue;
 		}
 		// Get distance to given position
 		float dist = ApplicationData::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
 		// If the sensor isn't too far away...
-		if (dist <= distThreshold)
-		{
+		if (dist <= distThreshold) {
 			// Calculate the weight factor based on distance
 			float weight = 1000 / pow(max(dist, 0.1f), 2);
 
@@ -161,6 +156,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			}
 
 			// Loop through its readings starting from uTBegin to uTEnd
+			map<Date, Reading *> readings = s->getReadings();
 			map<Date, Reading *>::iterator readingsBegin = readings.lower_bound(uTBegin);
 			map<Date, Reading *>::iterator readingsEnd = readings.upper_bound(uTEnd);
 			for_each(readingsBegin, readingsEnd, [&](pair<Date, Reading *> r)
@@ -175,23 +171,19 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 
 	// Average ATMO levels out
 	// If more than 2 sensors have been used...
-	if (j > 1)
-	{
+	if (j > 1) {
 		// If readings have been used...
-		if (i > 0)
-		{
+		if (i > 0) {
 			average /= i;
 		}
 		// If no readings have been used, the timestamps are out of scope
-		else
-		{
-			throw TimeSpanOutOfBoundException();
+		else {
+			throw "(!) The time period you entered is not in the scope of the database";
 		}
 	}
 	// If less than 2 sensors have been used, the location is too far away
-	else
-	{
-		throw LocationTooFarAwayException();
+	else {
+		throw "(!) The entered location is too far away from any sensors";
 	}
 
 	// Save the data (in case some individual points were updated)
@@ -220,30 +212,29 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	// If no cleaner is found, return negative floats as error codes
 	if (uCleanerID >= cleanerList.size())
 	{
-		throw UnknownCleanerException();
+		throw "(!) The entered Cleaner ID is unknown";
 	}
 	Cleaner *cleaner = cleanerList[uCleanerID];
 	float cleanerLat = cleaner->getLatitude();
 	float cleanerLon = cleaner->getLongitude();
 	Date cleanerStartDate = cleaner->getStartDate();
 	Date cleanerStopDate = cleaner->getStopDate();
-
+	
 	// Put all sensors in a vector and sort them based on distance to cleaner
 	vector<Sensor *> sortedSensorsList;
 	for (pair<int, Sensor *> i : sensorList)
 	{
 		sortedSensorsList.push_back(i.second);
 	}
-	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool
-		 {
-			 float d1 = ApplicationData::distance(
-				 s1->getLatitude(), s1->getLongitude(),
-				 cleanerLat, cleanerLon);
-			 float d2 = ApplicationData::distance(
-				 s2->getLatitude(), s2->getLongitude(),
-				 cleanerLat, cleanerLon);
-			 return d1 < d2;
-		 });
+	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool {
+		float d1 = ApplicationData::distance(
+			s1->getLatitude(), s1->getLongitude(),
+			cleanerLat, cleanerLon);
+		float d2 = ApplicationData::distance(
+			s2->getLatitude(), s2->getLongitude(),
+			cleanerLat, cleanerLon);
+		return d1 < d2;
+	});
 
 	int oCount = 0;
 	// Loop through sorted sensor list
@@ -271,16 +262,18 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		}
 
 		// Get their atmo at the start and at the end of the cleaner's action
+		map<Date, Reading *> readings = i->getReadings();
 		int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
 		int atmoAtStop = readings.upper_bound(cleanerStopDate)->second->atmo();
-
+		
+		
 		// Get distance between sensor and cleaner
 		float dist = ApplicationData::distance(
 			i->getLatitude(), i->getLongitude(),
 			cleanerLat, cleanerLon);
 		// Dermine if there's another cleaner closer to that sensor
 		bool foundCloser = false;
-
+		
 		for (pair<int, Cleaner *> j : cleanerList)
 		{
 			float oDist = ApplicationData::distance(
@@ -292,19 +285,19 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 				break;
 			}
 		}
-
+		
 		// Skip sensor if it's closer to another cleaner
 		if (foundCloser)
 		{
 			continue;
 		}
-
+		
 		// If no improvement has been found for a long distance, stop search
 		if (dist - rad > distThreshold && count == oCount && count > 0)
 		{
 			break;
 		}
-
+		
 		// If there's a significant difference of ATMO at that point before and after the cleaner's action,
 		// Mark that as an improvement
 		if (atmoAtStart - atmoAtStop >= atmoThreshold)
@@ -318,6 +311,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			oCount = count;
 			count++;
 		}
+		
 	}
 
 	// Average ATMO levels out

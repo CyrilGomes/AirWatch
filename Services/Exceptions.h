@@ -1,4 +1,4 @@
-#include<exception>
+#include <exception>
 
 struct UnknownSensorException : public std::exception
 {
