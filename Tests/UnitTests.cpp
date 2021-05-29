@@ -29,19 +29,19 @@ int main()
 
     Reading *reading1 = new Reading(tmpDate1);
     reading1->setSensor(sensor1);
-    reading1->addMeasurement(new Measurement("µg/m3", "Desc 1", 34.5), "O3");
-    reading1->addMeasurement(new Measurement("µg/m3", "Desc 2", 22.5), "SO2");
-    reading1->addMeasurement(new Measurement("µg/m3", "Desc 3", 84.5), "NO2");
-    reading1->addMeasurement(new Measurement("µg/m3", "Desc 4", 54.5), "PM10");
-    sensor1->addReading(reading1); //8
+    reading1->addMeasurement(new Measurement("µg/m3", "Desc 1", 32.5), "O3");
+    reading1->addMeasurement(new Measurement("µg/m3", "Desc 2", 23.1), "SO2");
+    reading1->addMeasurement(new Measurement("µg/m3", "Desc 3", 83.2), "NO2");
+    reading1->addMeasurement(new Measurement("µg/m3", "Desc 4", 48.7), "PM10");
+    sensor1->addReading(reading1); //7
 
     Reading *reading2 = new Reading(tmpDate2);
     reading2->setSensor(sensor1);
-    reading2->addMeasurement(new Measurement("µg/m3", "Desc 1", 32.5), "O3");
-    reading2->addMeasurement(new Measurement("µg/m3", "Desc 2", 23.1), "SO2");
-    reading2->addMeasurement(new Measurement("µg/m3", "Desc 3", 83.2), "NO2");
-    reading2->addMeasurement(new Measurement("µg/m3", "Desc 4", 48.7), "PM10");
-    sensor1->addReading(reading2); //7
+    reading2->addMeasurement(new Measurement("µg/m3", "Desc 1", 30.9), "O3");
+    reading2->addMeasurement(new Measurement("µg/m3", "Desc 2", 20.5), "SO2");
+    reading2->addMeasurement(new Measurement("µg/m3", "Desc 3", 79.5), "NO2");
+    reading2->addMeasurement(new Measurement("µg/m3", "Desc 4", 39.9), "PM10");
+    sensor1->addReading(reading2); //6
 
     Reading *reading3 = new Reading(tmpDate3);
     reading3->setSensor(sensor1);
@@ -53,11 +53,11 @@ int main()
 
     Reading *reading4 = new Reading(tmpDate4);
     reading4->setSensor(sensor1);
-    reading4->addMeasurement(new Measurement("µg/m3", "Desc 1", 30.9), "O3");
-    reading4->addMeasurement(new Measurement("µg/m3", "Desc 2", 20.5), "SO2");
-    reading4->addMeasurement(new Measurement("µg/m3", "Desc 3", 79.5), "NO2");
-    reading4->addMeasurement(new Measurement("µg/m3", "Desc 4", 39.9), "PM10");
-    sensor1->addReading(reading4); //6
+    reading4->addMeasurement(new Measurement("µg/m3", "Desc 1", 34.5), "O3");
+    reading4->addMeasurement(new Measurement("µg/m3", "Desc 2", 22.5), "SO2");
+    reading4->addMeasurement(new Measurement("µg/m3", "Desc 3", 84.5), "NO2");
+    reading4->addMeasurement(new Measurement("µg/m3", "Desc 4", 54.5), "PM10");
+    sensor1->addReading(reading4); //8
 
     appData->addSensor(sensor1);
     // ---
@@ -200,10 +200,10 @@ int main()
     int tAtmo3 = savedReading3->atmo(); 
     int tAtmo4 = savedReading4->atmo(); 
     // Expected Outputs
-    int eAtmo1 = 8; 
-    int eAtmo2 = 7; 
+    int eAtmo1 = 7; 
+    int eAtmo2 = 6; 
     int eAtmo3 = 6; 
-    int eAtmo4 = 6;
+    int eAtmo4 = 8;
     // Display and checks 
     cout << separator << endl;
     cout << "| TESTED FUNCTION    : " << "atmo()" << endl;

@@ -212,7 +212,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	// Vars
 	float atmoThreshold = 2;
 	float distThreshold = 600000;
-	float atmoAverageAtStart = 0;
+	float atmoAverageBeforeStop = 0;
 	float atmoAverageAtStop = 0;
 	float rad = 0;
 	float improvement = 0;
@@ -277,6 +277,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 
 		// Get their atmo at the start and at the end of the cleaner's action
 		int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
+		int atmoBeforeStop = prev(readings.upper_bound(cleanerStopDate))->second->atmo();
 		int atmoAtStop = readings.upper_bound(cleanerStopDate)->second->atmo();
 
 		// Get distance between sensor and cleaner
@@ -288,7 +289,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		// Dermine if there's another cleaner closer to that sensor
 		bool foundCloser = false;
 
-		for (pair<int, Cleaner *> j : cleanerList)
+		for (pair<int, Cleaner*> j : cleanerList)
 		{
 			float oDist = ApplicationData::distance(
 				i->getLatitude(), i->getLongitude(),
@@ -314,12 +315,12 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 
 		// If there's a significant difference of ATMO at that point before and after the cleaner's action,
 		// Mark that as an improvement
-		if (atmoAtStart - atmoAtStop >= atmoThreshold)
+		if (atmoAtStop - atmoBeforeStop >= atmoThreshold)
 		{
 			// Save the radius
 			rad = dist;
 			// Save the ATMO levels
-			atmoAverageAtStart += atmoAtStart;
+			atmoAverageBeforeStop += atmoBeforeStop;
 			atmoAverageAtStop += atmoAtStop;
 			// Save the improvement counter
 			oCount = count;
@@ -330,9 +331,9 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	// Average ATMO levels out
 	if (count != 0)
 	{
-		atmoAverageAtStart /= count;
+		atmoAverageBeforeStop /= count;
 		atmoAverageAtStop /= count;
-		improvement = atmoAverageAtStart - atmoAverageAtStop;
+		improvement = atmoAverageAtStop - atmoAverageBeforeStop;
 	}
 
 	// Save the data (in case some individual points were updated)
