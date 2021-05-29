@@ -6,6 +6,7 @@
 #include "../Model/Individual.h"
 #include "../Services/UserServices.h"
 #include "../Services/ApplicationServices.h"
+
 using namespace std;
 
 typedef pair<string, function<void()>> Option;
@@ -156,10 +157,10 @@ void HMIManager::querySensorSimilarity()
         // Call service
         similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
     }
-    catch (const char *e)
+    catch (exception &e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         sensorMenu();
         return;
     }
@@ -214,10 +215,10 @@ void HMIManager::queryPunctualAirQuality()
         // Call service
         atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     }
-    catch (const char *e)
+    catch (exception &e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         sensorMenu();
         return;
     }
@@ -254,10 +255,10 @@ void HMIManager::queryCleanerContribution()
         // Call service
         cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     }
-    catch (const char *e)
+    catch (exception &e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         mainMenu();
         return;
     }
@@ -303,10 +304,10 @@ void HMIManager::queryLogin()
         // Call service
         UserServices::authenticate(uMail, uPassword);
     }
-    catch (const char *e)
+    catch (exception& e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         loginMenu();
         return;
     }
@@ -334,10 +335,10 @@ void HMIManager::queryIndividualRegister()
         // Call service
         UserServices::registerIndividual(uMail, uPassword);
     }
-    catch (const char *e)
+    catch (exception &e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         loginMenu();
         return;
     }
@@ -360,10 +361,10 @@ void HMIManager::queryCompanyRegister()
         // Call service
         UserServices::registerCompany(uMail, uPassword);
     }
-    catch (const char *e)
+    catch (exception &e)
     {
         // Handle service errors
-        cerr << e << endl;
+        cerr << e.what() << endl;
         mainMenu();
         return;
     }

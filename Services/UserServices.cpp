@@ -5,6 +5,7 @@
 #include "../Model/User.h"
 #include "../Model/Company.h"
 #include "../Model/Individual.h"
+#include "Exceptions.h"
 
 User* UserServices::currentUser;
 
@@ -24,13 +25,13 @@ void UserServices::authenticate(string uEmail, string uPassword) {
     User* authenticatedUser = userList[uEmail];
 	// If it doesn't exist, error code -1
     if (authenticatedUser == nullptr) {
-        throw "(!) Given account does not exist, please try again";
+        throw AccountDoNoExistException();
     }
 	// If it does exist, check passwords
     else {
 		// If it's the wrong password, error code -2
         if (authenticatedUser->getPassword() != uPassword) {
-            throw "(!) Incorrect password, please try again";
+            throw IncorrectPasswordException();
         }
     }
 	// If everything went well, set the current user
@@ -44,7 +45,7 @@ void UserServices::registerCompany(string uEmail, string uPassword) {
 	unordered_map<string, User*> userList = applicationData->getUserList();
 	// If the email already exists, error code -1
 	if (userList.count(uEmail) != 0) {
-	   throw "(!) Given account already exists, please try again";
+	   throw AccountAlreadyExistsException();
 	}
 	// If everything went well, create the new user and save it
 	User* newUser = new Company(uEmail, uPassword);
@@ -59,7 +60,7 @@ void UserServices::registerIndividual(string uEmail, string uPassword) {
 	ApplicationData* applicationData = ApplicationData::getInstance();
     unordered_map<string, User*> userList = applicationData->getUserList();
     if (userList.count(uEmail) != 0) {
-        throw "(!) Given account already exists, please try again";
+        throw AccountAlreadyExistsException();
     }
 	// If everything went well, create the new user and save it
     User* newUser = new Individual(uEmail, uPassword);

@@ -4,6 +4,7 @@
 #include "../Database/DBManager.h"
 #include "../Model/ApplicationData.h"
 #include "../Model/ReliabilityFlag.h"
+#include "Exceptions.h"
 
 ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd)
 {
