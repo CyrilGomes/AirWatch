@@ -1,1 +1,2 @@
-compareSensorSimilarities functionality test: given sensor id is not found within the database
+compareSensorSimilarities functionality test: 
+- given sensor id is not found within the database

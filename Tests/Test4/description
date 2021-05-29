@@ -1,1 +1,3 @@
-Register test: given password is too short, then successful private individual register
+Register test: 
+- given password is too short
+- then successful private individual register

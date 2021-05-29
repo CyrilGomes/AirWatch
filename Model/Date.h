@@ -11,10 +11,10 @@ using namespace std;
 class Date {
 
 	private:
-		int year;
-		int month;
-		int day;
 		int hour;
+		int day;
+		int month;
+		int year;
 
 	public:
 		Date();

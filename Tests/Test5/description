@@ -1,1 +1,3 @@
-Navigation test: menu navigation with invalid inputs (string, then out of bounds menu choice)
+Navigation test: 
+- menu navigation with invalid inputs 
+  (string, then out of bounds menu choice)

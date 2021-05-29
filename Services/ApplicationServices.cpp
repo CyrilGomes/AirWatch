@@ -28,21 +28,22 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 	ApplicationData *applicationData = ApplicationData::getInstance();
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
 	// If no sensor is found, throw error
-	if (uSensorID >= sensorList.size())
+	if (uSensorID >= (int)sensorList.size())
 	{
 		throw UnknownSensorException();
 	}
 	sensor = sensorList[uSensorID];
 
+	// Check that readings aren't empty
 	map<Date, Reading *> readings = sensor->getReadings();
 	if (readings.empty())
 	{
 		throw EmptyReadingsException();
 	}
 
+	// Check that dates are in database bounds
 	Date minDate = readings.begin()->first;
 	Date maxDate = readings.rbegin()->first;
-
 	if (uTBegin < minDate || maxDate < uTEnd)
 	{
 		throw TimeSpanOutOfBoundException();
@@ -117,10 +118,12 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 		 {
 			 float d1 = ApplicationData::distance(
 				 s1->getLatitude(), s1->getLongitude(),
-				 uLat, uLon);
+				 uLat, uLon
+			 );
 			 float d2 = ApplicationData::distance(
 				 s2->getLatitude(), s2->getLongitude(),
-				 uLat, uLon);
+				 uLat, uLon
+			 );
 			 return d1 < d2;
 		 });
 
@@ -146,15 +149,17 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			{
 				break;
 			}
+			
+			// Check that readings aren't empty
 			map<Date, Reading *> readings = s->getReadings();
 			if (readings.empty())
 			{
 				continue;
 			}
-
+			
+			// Check that dates are in database bounds
 			Date minDate = readings.begin()->first;
 			Date maxDate = readings.rbegin()->first;
-
 			if (uTBegin < minDate || maxDate < uTEnd)
 			{
 				continue;
@@ -218,7 +223,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	unordered_map<int, Sensor *> sensorList = applicationData->getSensorList();
 	unordered_map<int, Cleaner *> cleanerList = applicationData->getCleanerList();
 	// If no cleaner is found, return negative floats as error codes
-	if (uCleanerID >= cleanerList.size())
+	if (uCleanerID >= (int)cleanerList.size())
 	{
 		throw UnknownCleanerException();
 	}
@@ -262,9 +267,9 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			continue;
 		}
 
+		// Check that dates are in database bounds
 		Date minDate = readings.begin()->first;
 		Date maxDate = readings.rbegin()->first;
-
 		if (cleanerStartDate < minDate || maxDate < cleanerStopDate || maxDate == cleanerStopDate)
 		{
 			continue;
@@ -277,7 +282,9 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		// Get distance between sensor and cleaner
 		float dist = ApplicationData::distance(
 			i->getLatitude(), i->getLongitude(),
-			cleanerLat, cleanerLon);
+			cleanerLat, cleanerLon
+		);
+			
 		// Dermine if there's another cleaner closer to that sensor
 		bool foundCloser = false;
 

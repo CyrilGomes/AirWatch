@@ -1,1 +1,4 @@
-compareSensorSimilarities functionality test: given date is not formatted correctly, then given end date is before given begin date, then successful execution
+compareSensorSimilarities functionality test: 
+- given date is not formatted correctly
+- then given end date is before given begin date
+- then successful execution

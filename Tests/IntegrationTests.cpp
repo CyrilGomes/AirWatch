@@ -227,12 +227,14 @@ int main()
                 cptFailed++;
             }
 
+            // Cleanup output redirection files
             remove(("./" + directoryName + "/temperr.txt").c_str());
             remove(("./" + directoryName + "/temp.txt").c_str());
             remove(("./" + directoryName + "/dump.txt").c_str());
         }
     }
 
+    /* ALL TESTS */
     cout << "Passed tests     : " << cptPassed << endl;
     cout << "Failed tests     : " << cptFailed << endl;
     cout << "-----------------------" << endl;

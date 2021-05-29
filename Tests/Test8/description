@@ -1,1 +1,2 @@
-getPunctualAirQuality functionality test: given timestamp is not contained within database
+getPunctualAirQuality functionality test: 
+- given timestamp is not contained within database

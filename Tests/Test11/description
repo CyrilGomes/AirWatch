@@ -1,1 +1,2 @@
-getCleanerContribution functionality test: given sensor id is not found within the database
+getCleanerContribution functionality test: 
+- given sensor id is not found within the database
