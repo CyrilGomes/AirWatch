@@ -6,11 +6,11 @@
 1. Login
 2. Register
 3. Exit
-> :
+> : 
 Login
 -----
 
-Email : Password :
+Email : Password : 
 =========================
  Main menu :
 =========================
@@ -19,7 +19,7 @@ Email : Password :
 2. Cleaner analytics
 3. Register Air Cleaning Company
 4. Log out
-> :
+> : 
 =========================
  Sensor analytics menu :
 =========================
@@ -29,11 +29,11 @@ Email : Password :
 3. See sensor reliabilities
 4. Find data similarities
 5. Go back
-> :
+> : 
 Punctual Air Quality
 --------------------
 
-Latitude : Latitude : Longitude : Start Time : End Time :
+Latitude : Latitude : Longitude : Start Time : End Time : 
 ATMO level : 6.66576
 
 =========================
@@ -45,7 +45,7 @@ ATMO level : 6.66576
 3. See sensor reliabilities
 4. Find data similarities
 5. Go back
-> :
+> : 
 =========================
  Main menu :
 =========================
@@ -54,7 +54,7 @@ ATMO level : 6.66576
 2. Cleaner analytics
 3. Register Air Cleaning Company
 4. Log out
-> :
+> : 
 =========================
  Welcome to AirWatch :
 =========================
@@ -62,4 +62,4 @@ ATMO level : 6.66576
 1. Login
 2. Register
 3. Exit
-> :
+> : 
