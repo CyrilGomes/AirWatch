@@ -54,34 +54,26 @@ vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, D
 
 	for (pair<int, Sensor *> ite : sensorList)
 	{
-
 		float diffAverage = 0;
 		int i = 0;
 		Sensor *os = ite.second;
 		if (os->getId() == uSensorID)
 			continue;
 
+		int atmo1 = 0; int atmo2 = 0;
 		map<Date, Reading *> osReadings = os->getReadings();
-
-		int atmo1 = 0;
-		int atmo2 = 0;
 		for (auto r = readingsBegin; r != readingsEnd; ++r)
 		{
-
 			Reading *reading1 = r->second;
 			Reading *reading2 = osReadings[r->first];
-
 			// Compute average of differences in ATMO scores
 			atmo1 = reading1->atmo();
 			atmo2 = reading2->atmo();
-
 			diffAverage = diffAverage + (atmo1 - atmo2);
-
 			i++;
 		}
 
 		diffAverage = abs(diffAverage / (float)i);
-		//cout << os->getId()<<" " <<diffAverage << endl;
 		if (diffAverage < threshold)
 		{
 			similarSensors.push_back(os);
@@ -160,7 +152,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			{
 				continue;
 			}
-			
+
 			// Loop through its readings starting from uTBegin to uTEnd
 			map<Date, Reading *>::iterator readingsBegin = readings.lower_bound(uTBegin);
 			map<Date, Reading *>::iterator readingsEnd = readings.upper_bound(uTEnd);

@@ -6,11 +6,11 @@
 1. Login
 2. Register
 3. Exit
-> :
+> : 
 Login
 -----
 
-Email : Password :
+Email : Password : 
 =========================
  Main menu :
 =========================
@@ -19,7 +19,7 @@ Email : Password :
 2. Cleaner analytics
 3. Register Air Cleaning Company
 4. Log out
-> :
+> : 
 =========================
  Sensor analytics menu :
 =========================
@@ -29,13 +29,12 @@ Email : Password :
 3. See sensor reliabilities
 4. Find data similarities
 5. Go back
-> :
+> : 
 Sensor Data Similarities
 ------------------------
 
-Sensor ID : Start Time : Start Time : Start Time : End Time : Start Time : End Time : 
-List of similar sensors in the given time period:
-3 (1, 1)
+Sensor ID : Start Time : Start Time : End Time : Start Time : End Time : List of similar sensors in the given time period: 
+Sensor 3 (1; 1)
 
 =========================
  Sensor analytics menu :
@@ -46,7 +45,7 @@ List of similar sensors in the given time period:
 3. See sensor reliabilities
 4. Find data similarities
 5. Go back
-> :
+> : 
 =========================
  Main menu :
 =========================
@@ -55,7 +54,7 @@ List of similar sensors in the given time period:
 2. Cleaner analytics
 3. Register Air Cleaning Company
 4. Log out
-> :
+> : 
 =========================
  Welcome to AirWatch :
 =========================
@@ -63,4 +62,4 @@ List of similar sensors in the given time period:
 1. Login
 2. Register
 3. Exit
-> :
+> : 

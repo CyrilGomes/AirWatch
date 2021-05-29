@@ -59,9 +59,9 @@ int Reading::atmo() {
 	int atmo = 0;
 	for (pair<string, Measurement*> i : measurements) {
 		int subAtmo = 0;
-		for (int j = 0; j < 10; j++) {
-			if (Reading::atmoTable[i.first][j] > i.second->getValue()) {
-				subAtmo = j - 1;
+		for (int k = 0; k < 10; k++) {
+			if (Reading::atmoTable[i.first][k] > i.second->getValue()) {
+				subAtmo = k - 1;
 				break;
 			}
 		}
