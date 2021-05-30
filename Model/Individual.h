@@ -7,6 +7,9 @@
 #include "User.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* INDIVIDUAL (child of User) ----------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Individual : public User {
 
 	private:
@@ -16,11 +19,11 @@ class Individual : public User {
 		static unsigned int maxId;
 
 	public:
-		/* CONSTRUCTORS & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Individual(unsigned int id, string mail, string password);
 		Individual(string mail, string password);
 		~Individual();
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		int getPoints() const;
 		void setPoints(int points);
 		void addPoint();

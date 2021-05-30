@@ -7,10 +7,13 @@
 #include "../Model/Sensor.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* APPLICATION SERVICES ----------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class ApplicationServices {
 
 	public:
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		static vector<Sensor*> checkSensorsReliabilities(Date uTBegin, Date uTEnd);
 		static void flagSensor(int uSensorID, bool uFlag);
 		static vector<Sensor*> compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd);

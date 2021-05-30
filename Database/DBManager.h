@@ -9,16 +9,19 @@
 #include "../Model/Government.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* DBMANAGER ---------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class DBManager {
 
 	private:
 		static string directory;
 
 	public:
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		static string getDirectory();
 		static void setDirectory(string directory);
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		static void importCentralAndLocalData();
 		static void saveLocalData();
 		static void updateLocalDataWithUser(User* newUser);

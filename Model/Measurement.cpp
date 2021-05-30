@@ -1,28 +1,36 @@
 #include "Measurement.h"
 
-Measurement::Measurement(string unitType, string description, float value) : unitType(unitType), description(description), value(value)  {
+/* -------------------------------------------------------------------------- */
+/* CONSTRUCTORS & DESTRUCTOR ------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
+Measurement::Measurement(string unitType, string description, float value) : unitType(unitType), description(description), value(value)  
+{
 }
 
-string Measurement::getUnitType() const {
+/* -------------------------------------------------------------------------- */
+/* ACCESSORS ---------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+string Measurement::getUnitType() const 
+{
 	return this->unitType;
 }
-
-void Measurement::setUnitType(string unitType) {
+void Measurement::setUnitType(string unitType) 
+{
 	this->unitType = unitType;
 }
-
-string Measurement::getDescription() const {
+string Measurement::getDescription() const 
+{
 	return this->description;
 }
-
-void Measurement::setDescription(string description) {
+void Measurement::setDescription(string description) 
+{
 	this->description = description;
 }
-
-float Measurement::getValue() const {
+float Measurement::getValue() const 
+{
 	return this->value;
 }
-
-void Measurement::setValue(float value) {
+void Measurement::setValue(float value) 
+{
 	this->value = value;
 }

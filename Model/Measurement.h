@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* MEASUREMENT -------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Measurement {
 
 	private:
@@ -12,9 +15,9 @@ class Measurement {
 		float value;
 
 	public:
-		/* CONSTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Measurement(string unitType, string description, float value);
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		string getUnitType() const;
 		void setUnitType(string unitType);
 		string getDescription() const;

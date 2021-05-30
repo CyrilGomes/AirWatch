@@ -18,10 +18,10 @@ class ApplicationData {
 		ApplicationData();
 
 	public:
-		/* CONSTRUCTORS & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		ApplicationData(ApplicationData& other) = delete;
 		~ApplicationData();
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		static ApplicationData* getInstance();
 		unordered_map<int, Cleaner*> getCleanerList() const;
 		void addCleaner(Cleaner* cleaner);
@@ -29,10 +29,11 @@ class ApplicationData {
 		void addSensor(Sensor* sensor);
 		unordered_map<string, User*> getUserList() const;
 		void addUser(User* user);
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		void updateUserList(string oldKey);
-		/* OPERATOR OVERLOADS */
+		/* OPERATOR OVERLOADS ----------------------------------------------- */
     	void operator = (const ApplicationData& other) = delete;
+		
 };
 
 #endif

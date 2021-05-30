@@ -7,10 +7,13 @@
 #include "../Model/Date.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* INPUT MANAGER ------------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 class InputManager {
 
 	public:
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		static int promptInteger(string prompt);
 		static string promptString(string prompt);
 		static string promptEmail(string prompt);

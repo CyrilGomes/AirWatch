@@ -5,13 +5,16 @@
 #include "User.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* GOVERNMENT (child of User) ----------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Government : public User {
 
 	private:
 		static unsigned int maxId;
 
 	public:
-		/* CONSTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Government(string mail, string password);
 
 };

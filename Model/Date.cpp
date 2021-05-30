@@ -1,46 +1,52 @@
 #include "Date.h"
 
+/* -------------------------------------------------------------------------- */
+/* CONSTRUCTORS & DESTRUCTOR ------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 Date::Date(int h, int d, int m, int y) :  hour(h), day(d), month(m), year(y)
 {
 }
-
 Date::Date()
 {	
 }
 
-int Date::getYear() const {
+/* -------------------------------------------------------------------------- */
+/* ACCESSORS ---------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+int Date::getYear() const 
+{
 	return year;
 }
-
-void Date::setYear(int year) {
+void Date::setYear(int year) 
+{
 	this->year = year;
 }
-
-int Date::getMonth() const {
+int Date::getMonth() const 
+{
 	return month;
 }
-
-void Date::setMonth(int month) {
+void Date::setMonth(int month) 
+{
 	this->month = month;
 }
-
-int Date::getDay() const {
+int Date::getDay() const 
+{
 	return day;
 }
-
-void Date::setDay(int day) {
+void Date::setDay(int day) 
+{
 	this->day = day;
 }
-
-int Date::getHour() const {
+int Date::getHour() const 
+{
 	return hour;
 }
-
-void Date::setHour(int hour) {
+void Date::setHour(int hour) 
+{
 	this->hour = hour;
 }
-
-string Date::toString() const {
+string Date::toString() const 
+{
 	string sYear = to_string(year);
 	string sMonth = (month < 10) ? "0" + to_string(month) : to_string(month);
 	string sDay = (day < 10) ? "0" + to_string(day) : to_string(day);
@@ -48,7 +54,11 @@ string Date::toString() const {
 	return sDay + "/" + sMonth + "/" + sYear + " " + sHour + ":00:00";
 }
 
-bool Date::operator==(const Date& oDate) const {
+/* -------------------------------------------------------------------------- */
+/* OPERATOR OVERLOADS ------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+bool Date::operator==(const Date& oDate) const 
+{
 	return (
 		getYear() == oDate.getYear()
 		&& getMonth() == oDate.getMonth()
@@ -56,8 +66,8 @@ bool Date::operator==(const Date& oDate) const {
 		&& getHour() == oDate.getHour()
 	);
 }
-
-bool Date::operator<(const Date& oDate) const {
+bool Date::operator<(const Date& oDate) const 
+{
 	if (getYear() < oDate.getYear()) {
 		return true;
 	}
@@ -90,21 +100,21 @@ bool Date::operator<(const Date& oDate) const {
 	}
 	return false;
 }
-
-Date& Date::operator=(const Date& oDate) {
+Date& Date::operator=(const Date& oDate) 
+{
 	year = oDate.getYear();
 	month = oDate.getMonth();
 	day = oDate.getDay();
 	hour = oDate.getHour();
 	return *this;
 }
-
-ostream& operator<<(ostream& output, const Date& date) {
+ostream& operator<<(ostream& output, const Date& date) 
+{
 	output << date.toString();
 	return output;
 }
-
-istream& operator>>(istream& input, Date& date) {
+istream& operator>>(istream& input, Date& date) 
+{
 	tm t = {};
 	input >> get_time(&t, "%d/%m/%Y");
 	if (!input.fail()) {

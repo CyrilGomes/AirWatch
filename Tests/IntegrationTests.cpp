@@ -12,25 +12,36 @@
 using namespace std;
 using std::filesystem::directory_iterator;
 
-// https://helloacm.com/how-to-split-a-string-in-c/
+/* -------------------------------------------------------------------------- */
+/* FUNCTION: split() -------------------------------------------------------- */
+/* Splits a string into a vector of substrings based on a separator character */
+/* https://helloacm.com/how-to-split-a-string-in-c/ ------------------------- */
+/* -------------------------------------------------------------------------- */
 inline vector<string> split(const string &text, const char &sep)
 {
     string tmp;
     vector<string> stk;
     stringstream ss(text);
-    while (getline(ss, tmp, sep))
-    {
+    while (getline(ss, tmp, sep)) {
         stk.push_back(tmp);
     }
     return stk;
 }
 
-// https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
+/* -------------------------------------------------------------------------- */
+/* FUNCTION: rtrim() -------------------------------------------------------- */
+/* Trims a string by the end ------------------------------------------------ */
+/* https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring */
+/* -------------------------------------------------------------------------- */
 inline void rtrim(std::string &s)
 {
     s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
 }
 
+/* -------------------------------------------------------------------------- */
+/* FUNCTION: checkFiles() --------------------------------------------------- */
+/* Checks equality between the contents of two files, ignoring whitespaces -- */
+/* -------------------------------------------------------------------------- */
 bool checkFiles(const string &filename1, const string &filename2)
 {
     // Get strings contained in each file
@@ -53,6 +64,10 @@ bool checkFiles(const string &filename1, const string &filename2)
     return str1 == str2;
 }
 
+/* -------------------------------------------------------------------------- */
+/* FUNCTION: checkCSVs() ---------------------------------------------------- */
+/* Checks equality between a csv file from the dataset and an expected output */
+/* -------------------------------------------------------------------------- */
 bool checkCSVs(const string &filename1, const string &filename2)
 {
     // Get strings contained in each file
@@ -84,19 +99,23 @@ bool checkCSVs(const string &filename1, const string &filename2)
     return linesContained;
 }
 
+/* -------------------------------------------------------------------------- */
+/* FUNCTION: getFilesInDirectory() ------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 vector<filesystem::path> getFilesInDirectory(string directoryName)
 {
     vector<filesystem::path> fileList;
-    for (const auto &file : directory_iterator("./" + directoryName))
-    {
-        if (!is_directory(file))
-        {
+    for (const auto &file : directory_iterator("./" + directoryName)) {
+        if (!is_directory(file)) {
             fileList.push_back(file.path());
         }
     }
     return fileList;
 }
 
+/* -------------------------------------------------------------------------- */
+/* MAIN TESTS PROGRAM ------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 int main()
 {
     int cptPassed = 0;
@@ -104,12 +123,10 @@ int main()
     string separator = "-----------------------------------------------------------";
 
     // For each Test directory
-    for (const auto &file : directory_iterator("./"))
-    {
+    for (const auto &file : directory_iterator("./")) {
         string directoryName = file.path().filename().string();
         filesystem::path path = file.path();
-        if (is_directory(file) && directoryName.find("Test") != string::npos)
-        {
+        if (is_directory(file) && directoryName.find("Test") != string::npos) {
             
             // Reset local files
             system(("mkdir -p ./" + directoryName + "/Dataset").c_str());

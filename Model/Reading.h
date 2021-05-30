@@ -8,6 +8,9 @@ class Sensor;
 #include "Date.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* READING ------------------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 class Reading {
 
 	private:
@@ -17,17 +20,17 @@ class Reading {
 		static unordered_map<string, int*> atmoTable;
 
 	public:
-		/* CONSTRUCTOR & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Reading(Date timeStamp);
 		~Reading();
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		Date getTimeStamp() const;
 		void setTimeStamp(Date timeStamp);
 		Sensor* getSensor() const;
 		void setSensor(Sensor* sensor);
 		unordered_map<string, Measurement*> getMeasurements() const;
 		void addMeasurement(Measurement* measurement, string type);
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		int atmo();
 
 };

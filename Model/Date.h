@@ -5,9 +5,11 @@
 #include <iostream>
 #include <locale>
 #include <iomanip>
-
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* DATE --------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Date {
 
 	private:
@@ -17,10 +19,10 @@ class Date {
 		int year;
 
 	public:
-		/* CONSTRUCTORS */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Date();
 		Date(int hour, int day, int month, int year);
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		int getYear() const;
 		void setYear(int year);
 		int getMonth() const;
@@ -30,7 +32,7 @@ class Date {
 		int getHour() const;
 		void setHour(int hour);
 		string toString() const;
-		/* OPERATOR OVERLOADS */
+		/* OPERATOR OVERLOADS ----------------------------------------------- */
 		bool operator==(const Date& oDate) const;
 		bool operator<(const Date& oDate) const;
 		Date& operator=(const Date& oDate);

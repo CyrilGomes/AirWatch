@@ -11,6 +11,10 @@ using namespace std;
 
 typedef pair<string, function<void()>> Option;
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: displayHeader() -------------------------------------------------- */
+/* Displays a header in the console with different styles / borders around it */
+/* -------------------------------------------------------------------------- */
 void HMIManager::displayHeader(string message, int level)
 {
     const string headerBanner = "=========================";
@@ -41,6 +45,11 @@ void HMIManager::displayHeader(string message, int level)
     }
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: displayMenu() ---------------------------------------------------- */
+/* Displays a menu with a given options lists and prompts an input for a menu */
+/* choice, then executes the associated function ---------------------------- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList)
 {
     // Display Menu
@@ -63,6 +72,10 @@ void HMIManager::displayMenu(string menuTitle, vector<Option> optionsList)
     optionsList[menuChoice].second();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: loginMenu() ------------------------------------------------------ */
+/* Builds the options of the login menu then displays it and waits for input  */
+/* -------------------------------------------------------------------------- */
 void HMIManager::loginMenu()
 {
     // Set menu title
@@ -76,6 +89,10 @@ void HMIManager::loginMenu()
     displayMenu(menuTitle, optionsList);
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: mainMenu() ------------------------------------------------------- */
+/* Builds the options of the main menu then displays it and waits for input - */
+/* -------------------------------------------------------------------------- */
 void HMIManager::mainMenu()
 {
     // Set menu title
@@ -104,6 +121,10 @@ void HMIManager::mainMenu()
     displayMenu(menuTitle, optionsList);
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: sensorMenu() ----------------------------------------------------- */
+/* Builds the options of the sensor menu then displays it and waits for input */
+/* -------------------------------------------------------------------------- */
 void HMIManager::sensorMenu()
 {
     // Set menu title
@@ -119,19 +140,28 @@ void HMIManager::sensorMenu()
     displayMenu(menuTitle, optionsList);
 }
 
-// Sensor queries
+/* -------------------------------------------------------------------------- */
+/* METHOD: querySensorReliability() ----------------------------------------- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::querySensorReliability()
 {
     cerr << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: querySensorFlag() ------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 void HMIManager::querySensorFlag()
 {
     cerr << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: querySensorSimilarity() ------------------------------------------ */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::querySensorSimilarity()
 {
     // Display title and prompt parameters
@@ -140,40 +170,35 @@ void HMIManager::querySensorSimilarity()
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
     // Check date coherence
-    while (uTEnd < uTBegin)
-    {
+    while (uTEnd < uTBegin) {
         cerr << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
 
     #ifdef DEBUG
-    // Getting the starting time of the functionality
-    auto start = chrono::high_resolution_clock::now();
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
     #endif
     
     vector<Sensor *> similarSensors;
-    try
-    {
+    try {
         // Call service
         similarSensors = ApplicationServices::compareSensorSimilarities(uSensorId, uTBegin, uTEnd);
     }
-    catch (UnknownSensorException &e)
-    {
+    catch (UnknownSensorException &e) {
         // Handle service errors
         cerr << "(!) The entered Sensor ID is unknown" << endl;
         sensorMenu();
         return;
     }
-        catch (EmptyReadingsException &e)
-    {
+    catch (EmptyReadingsException &e) {
         // Handle service errors
         cerr << "(!) There is no readings in this Sensor" << endl;
         sensorMenu();
         return;
     }
-        catch (TimeSpanOutOfBoundException &e)
-    {
+    catch (TimeSpanOutOfBoundException &e) {
         // Handle service errors
         cerr << "(!) The time period you entered is not in the scope of the database" << endl;
         sensorMenu();
@@ -181,29 +206,35 @@ void HMIManager::querySensorSimilarity()
     }
 
     #ifdef DEBUG
-    // Getting the ending time of the functionality
-    auto end = chrono::high_resolution_clock::now();
-    // Displaying the duration
-    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Display result
     cout << "List of similar sensors in the given time period: " << endl;
-    for (Sensor *s : similarSensors)
-    {
+    for (Sensor *s : similarSensors) {
         cout << "Sensor " << s->getId() << " (" << s->getLatitude() << "; " << s->getLongitude() << ")" << endl;
     }
     // Go back to menu
     sensorMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryAreaAirQuality() -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryAreaAirQuality()
 {
     cout << "This functionality is unavailable" << endl;
     sensorMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryPunctualAirQuality() ---------------------------------------- */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryPunctualAirQuality()
 {
     // Display title and prompt parameters
@@ -213,32 +244,29 @@ void HMIManager::queryPunctualAirQuality()
     Date uTBegin = InputManager::promptDate("Start Time");
     Date uTEnd = InputManager::promptDate("End Time");
     // Check date coherence
-    while (uTEnd < uTBegin)
-    {
+    while (uTEnd < uTBegin) {
         cerr << "(!) The entered time period is invalid, please try again" << endl;
         uTBegin = InputManager::promptDate("Start Time");
         uTEnd = InputManager::promptDate("End Time");
     }
 
     #ifdef DEBUG
-    // Getting the starting time of the functionality
-    auto start = chrono::high_resolution_clock::now();
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
     #endif
+    
     float atmo;
-    try
-    {
+    try {
         // Call service
         atmo = ApplicationServices::getPunctualAirQuality(uLat, uLon, uTBegin, uTEnd);
     }
-    catch (TimeSpanOutOfBoundException &e)
-    {
+    catch (TimeSpanOutOfBoundException &e) {
         // Handle service errors
         cerr << "(!) The time period you entered is not in the scope of the database" << endl;
         sensorMenu();
         return;
     }
-        catch (LocationTooFarAwayException &e)
-    {
+    catch (LocationTooFarAwayException &e) {
         // Handle service errors
         cerr << "(!) The entered location is too far away from any sensors" << endl;
         sensorMenu();
@@ -246,11 +274,11 @@ void HMIManager::queryPunctualAirQuality()
     }
 
     #ifdef DEBUG
-    // Getting the ending time of the functionality
-    auto end = chrono::high_resolution_clock::now();
-    // Displaying the duration
-    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Display result
@@ -260,7 +288,10 @@ void HMIManager::queryPunctualAirQuality()
     sensorMenu();
 }
 
-// Cleaner queries
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryCleanerContribution() --------------------------------------- */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryCleanerContribution()
 {
     // Display title and prompt parameters
@@ -268,17 +299,16 @@ void HMIManager::queryCleanerContribution()
     int uCleanerId = InputManager::promptInteger("Cleaner ID");
 
     #ifdef DEBUG
-    // Getting the starting time of the functionality
-    auto start = chrono::high_resolution_clock::now();
+        // Getting the starting time of the functionality
+        auto start = chrono::high_resolution_clock::now();
     #endif
+    
     pair<float, float> cleanerContribution;
-    try
-    {
+    try {
         // Call service
         cleanerContribution = ApplicationServices::getCleanerContribution(uCleanerId);
     }
-    catch (UnknownCleanerException &e)
-    {
+    catch (UnknownCleanerException &e) {
         // Handle service errors
         cerr << "(!) The entered Cleaner ID is unknown" << endl;
         mainMenu();
@@ -286,11 +316,11 @@ void HMIManager::queryCleanerContribution()
     }
 
     #ifdef DEBUG
-    // Getting the ending time of the functionality
-    auto end = chrono::high_resolution_clock::now();
-    // Displaying the duration
-    auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
+        // Getting the ending time of the functionality
+        auto end = chrono::high_resolution_clock::now();
+        // Displaying the duration
+        auto timeTaken = chrono::duration_cast<chrono::milliseconds>(end - start);
+        cout << "Execution time: " << timeTaken.count() << " milliseconds" << endl << endl;
     #endif
 
     // Display result
@@ -301,7 +331,10 @@ void HMIManager::queryCleanerContribution()
     mainMenu();
 }
 
-// User queries
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryIndividualPoints() ------------------------------------------ */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryIndividualPoints()
 {
     // Display title
@@ -315,26 +348,28 @@ void HMIManager::queryIndividualPoints()
     mainMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryLogin() ----------------------------------------------------- */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryLogin()
 {
     // Display title and prompt parameters
     displayHeader("Login", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", false);
-    try
-    {
+    
+    try {
         // Call service
         UserServices::authenticate(uMail, uPassword);
     }
-    catch (AccountDoNoExistException& e)
-    {
+    catch (AccountDoNoExistException& e) {
         // Handle service errors
         cerr << "(!) Given account does not exist, please try again" << endl;
         loginMenu();
         return;
     }
-        catch (IncorrectPasswordException& e)
-    {
+    catch (IncorrectPasswordException& e) {
         // Handle service errors
         cerr << "(!) Incorrect password, please try again" << endl;
         loginMenu();
@@ -345,6 +380,9 @@ void HMIManager::queryLogin()
     mainMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryLogout() ---------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryLogout()
 {
     // Call service
@@ -353,19 +391,22 @@ void HMIManager::queryLogout()
     loginMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryIndividualRegister() ---------------------------------------- */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryIndividualRegister()
 {
     // Display title and prompt parameters
     displayHeader("Register as a private individual", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", true);
-    try
-    {
+    
+    try {
         // Call service
         UserServices::registerIndividual(uMail, uPassword);
     }
-    catch (AccountAlreadyExistsException &e)
-    {
+    catch (AccountAlreadyExistsException &e) {
         // Handle service errors
         cerr << "(!) Given account already exists, please try again" << endl;
         loginMenu();
@@ -379,19 +420,22 @@ void HMIManager::queryIndividualRegister()
     loginMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryCompanyRegister() ------------------------------------------- */
+/* Fetches inputs and uses them to call the service and display the output -- */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryCompanyRegister()
 {
     // Display title and prompt parameters
     displayHeader("Register company", 1);
     string uMail = InputManager::promptEmail("Email");
     string uPassword = InputManager::promptPassword("Password", true);
-    try
-    {
+    
+    try {
         // Call service
         UserServices::registerCompany(uMail, uPassword);
     }
-    catch (AccountAlreadyExistsException &e)
-    {
+    catch (AccountAlreadyExistsException &e) {
         // Handle service errors
         cerr << "(!) Given account already exists, please try again" << endl;
         mainMenu();
@@ -405,6 +449,9 @@ void HMIManager::queryCompanyRegister()
     mainMenu();
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: queryExit() ------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 void HMIManager::queryExit()
 {
     cout << endl;

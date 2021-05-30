@@ -3,6 +3,10 @@
 #include "InputManager.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptInteger() -------------------------------------------------- */
+/* Prompts for an integer (prompts again if input is not an integer) -------- */
+/* -------------------------------------------------------------------------- */
 int InputManager::promptInteger(string prompt) {
 	int valueIn = 1;
     float ref = 0;
@@ -20,6 +24,10 @@ int InputManager::promptInteger(string prompt) {
 	return valueIn;
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptString() --------------------------------------------------- */
+/* Prompts for a string ----------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 string InputManager::promptString(string prompt) {
 	string valueIn = "";
 	cout << prompt << " : ";
@@ -27,6 +35,10 @@ string InputManager::promptString(string prompt) {
 	return valueIn;
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptEmail() ---------------------------------------------------- */
+/* Prompts for an email (prompts again if input contains ';') --------------- */
+/* -------------------------------------------------------------------------- */
 string InputManager::promptEmail(string prompt) {
 	string valueIn = "";
 	cout << prompt << " : ";
@@ -41,6 +53,10 @@ string InputManager::promptEmail(string prompt) {
 	return valueIn;
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptPassword() ------------------------------------------------- */
+/* Prompts for a password (prompts again if input contains ';' / is too short)*/
+/* -------------------------------------------------------------------------- */
 string InputManager::promptPassword(string prompt, bool restrictLength) {
 	string valueIn = "";
 	cout << prompt << " : ";
@@ -64,6 +80,10 @@ string InputManager::promptPassword(string prompt, bool restrictLength) {
 	return valueIn;
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptFloat() ---------------------------------------------------- */
+/* Prompts for a float (prompts again if input is not a float) -------------- */
+/* -------------------------------------------------------------------------- */
 float InputManager::promptFloat(string prompt) {
 	float valueIn = 0;
 	cout << prompt << " : ";
@@ -78,6 +98,10 @@ float InputManager::promptFloat(string prompt) {
 	return valueIn;
 }
 
+/* -------------------------------------------------------------------------- */
+/* METHOD: promptDate() ----------------------------------------------------- */
+/* Prompts for a date (prompts again if input is badly formatted) ----------- */
+/* -------------------------------------------------------------------------- */
 Date InputManager::promptDate(string prompt) {
 	Date valueIn;
 	cout << prompt << " : ";

@@ -5,16 +5,19 @@
 #include "../Model/User.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* USER SERVICES ------------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 class UserServices {
 
 	private:
 		static User* currentUser;
 
 	public:
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		static User* getCurrentUser();
 		static void setCurrentUser(User* user);
-		/* METHODS */
+		/* METHODS ---------------------------------------------------------- */
 		static void authenticate(string uEmail, string uPassword);
 		static void registerCompany(string uEmail, string uPassword);
 		static void registerIndividual(string uEmail, string uPassword);

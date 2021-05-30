@@ -4,6 +4,9 @@
 class Company;
 #include "Date.h"
 
+/* -------------------------------------------------------------------------- */
+/* CLEANER ------------------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
 class Cleaner {
 
 	private:
@@ -15,9 +18,9 @@ class Cleaner {
 		Company* owner;
 
 	public:
-		/* CONSTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Cleaner(int id, float latitude, float longitude, Date startDate, Date stopDate);
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		int getId() const;
 		void setId(int id);
 		float getLatitude() const;

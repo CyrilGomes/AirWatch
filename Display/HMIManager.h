@@ -6,10 +6,13 @@
 #include <functional>
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* HMIMANAGER --------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class HMIManager {
 
     public:
-        /* METHODS */
+        /* METHODS ---------------------------------------------------------- */
         // Menu displays
         void displayMenu(string menuTitle, vector<pair<string, function<void()>>> optionsList);
         void loginMenu();

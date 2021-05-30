@@ -7,17 +7,24 @@
 #include "../Model/Individual.h"
 #include "Exceptions.h"
 
+/* -------------------------------------------------------------------------- */
+/* ACCESSORS ---------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 User* UserServices::currentUser;
-
-User* UserServices::getCurrentUser() {
+User* UserServices::getCurrentUser() 
+{
 	return currentUser;
 }
-
-void UserServices::setCurrentUser(User* user) {
+void UserServices::setCurrentUser(User* user) 
+{
 	currentUser = user;
 }
 
-void UserServices::authenticate(string uEmail, string uPassword) {
+/* -------------------------------------------------------------------------- */
+/* METHOD: authenticate() --------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+void UserServices::authenticate(string uEmail, string uPassword) 
+{
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
     unordered_map<string, User*> userList = applicationData->getUserList();
@@ -38,7 +45,11 @@ void UserServices::authenticate(string uEmail, string uPassword) {
     setCurrentUser(authenticatedUser);
 }
 
-void UserServices::registerCompany(string uEmail, string uPassword) {
+/* -------------------------------------------------------------------------- */
+/* METHOD: registerCompany() ------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
+void UserServices::registerCompany(string uEmail, string uPassword) 
+{
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
 	unordered_map<string, User*> userList = applicationData->getUserList();
@@ -53,8 +64,11 @@ void UserServices::registerCompany(string uEmail, string uPassword) {
 	DBManager::updateLocalDataWithUser(newUser);
 }
 
-
-void UserServices::registerIndividual(string uEmail, string uPassword) {
+/* -------------------------------------------------------------------------- */
+/* METHOD: registerIndividual() --------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+void UserServices::registerIndividual(string uEmail, string uPassword) 
+{
 	// ApplicationData instance and user list
 	ApplicationData* applicationData = ApplicationData::getInstance();
     unordered_map<string, User*> userList = applicationData->getUserList();

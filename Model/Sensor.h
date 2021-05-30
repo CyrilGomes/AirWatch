@@ -7,6 +7,9 @@ class Individual;
 #include "Date.h"
 #include "ReliabilityFlag.h"
 
+/* -------------------------------------------------------------------------- */
+/* SENSOR ------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Sensor {
 
 	private:
@@ -18,10 +21,10 @@ class Sensor {
 		map<Date, Reading*> readings;
 
 	public:
-		/* CONSTRUCTOR & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Sensor(int id, float latitude, float longitude);
 		~Sensor();
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		int getId() const;
 		void setId(int id);
 		float getLatitude() const;

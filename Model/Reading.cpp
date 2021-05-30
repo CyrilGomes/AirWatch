@@ -3,6 +3,9 @@
 #include "User.h"
 #include "Individual.h"
 
+/* -------------------------------------------------------------------------- */
+/* STATIC TABLE USED TO COMPUTE ATMO SCORES --------------------------------- */
+/* -------------------------------------------------------------------------- */
 int _atmo_O3   [] = {0, 30, 55, 80, 105, 130, 150, 180, 210, 240};
 int _atmo_SO2  [] = {0, 40, 80, 120, 160, 200, 250, 300, 400, 500};
 int _atmo_NO2  [] = {0, 30, 55, 85, 110, 135, 165, 200, 275, 400};
@@ -14,41 +17,54 @@ unordered_map<string, int*> Reading::atmoTable = {
 	{"PM10", _atmo_PM10}
 };
 
-Reading::Reading(Date timeStamp) : timeStamp(timeStamp) {
+/* -------------------------------------------------------------------------- */
+/* CONSTRUCTORS & DESTRUCTOR ------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
+Reading::Reading(Date timeStamp) : timeStamp(timeStamp) 
+{
 	this->sensor = nullptr;
 }
-
-Reading::~Reading() {
+Reading::~Reading() 
+{
 	for (auto i : measurements) {
 		delete i.second;
 	}
 }
 
-Date Reading::getTimeStamp() const {
+/* -------------------------------------------------------------------------- */
+/* ACCESSORS ---------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+Date Reading::getTimeStamp() const 
+{
 	return this->timeStamp;
 }
-
-void Reading::setTimeStamp(Date timeStamp) {
+void Reading::setTimeStamp(Date timeStamp) 
+{
 	this->timeStamp = timeStamp;
 }
-
-Sensor* Reading::getSensor() const {
+Sensor* Reading::getSensor() const 
+{
 	return this->sensor;
 }
-
-void Reading::setSensor(Sensor* sensor) {
+void Reading::setSensor(Sensor* sensor) 
+{
 	this->sensor = sensor;
 }
-
-unordered_map<string, Measurement*> Reading::getMeasurements() const {
+unordered_map<string, Measurement*> Reading::getMeasurements() const 
+{
 	return this->measurements;
 }
-
-void Reading::addMeasurement(Measurement* measurement, string type) {
+void Reading::addMeasurement(Measurement* measurement, string type) 
+{
 	measurements[type] = measurement;
 }
 
-int Reading::atmo() {
+/* -------------------------------------------------------------------------- */
+/* METHOD: atmo() ----------------------------------------------------------- */
+/* Calculates the ATMO Index of the reading --------------------------------- */
+/* -------------------------------------------------------------------------- */
+int Reading::atmo() 
+{
 	// Give points to owner (unless owner is current user)
 	User* currentUser = UserServices::getCurrentUser();
 	Individual* owner = sensor->getOwner();

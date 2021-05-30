@@ -7,6 +7,9 @@
 #include "Cleaner.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* COMPANY (child of User) -------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class Company : public User {
 
 	private:
@@ -14,11 +17,11 @@ class Company : public User {
 		static unsigned int maxId;
 
 	public:
-		/* CONSTRUCTORS & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		Company(unsigned int id, string mail, string password);
 		Company(string mail, string password);
 		~Company();
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		vector<Cleaner*> getCleanerList() const;
 		void addCleaner(Cleaner* cleaner);
 

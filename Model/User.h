@@ -5,6 +5,9 @@
 #include "UserType.h"
 using namespace std;
 
+/* -------------------------------------------------------------------------- */
+/* USER --------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class User {
 
 	protected:
@@ -14,11 +17,11 @@ class User {
 		UserType type;
 
 	public:
-		/* CONSTRUCTORS & DESTRUCTOR */
+		/* CONSTRUCTORS & DESTRUCTOR ---------------------------------------- */
 		User();
 		User(string mail, string password);
 		virtual ~User() {};
-		/* ACCESSORS */
+		/* ACCESSORS -------------------------------------------------------- */
 		unsigned int getId() const;
 		void setId(unsigned int id);
 		string getPassword() const;
