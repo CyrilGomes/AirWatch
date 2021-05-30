@@ -18,8 +18,10 @@ class Sensor {
 		map<Date, Reading*> readings;
 
 	public:
+		/* CONSTRUCTOR & DESTRUCTOR */
 		Sensor(int id, float latitude, float longitude);
 		~Sensor();
+		/* ACCESSORS */
 		int getId() const;
 		void setId(int id);
 		float getLatitude() const;

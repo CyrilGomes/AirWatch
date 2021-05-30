@@ -16,9 +16,11 @@ class Individual : public User {
 		static unsigned int maxId;
 
 	public:
+		/* CONSTRUCTORS & DESTRUCTOR */
 		Individual(unsigned int id, string mail, string password);
 		Individual(string mail, string password);
 		~Individual();
+		/* ACCESSORS */
 		int getPoints() const;
 		void setPoints(int points);
 		void addPoint();

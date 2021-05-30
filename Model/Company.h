@@ -14,9 +14,11 @@ class Company : public User {
 		static unsigned int maxId;
 
 	public:
+		/* CONSTRUCTORS & DESTRUCTOR */
 		Company(unsigned int id, string mail, string password);
 		Company(string mail, string password);
 		~Company();
+		/* ACCESSORS */
 		vector<Cleaner*> getCleanerList() const;
 		void addCleaner(Cleaner* cleaner);
 

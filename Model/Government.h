@@ -11,6 +11,7 @@ class Government : public User {
 		static unsigned int maxId;
 
 	public:
+		/* CONSTRUCTOR */
 		Government(string mail, string password);
 
 };

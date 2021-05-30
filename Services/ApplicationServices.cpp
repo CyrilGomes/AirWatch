@@ -6,7 +6,7 @@
 #include "../Model/ReliabilityFlag.h"
 #include "Exceptions.h"
 
-ReliabilityFlag ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd)
+vector<Sensor*> ApplicationServices::checkSensorsReliabilities(Date uTBegin, Date uTEnd)
 {
 	throw "Not yet implemented";
 }
@@ -16,12 +16,12 @@ void ApplicationServices::flagSensor(int uSensorID, bool uFlag)
 	throw "Not yet implemented";
 }
 
-vector<Sensor *> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
+vector<Sensor*> ApplicationServices::compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd)
 {
 
 	//Vars
-	vector<Sensor *> similarSensors;
-	Sensor *sensor;
+	vector<Sensor*> similarSensors;
+	Sensor* sensor;
 	float threshold = 0.1;
 
 	// Fetch data
@@ -116,11 +116,11 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 	}
 	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool
 		 {
-			 float d1 = ApplicationData::distance(
+			 float d1 = ApplicationServices::distance(
 				 s1->getLatitude(), s1->getLongitude(),
 				 uLat, uLon
 			 );
-			 float d2 = ApplicationData::distance(
+			 float d2 = ApplicationServices::distance(
 				 s2->getLatitude(), s2->getLongitude(),
 				 uLat, uLon
 			 );
@@ -136,7 +136,7 @@ float ApplicationServices::getPunctualAirQuality(float uLat, float uLon, Date uT
 			continue;
 		}
 		// Get distance to given position
-		float dist = ApplicationData::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
+		float dist = ApplicationServices::distance(s->getLatitude(), s->getLongitude(), uLat, uLon);
 		// If the sensor isn't too far away...
 		if (dist <= distThreshold)
 		{
@@ -241,10 +241,10 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 	}
 	sort(sortedSensorsList.begin(), sortedSensorsList.end(), [&](const Sensor *s1, const Sensor *s2) -> bool
 		 {
-			 float d1 = ApplicationData::distance(
+			 float d1 = ApplicationServices::distance(
 				 s1->getLatitude(), s1->getLongitude(),
 				 cleanerLat, cleanerLon);
-			 float d2 = ApplicationData::distance(
+			 float d2 = ApplicationServices::distance(
 				 s2->getLatitude(), s2->getLongitude(),
 				 cleanerLat, cleanerLon);
 			 return d1 < d2;
@@ -275,13 +275,13 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			continue;
 		}
 
-		// Get their atmo at the start and at the end of the cleaner's action
+		// Get their atmo before the end and at the end of the cleaner's action
 		int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
 		int atmoBeforeStop = prev(readings.upper_bound(cleanerStopDate))->second->atmo();
 		int atmoAtStop = readings.upper_bound(cleanerStopDate)->second->atmo();
 
 		// Get distance between sensor and cleaner
-		float dist = ApplicationData::distance(
+		float dist = ApplicationServices::distance(
 			i->getLatitude(), i->getLongitude(),
 			cleanerLat, cleanerLon
 		);
@@ -291,7 +291,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 
 		for (pair<int, Cleaner*> j : cleanerList)
 		{
-			float oDist = ApplicationData::distance(
+			float oDist = ApplicationServices::distance(
 				i->getLatitude(), i->getLongitude(),
 				j.second->getLatitude(), j.second->getLongitude());
 			if (oDist < dist)
@@ -313,7 +313,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 			break;
 		}
 
-		// If there's a significant difference of ATMO at that point before and after the cleaner's action,
+		// If there's a significant difference of ATMO at that point at the end and right after the cleaner's action,
 		// Mark that as an improvement
 		if (atmoAtStop - atmoBeforeStop >= atmoThreshold)
 		{
@@ -357,4 +357,11 @@ void ApplicationServices::saveData()
 void ApplicationServices::cleanup()
 {
 	delete ApplicationData::getInstance();
+}
+
+float ApplicationServices::distance(float lat1, float lon1, float lat2, float lon2) {
+    float earthRadius = 6378137.0;
+    float lat1_rad = lat1 * M_PI/180.0; float lon1_rad = lon1 * M_PI/180.0;
+    float lat2_rad = lat2 * M_PI/180.0; float lon2_rad = lon2 * M_PI/180.0;
+    return acos(sin(lat1_rad)*sin(lat2_rad)+cos(lat1_rad)*cos(lat2_rad)*cos(lon2_rad-lon1_rad))*earthRadius;
 }

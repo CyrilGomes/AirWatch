@@ -12,7 +12,9 @@ class Measurement {
 		float value;
 
 	public:
+		/* CONSTRUCTOR */
 		Measurement(string unitType, string description, float value);
+		/* ACCESSORS */
 		string getUnitType() const;
 		void setUnitType(string unitType);
 		string getDescription() const;

@@ -10,7 +10,8 @@ using namespace std;
 class ApplicationServices {
 
 	public:
-		static ReliabilityFlag checkSensorsReliabilities(Date uTBegin, Date uTEnd);
+		/* METHODS */
+		static vector<Sensor*> checkSensorsReliabilities(Date uTBegin, Date uTEnd);
 		static void flagSensor(int uSensorID, bool uFlag);
 		static vector<Sensor*> compareSensorSimilarities(int uSensorID, Date uTBegin, Date uTEnd);
 		static float getAreaAirQuality(float uLat, float uLon, float uRad, Date uTBegin, Date uTEnd);
@@ -19,6 +20,7 @@ class ApplicationServices {
 		static void importData(string dataDirectory);
 		static void saveData();
 		static void cleanup();
+		static float distance(float lat1, float lon1, float lat2, float lon2);
 
 };
 

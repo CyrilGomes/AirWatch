@@ -17,8 +17,10 @@ class Date {
 		int year;
 
 	public:
+		/* CONSTRUCTORS */
 		Date();
 		Date(int hour, int day, int month, int year);
+		/* ACCESSORS */
 		int getYear() const;
 		void setYear(int year);
 		int getMonth() const;
@@ -28,6 +30,7 @@ class Date {
 		int getHour() const;
 		void setHour(int hour);
 		string toString() const;
+		/* OPERATOR OVERLOADS */
 		bool operator==(const Date& oDate) const;
 		bool operator<(const Date& oDate) const;
 		Date& operator=(const Date& oDate);

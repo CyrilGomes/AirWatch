@@ -15,7 +15,9 @@ class Cleaner {
 		Company* owner;
 
 	public:
+		/* CONSTRUCTOR */
 		Cleaner(int id, float latitude, float longitude, Date startDate, Date stopDate);
+		/* ACCESSORS */
 		int getId() const;
 		void setId(int id);
 		float getLatitude() const;

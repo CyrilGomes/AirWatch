@@ -18,6 +18,10 @@ class ApplicationData {
 		ApplicationData();
 
 	public:
+		/* CONSTRUCTORS & DESTRUCTOR */
+		ApplicationData(ApplicationData& other) = delete;
+		~ApplicationData();
+		/* ACCESSORS */
 		static ApplicationData* getInstance();
 		unordered_map<int, Cleaner*> getCleanerList() const;
 		void addCleaner(Cleaner* cleaner);
@@ -25,10 +29,9 @@ class ApplicationData {
 		void addSensor(Sensor* sensor);
 		unordered_map<string, User*> getUserList() const;
 		void addUser(User* user);
+		/* METHODS */
 		void updateUserList(string oldKey);
-		static float distance(float lat1, float lon1, float lat2, float lon2);
-		~ApplicationData();
-		ApplicationData(ApplicationData& other) = delete;
+		/* OPERATOR OVERLOADS */
     	void operator = (const ApplicationData& other) = delete;
 };
 

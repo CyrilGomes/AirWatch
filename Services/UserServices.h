@@ -11,8 +11,10 @@ class UserServices {
 		static User* currentUser;
 
 	public:
+		/* ACCESSORS */
 		static User* getCurrentUser();
 		static void setCurrentUser(User* user);
+		/* METHODS */
 		static void authenticate(string uEmail, string uPassword);
 		static void registerCompany(string uEmail, string uPassword);
 		static void registerIndividual(string uEmail, string uPassword);

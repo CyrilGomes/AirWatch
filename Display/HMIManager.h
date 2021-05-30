@@ -9,6 +9,7 @@ using namespace std;
 class HMIManager {
 
     public:
+        /* METHODS */
         // Menu displays
         void displayMenu(string menuTitle, vector<pair<string, function<void()>>> optionsList);
         void loginMenu();

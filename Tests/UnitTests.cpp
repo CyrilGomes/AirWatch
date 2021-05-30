@@ -164,7 +164,7 @@ int main()
     // Inputs
     float iDist1 = 2; float iDist2 = 6; float iDist3 = 4; float iDist4 = 7;
     // Actual output
-    float tDist = ApplicationData::distance(iDist1, iDist2, iDist3, iDist4);
+    float tDist = ApplicationServices::distance(iDist1, iDist2, iDist3, iDist4);
     // Expected output
     float eDist = 248831;
     // Display and checks

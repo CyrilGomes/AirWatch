@@ -14,9 +14,11 @@ class User {
 		UserType type;
 
 	public:
+		/* CONSTRUCTORS & DESTRUCTOR */
 		User();
 		User(string mail, string password);
 		virtual ~User() {};
+		/* ACCESSORS */
 		unsigned int getId() const;
 		void setId(unsigned int id);
 		string getPassword() const;

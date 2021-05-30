@@ -15,8 +15,10 @@ class DBManager {
 		static string directory;
 
 	public:
+		/* ACCESSORS */
 		static string getDirectory();
 		static void setDirectory(string directory);
+		/* METHODS */
 		static void importCentralAndLocalData();
 		static void saveLocalData();
 		static void updateLocalDataWithUser(User* newUser);
