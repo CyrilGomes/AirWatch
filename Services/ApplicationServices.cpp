@@ -271,7 +271,7 @@ pair<float, float> ApplicationServices::getCleanerContribution(int uCleanerID)
 		}
 
 		// Get their atmo before the end and at the end of the cleaner's action
-		int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
+		//int atmoAtStart = readings.lower_bound(cleanerStartDate)->second->atmo();
 		int atmoBeforeStop = prev(readings.upper_bound(cleanerStopDate))->second->atmo();
 		int atmoAtStop = readings.upper_bound(cleanerStopDate)->second->atmo();
 
