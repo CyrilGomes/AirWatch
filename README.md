@@ -5,5 +5,8 @@ In order to see the execution times of each algorithm, compile using `make debug
 
 Execute tests by going in the Tests/ directory and compiling the tests using `make`. 
 You can then execute unit tests by launching `./UnitTests.exe`, and integration tests by launching `./IntegrationTests.exe`. 
-**Note: ** the program has to be compiled without the DEBUG flag, otherwise the tests won't work.
+
+**Note:** the program has to be compiled without the DEBUG flag, otherwise the tests won't work.
+
+For more information on how to use the program, please look at the User Manual in the Requirements Specifications .pdf
 
